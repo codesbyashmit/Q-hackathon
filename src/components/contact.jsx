@@ -174,7 +174,7 @@ const Contact = () => {
             name="Ayushman Ganeriwal"
             role="Event Lead"
             desc="For registration & logistics info"
-            phone="+91 91234 56789"
+            phone="+91 99844 33785"
             inView={cardsInView}
             delay={200}
           />
