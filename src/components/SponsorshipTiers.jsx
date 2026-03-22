@@ -90,6 +90,11 @@ const TierCard = ({ tier, index, inView }) => {
   const { name, price, featured, badge, benefits } = tier;
   const delay = index * 100;
 
+  const handleSponsorClick = (e) => {
+    e.preventDefault();
+    window.open("https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view?usp=drivesdk", "_blank");
+  };
+
   return (
     <div
       className="relative flex flex-col rounded-(--radius) border px-7 pt-10 pb-8
@@ -156,10 +161,10 @@ const TierCard = ({ tier, index, inView }) => {
       </ul>
 
       {/* CTA */}
-      <a
-        href="assets/sponsorship-brochure.pdf"
+      <button
+        onClick={handleSponsorClick}
         className="block w-full text-center text-sm font-bold py-3 rounded-(--radius)
-                   border-2 transition-all duration-200"
+                   border-2 transition-all duration-200 cursor-pointer"
         style={
           featured
             ? { background: "var(--primary)", color: "white", borderColor: "var(--primary)" }
@@ -183,7 +188,7 @@ const TierCard = ({ tier, index, inView }) => {
         }}
       >
         Become a Sponsor
-      </a>
+      </button>
     </div>
   );
 };

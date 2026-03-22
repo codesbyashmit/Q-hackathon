@@ -54,6 +54,11 @@ const PartnerBox = ({ partner, index, inView }) => {
   const { Icon, title, price, desc, perks, highlight, cta, primary } = partner;
   const delay = index * 130;
 
+  const handlePDFClick = (e) => {
+    e.preventDefault();
+    window.open("https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view?usp=drivesdk", "_blank");
+  };
+
   return (
     <div
       className="relative flex flex-col rounded-(--radius) border bg-white px-8 py-9
@@ -117,10 +122,10 @@ const PartnerBox = ({ partner, index, inView }) => {
       </ul>
 
       {/* CTA button */}
-      <a
-        href="assets/sponsorship-brochure.pdf"
+      <button
+        onClick={handlePDFClick}
         className="block w-full text-center text-sm font-bold py-3 rounded-(--radius)
-                   border-2 transition-all duration-200 mt-auto"
+                   border-2 transition-all duration-200 mt-auto cursor-pointer"
         style={
           primary
             ? { background: "var(--primary)", color: "white", borderColor: "var(--primary)" }
@@ -144,7 +149,7 @@ const PartnerBox = ({ partner, index, inView }) => {
         }}
       >
         {cta}
-      </a>
+      </button>
     </div>
   );
 };

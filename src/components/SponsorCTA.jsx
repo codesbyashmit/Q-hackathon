@@ -22,6 +22,11 @@ const SponsorCTA = () => {
   const [headerRef, headerInView] = useInView(0.3);
   const [boxRef,    boxInView]    = useInView(0.2);
 
+  const handleDownloadBrochure = (e) => {
+    e.preventDefault();
+    window.open("https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view?usp=drivesdk", "_blank");
+  };
+
   return (
     <section className="py-20 px-5 bg-white">
       <div className="max-w-3xl mx-auto">
@@ -70,12 +75,11 @@ const SponsorCTA = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center">
 
             {/* Primary — Download */}
-            <a
-              href="assets/sponsorship-brochure.pdf"
-              download
+            <button
+              onClick={handleDownloadBrochure}
               className="inline-flex items-center justify-center gap-2
                          font-bold text-sm px-6 py-3.5 rounded-(--radius)
-                         border-2 transition-all duration-200 whitespace-nowrap"
+                         border-2 transition-all duration-200 whitespace-nowrap cursor-pointer"
               style={{
                 background:  "var(--primary)",
                 color:       "white",
@@ -92,7 +96,7 @@ const SponsorCTA = () => {
             >
               <Download size={15} strokeWidth={2.5} />
               Download Brochure (PDF)
-            </a>
+            </button>
 
             {/* Outline — Contact */}
             <a

@@ -3,18 +3,16 @@ import { Link } from "react-router-dom";
 
 const exploreLinks = [
   { name: "Home", to: "/" },
-  { name: "About", to: "/#about" },
-  { name: "Tracks", to: "/#tracks" },
-  { name: "Roadmap", to: "/#timeline-section" },
-  { name: "FAQs", to: "/#faq" },
+  { name: "About", section: "about" },
+  { name: "Tracks", section: "tracks" },
+  { name: "Roadmap", section: "timeline-section" },
+  { name: "FAQs", section: "faq" },
 ];
 
 const engageLinks = [
-  { name: "Register Now", to: "/register" },
-  { name: "Sponsor Us", to: "/sponsors" },
-  { name: "Contact Support", to: "/#contact" },
-  { name: "Code of Conduct", to: "#" },
-  { name: "Privacy Policy", to: "#" },
+  { name: "Register Now", to: "https://bit.ly/4st6atF" },
+  { name: "Sponsor Us", to: "/sponsors" }
+  
 ];
 
 function Footer() {
@@ -35,9 +33,9 @@ function Footer() {
           </p>
 
           <div className="social-links">
-            <a href="#" className="social-icon">IG</a>
-            <a href="#" className="social-icon">IN</a>
-            <a href="#" className="social-icon">X</a>
+            <a href="https://www.instagram.com/qu_codex/" className="social-icon">IG</a>
+            <a href="https://www.linkedin.com/company/qucodex/" className="social-icon">IN</a>
+            <a href="https://www.qucodex.com" className="social-icon">X</a>
           </div>
         </div>
 
@@ -47,7 +45,19 @@ function Footer() {
           <ul>
             {exploreLinks.map((link, i) => (
               <li key={i}>
-                <Link to={link.to}>{link.name}</Link>
+                {link.to ? (
+  <Link to={link.to}>{link.name}</Link>
+) : (
+  <button
+    onClick={() => {
+      const el = document.getElementById(link.section);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }}
+    style={{ background: "none", border: "none", cursor: "pointer" }}
+  >
+    {link.name}
+  </button>
+)}
               </li>
             ))}
           </ul>
@@ -59,7 +69,15 @@ function Footer() {
           <ul>
             {engageLinks.map((link, i) => (
               <li key={i}>
-                <Link to={link.to}>{link.name}</Link>
+                {link.to.startsWith("http") ? (
+                  <a href={link.to} target="_blank" rel="noopener noreferrer">
+                    {link.name}
+                  </a>
+                ) : (
+                  <Link to={link.to}>
+                    {link.name}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>

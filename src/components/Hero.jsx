@@ -15,10 +15,10 @@ const Hero = () => {
     if (gap <= 0) return null;
     const s = 1000, m = s * 60, h = m * 60, d = h * 24;
     return {
-      days:  Math.floor(gap / d),
+      days: Math.floor(gap / d),
       hours: Math.floor((gap % d) / h),
-      mins:  Math.floor((gap % h) / m),
-      secs:  Math.floor((gap % m) / s),
+      mins: Math.floor((gap % h) / m),
+      secs: Math.floor((gap % m) / s),
     };
   };
 
@@ -30,16 +30,16 @@ const Hero = () => {
 
   const timeUnits = timeLeft
     ? [
-        { value: timeLeft.days,  label: "Days" },
-        { value: timeLeft.hours, label: "Hrs"  },
-        { value: timeLeft.mins,  label: "Min"  },
-        { value: timeLeft.secs,  label: "Sec"  },
-      ]
+      { value: timeLeft.days, label: "Days" },
+      { value: timeLeft.hours, label: "Hrs" },
+      { value: timeLeft.mins, label: "Min" },
+      { value: timeLeft.secs, label: "Sec" },
+    ]
     : [];
 
   const fadeUp = (delay = 0) => ({
-    opacity:    mounted ? 1 : 0,
-    transform:  mounted ? "translateY(0)" : "translateY(24px)",
+    opacity: mounted ? 1 : 0,
+    transform: mounted ? "translateY(0)" : "translateY(24px)",
     transition: `opacity 0.7s ease ${delay}ms, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
   });
 
@@ -60,8 +60,8 @@ const Hero = () => {
         <div
           className="w-full lg:flex-1 flex justify-center lg:order-2"
           style={{
-            opacity:    mounted ? 1 : 0,
-            transform:  mounted ? "translateY(0) scale(1)" : "translateY(-20px) scale(0.94)",
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? "translateY(0) scale(1)" : "translateY(-20px) scale(0.94)",
             transition: "opacity 0.8s ease 120ms, transform 0.8s cubic-bezier(0.22,1,0.36,1) 120ms",
           }}
         >
@@ -105,50 +105,56 @@ const Hero = () => {
             className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 mb-6 sm:mb-10 w-full sm:w-auto"
             style={fadeUp(440)}
           >
-            <a href="" className="w-full sm:w-auto">
+            <a href="https://bit.ly/4st6atF" className="w-full sm:w-auto">
               <button
                 className="w-full font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5
                            rounded-(--radius) transition-all duration-300 cursor-pointer border-none"
                 style={{
                   background: "var(--primary)",
-                  color:      "var(--text-light)",
-                  boxShadow:  "0 6px 18px rgba(140,46,124,0.28)",
+                  color: "var(--text-light)",
+                  boxShadow: "0 6px 18px rgba(140,46,124,0.28)",
                   fontFamily: "inherit",
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.background = "var(--primary-dark)";
-                  e.currentTarget.style.transform  = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow  = "0 10px 22px rgba(140,46,124,0.38)";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 10px 22px rgba(140,46,124,0.38)";
                 }}
                 onMouseLeave={e => {
                   e.currentTarget.style.background = "var(--primary)";
-                  e.currentTarget.style.transform  = "translateY(0)";
-                  e.currentTarget.style.boxShadow  = "0 6px 18px rgba(140,46,124,0.28)";
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 6px 18px rgba(140,46,124,0.28)";
                 }}
                 onMouseDown={e => { e.currentTarget.style.transform = "translateY(0)"; }}
               >
                 Register Now
               </button>
             </a>
-            <a href="#tracks" className="w-full sm:w-auto">
-              <button
-                className="w-full font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5
-                           rounded-(--radius) bg-transparent transition-all duration-300 cursor-pointer"
-                style={{ border: "2px solid var(--border)", color: "var(--text-dark)", fontFamily: "inherit" }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = "var(--primary)";
-                  e.currentTarget.style.color       = "var(--primary)";
-                  e.currentTarget.style.background  = "var(--secondary)";
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = "var(--border)";
-                  e.currentTarget.style.color       = "var(--text-dark)";
-                  e.currentTarget.style.background  = "transparent";
-                }}
-              >
-                View Tracks
-              </button>
-            </a>
+            <button
+              onClick={() => {
+                const el = document.getElementById("tracks");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="w-full sm:w-auto font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5
+             rounded-(--radius) bg-transparent transition-all duration-300 cursor-pointer"
+              style={{
+                border: "2px solid var(--border)",
+                color: "var(--text-dark)",
+                fontFamily: "inherit"
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = "var(--primary)";
+                e.currentTarget.style.color = "var(--primary)";
+                e.currentTarget.style.background = "var(--secondary)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = "var(--border)";
+                e.currentTarget.style.color = "var(--text-dark)";
+                e.currentTarget.style.background = "transparent";
+              }}
+            >
+              View Tracks
+            </button>
           </div>
 
           {/* ── Countdown — always a single row of 4 ── */}
@@ -159,13 +165,13 @@ const Hero = () => {
                   key={label}
                   className="flex-1 text-center rounded-(--radius) py-2.5 sm:py-3.5 px-1 sm:px-4"
                   style={{
-                    background:           "rgba(255,255,255,0.6)",
-                    backdropFilter:       "blur(12px)",
+                    background: "rgba(255,255,255,0.6)",
+                    backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
-                    border:               "1px solid rgba(255,255,255,0.85)",
-                    boxShadow:            "0 4px 14px rgba(0,0,0,0.05)",
-                    opacity:    mounted ? 1 : 0,
-                    transform:  mounted ? "translateY(0) scale(1)" : "translateY(16px) scale(0.92)",
+                    border: "1px solid rgba(255,255,255,0.85)",
+                    boxShadow: "0 4px 14px rgba(0,0,0,0.05)",
+                    opacity: mounted ? 1 : 0,
+                    transform: mounted ? "translateY(0) scale(1)" : "translateY(16px) scale(0.92)",
                     transition: `opacity 0.6s ease ${520 + i * 70}ms, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${520 + i * 70}ms`,
                   }}
                 >

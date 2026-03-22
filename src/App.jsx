@@ -4,7 +4,7 @@ import Sponsors from "./pages/Sponsors";
 
 function App() {
   return (
-    <HashRouter>
+    <HashRouter >
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sponsors" element={<Sponsors />} />

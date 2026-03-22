@@ -44,10 +44,10 @@ function Navbar() {
   };
 
   const navLinks = [
-    { label: "About",   section: "about"            },
-    { label: "Tracks",  section: "tracks"            },
-    { label: "Roadmap", section: "timeline-section"  },
-    { label: "FAQ",     section: "faq"               },
+    { label: "About", section: "about" },
+    { label: "Tracks", section: "tracks" },
+    { label: "Roadmap", section: "timeline-section" },
+    { label: "FAQ", section: "faq" },
   ];
 
   return (
@@ -84,9 +84,14 @@ function Navbar() {
               <Link to="/sponsors" className="nav-item external-link" onClick={scrollToTop}>
                 Sponsors
               </Link>
-              <Link to="/register" className="btn-nav" onClick={closeMenu}>
-                Register
-              </Link>
+              <a
+                href="https://bit.ly/4st6atF"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-nav"
+              >
+                Register Now
+              </a>
             </div>
           </nav>
 
@@ -205,23 +210,25 @@ function Navbar() {
         </Link>
 
         {/* Register CTA */}
-        <Link
-          to="/register"
-          onClick={closeMenu}
+        <a
+          href="https://bit.ly/4st6atF"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
             marginTop: "8px",
-            display: "block", textAlign: "center",
-            padding: "12px 0", borderRadius: "var(--radius)",
-            background: "var(--primary)", color: "white",
-            fontWeight: 700, fontSize: "0.95rem",
+            display: "block",
+            textAlign: "center",
+            padding: "12px 0",
+            borderRadius: "var(--radius)",
+            background: "var(--primary)",
+            color: "white",
+            fontWeight: 700,
+            fontSize: "0.95rem",
             textDecoration: "none",
-            transition: "background 0.2s ease",
           }}
-          onMouseEnter={e => { e.currentTarget.style.background = "var(--primary-dark)"; }}
-          onMouseLeave={e => { e.currentTarget.style.background = "var(--primary)"; }}
         >
           Register Now
-        </Link>
+        </a>
       </div>
     </>
   );
