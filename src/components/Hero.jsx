@@ -1,14 +1,9 @@
 import { useEffect, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import logo from "../assets/qhackathon-name.svg";
 import robot from "../assets/hero-robo.svg";
 
 const Hero = () => {
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 80);
-    return () => clearTimeout(t);
-  }, []);
-
   const calculateTimeLeft = () => {
     const countDate = new Date("April 24, 2026 09:00:00").getTime();
     const gap = countDate - Date.now();
@@ -23,6 +18,7 @@ const Hero = () => {
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
   useEffect(() => {
     const id = setInterval(() => setTimeLeft(calculateTimeLeft()), 1000);
     return () => clearInterval(id);
@@ -30,137 +26,168 @@ const Hero = () => {
 
   const timeUnits = timeLeft
     ? [
-      { value: timeLeft.days, label: "Days" },
-      { value: timeLeft.hours, label: "Hrs" },
-      { value: timeLeft.mins, label: "Min" },
-      { value: timeLeft.secs, label: "Sec" },
-    ]
+        { value: timeLeft.days, label: "Days" },
+        { value: timeLeft.hours, label: "Hrs" },
+        { value: timeLeft.mins, label: "Min" },
+        { value: timeLeft.secs, label: "Sec" },
+      ]
     : [];
+//layout varients
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.2 },
+    },
+  };
 
-  const fadeUp = (delay = 0) => ({
-    opacity: mounted ? 1 : 0,
-    transform: mounted ? "translateY(0)" : "translateY(24px)",
-    transition: `opacity 0.7s ease ${delay}ms, transform 0.7s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
-  });
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { type: "spring", stiffness: 80, damping: 15 } 
+    },
+  };
 
+  //3d hover tilt
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    const xPct = mouseX / width - 0.5;
+    const yPct = mouseY / height - 0.5;
+    x.set(xPct);
+    y.set(yPct);
+  };
+  const handleMouseLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
   return (
     <section
       className="relative min-h-svh flex items-center px-4 sm:px-6 py-14 overflow-hidden"
       style={{ background: "radial-gradient(circle at top left, var(--secondary), var(--bg-light) 60%)" }}
     >
-      {/* Blobs */}
+      {/*background circle*/}
       <div className="pointer-events-none absolute -top-20 -left-20 w-65 h-65 sm:w-115 sm:h-115 rounded-full opacity-20 blur-3xl"
         style={{ background: "var(--primary)" }} />
       <div className="pointer-events-none absolute bottom-0 right-0 w-50 h-50 sm:w-95 sm:h-95 rounded-full opacity-10 blur-3xl"
         style={{ background: "var(--primary-dark)" }} />
 
       <div className="relative z-10 w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-16">
-
-        {/* Robot — top on mobile */}
-        <div
+        
+        {/*robot */}
+        <motion.div
           className="w-full lg:flex-1 flex justify-center lg:order-2"
-          style={{
-            opacity: mounted ? 1 : 0,
-            transform: mounted ? "translateY(0) scale(1)" : "translateY(-20px) scale(0.94)",
-            transition: "opacity 0.8s ease 120ms, transform 0.8s cubic-bezier(0.22,1,0.36,1) 120ms",
-          }}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
+          onMouseMove={handleMouseMove}
+          onMouseLeave={handleMouseLeave}
+          style={{ perspective: 1000 }} 
         >
-          <img
+          <motion.img
             src={robot}
             alt="Hackathon Robot Mascot"
-            className="w-36 sm:w-56 lg:w-full lg:max-w-100 animate-float"
-            style={{ filter: "drop-shadow(0 14px 22px rgba(140,46,124,0.18))" }}
+            className="w-36 sm:w-56 lg:w-full lg:max-w-100"
+            style={{ 
+              rotateX, 
+              rotateY, 
+              transformStyle: "preserve-3d",
+              filter: "drop-shadow(0 25px 35px rgba(140,46,124,0.25))"
+            }}
+            animate={{ y: [0, -15, 0] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
-        </div>
+        </motion.div>
 
-        {/* Content */}
-        <div className="lg:order-1 lg:flex-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full">
-
-          {/* Logo */}
-          <img
+        {/*leftside content*/}
+        <motion.div 
+          className="lg:order-1 lg:flex-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
+          {/*logo qhackathon */}
+          <motion.img
             src={logo}
             alt="Q-Hackathon 2026 Logo"
             className="w-40 sm:w-56 lg:max-w-xs mb-4 drop-shadow-md"
-            style={fadeUp(100)}
+            variants={itemVariants}
           />
-
-          {/* Subtitle */}
-          <p
+          {/*subtitle */}
+          <motion.p
             className="text-lg sm:text-2xl lg:text-3xl font-bold tracking-tight mb-1"
-            style={{ color: "var(--primary)", letterSpacing: "-0.4px", ...fadeUp(220) }}
+            style={{ color: "var(--primary)", letterSpacing: "-0.4px" }}
+            variants={itemVariants}
           >
             36-Hour Intercollegiate Hackathon
-          </p>
+          </motion.p>
 
-          {/* Date / location */}
-          <p
+          {/*date and location*/}
+          <motion.p
             className="text-xs sm:text-sm lg:text-base font-semibold mb-5 sm:mb-7 opacity-70"
-            style={{ color: "var(--text-dark)", ...fadeUp(330) }}
+            style={{ color: "var(--text-dark)" }}
+            variants={itemVariants}
           >
             24–25 April 2026 &bull; Quantum University
-          </p>
+          </motion.p>
 
-          {/* Buttons */}
-          <div
-            className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 mb-6 sm:mb-10 w-full sm:w-auto"
-            style={fadeUp(440)}
-          >
+          {/*buttons*/}
+          <motion.div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 mb-6 sm:mb-10 w-full sm:w-auto" variants={itemVariants}>
             <a href="https://bit.ly/4st6atF" className="w-full sm:w-auto">
-              <button
-                className="w-full font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5
-                           rounded-(--radius) transition-all duration-300 cursor-pointer border-none"
+              <motion.button
+                className="w-full font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-(--radius) border-none cursor-pointer"
                 style={{
                   background: "var(--primary)",
                   color: "var(--text-light)",
                   boxShadow: "0 6px 18px rgba(140,46,124,0.28)",
                   fontFamily: "inherit",
                 }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = "var(--primary-dark)";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                  e.currentTarget.style.boxShadow = "0 10px 22px rgba(140,46,124,0.38)";
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = "var(--primary)";
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 6px 18px rgba(140,46,124,0.28)";
-                }}
-                onMouseDown={e => { e.currentTarget.style.transform = "translateY(0)"; }}
+                whileHover={{ scale: 1.05, y: -2, backgroundColor: "var(--primary-dark)" }}
+                whileTap={{ scale: 0.95 }}
               >
                 Register Now
-              </button>
+              </motion.button>
             </a>
-            <button
+            <motion.button
               onClick={() => {
                 const el = document.getElementById("tracks");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
-              className="w-full sm:w-auto font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5
-             rounded-(--radius) bg-transparent transition-all duration-300 cursor-pointer"
+              className="w-full sm:w-auto font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-(--radius) cursor-pointer"
               style={{
                 border: "2px solid var(--border)",
                 color: "var(--text-dark)",
+                background: "transparent",
                 fontFamily: "inherit"
               }}
-              onMouseEnter={e => {
-                e.currentTarget.style.borderColor = "var(--primary)";
-                e.currentTarget.style.color = "var(--primary)";
-                e.currentTarget.style.background = "var(--secondary)";
+              whileHover={{ 
+                scale: 1.05, 
+                y: -2, 
+                borderColor: "var(--primary)", 
+                color: "var(--primary)", 
+                backgroundColor: "var(--secondary)" 
               }}
-              onMouseLeave={e => {
-                e.currentTarget.style.borderColor = "var(--border)";
-                e.currentTarget.style.color = "var(--text-dark)";
-                e.currentTarget.style.background = "transparent";
-              }}
+              whileTap={{ scale: 0.95 }}
             >
               View Tracks
-            </button>
-          </div>
+            </motion.button>
+          </motion.div>
 
-          {/* ── Countdown — always a single row of 4 ── */}
+          {/*countdown*/}
           {timeLeft ? (
-            <div className="flex flex-row gap-2 sm:gap-3 w-full sm:w-auto">
-              {timeUnits.map(({ value, label }, i) => (
+            <motion.div className="flex flex-row gap-2 sm:gap-3 w-full sm:w-auto" variants={itemVariants}>
+              {timeUnits.map(({ value, label }) => (
                 <div
                   key={label}
                   className="flex-1 text-center rounded-(--radius) py-2.5 sm:py-3.5 px-1 sm:px-4"
@@ -170,33 +197,24 @@ const Hero = () => {
                     WebkitBackdropFilter: "blur(12px)",
                     border: "1px solid rgba(255,255,255,0.85)",
                     boxShadow: "0 4px 14px rgba(0,0,0,0.05)",
-                    opacity: mounted ? 1 : 0,
-                    transform: mounted ? "translateY(0) scale(1)" : "translateY(16px) scale(0.92)",
-                    transition: `opacity 0.6s ease ${520 + i * 70}ms, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${520 + i * 70}ms`,
                   }}
                 >
-                  <span
-                    className="block text-xl sm:text-3xl font-bold leading-none mb-0.5"
-                    style={{ color: "var(--primary)" }}
-                  >
+                  <span className="block text-xl sm:text-3xl font-bold leading-none mb-0.5" style={{ color: "var(--primary)" }}>
                     {String(value).padStart(2, "0")}
                   </span>
-                  <small
-                    className="uppercase text-[9px] sm:text-[11px] font-semibold tracking-wider opacity-60"
-                    style={{ color: "var(--text-dark)" }}
-                  >
+                  <small className="uppercase text-[9px] sm:text-[11px] font-semibold tracking-wider opacity-60" style={{ color: "var(--text-dark)" }}>
                     {label}
                   </small>
                 </div>
               ))}
-            </div>
+            </motion.div>
           ) : (
-            <h3 className="text-lg sm:text-2xl font-bold" style={{ color: "var(--primary)" }}>
-              🚀 The Hackathon has started!
-            </h3>
+            <motion.h3 variants={itemVariants} className="text-lg sm:text-2xl font-bold" style={{ color: "var(--primary)" }}>
+               The Hackathon has started!
+            </motion.h3>
           )}
 
-        </div>
+        </motion.div>
       </div>
     </section>
   );
