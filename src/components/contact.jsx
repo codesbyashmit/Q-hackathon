@@ -1,187 +1,187 @@
-import { useEffect, useRef, useState } from "react";
 import { Mail, Instagram, MapPin, Phone, User } from "lucide-react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import OrganizerStrip from "./organizerStrip";
-/* ── IntersectionObserver hook (fires once) ── */
-const useInView = (threshold = 0.15) => {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, inView];
+
+const TiltWrapper = ({ children, delay = 0 }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["7deg", "-7deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-7deg", "7deg"]);
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / rect.width - 0.5);
+    y.set(mouseY / rect.height - 0.5);
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      className="w-full h-full"
+      style={{ perspective: 1000 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
+    >
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="w-full h-full"
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  );
 };
 
-/* ── Info Card ── */
-const InfoCard = ({ inView, delay }) => (
-  <div
-    className="flex flex-col bg-white rounded-(--radius) border p-7
-                transition-all duration-300 hover:-translate-y-1 hover:border-(--primary)"
-    style={{
-      borderColor: "var(--border)",
-      boxShadow: "0 4px 14px rgba(0,0,0,0.05)",
-      opacity: inView ? 1 : 0,
-      transform: inView ? "translateY(0)" : "translateY(36px)",
-      transition: `opacity 0.6s ease ${delay}ms, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}ms,
-                   border-color 0.3s ease, box-shadow 0.3s ease`,
-    }}
-    onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 10px 28px rgba(140,46,124,0.10)"; }}
-    onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 14px rgba(0,0,0,0.05)"; }}
+/*dark purple infocard*/
+const InfoCard = () => (
+  <div 
+    className="flex flex-col h-full rounded-2xl p-8 sm:p-10 shadow-xl overflow-hidden relative group"
+    style={{ background: "linear-gradient(135deg, #111 0%, var(--primary-dark) 150%)" }}
   >
-    <h3 className="text-xl font-bold mb-5" style={{ color: "var(--primary-dark)" }}>
+    <div 
+      className="absolute top-0 right-0 w-40 h-40 bg-(--primary) rounded-full blur-[80px] opacity-30 group-hover:opacity-50 transition-opacity duration-500"
+      style={{ transform: "translateZ(0)" }}
+    />
+
+    <h3 className="text-2xl font-black mb-8 text-white tracking-tight" style={{ transform: "translateZ(30px)" }}>
       General Inquiries
     </h3>
 
-    {/* Email */}
-    <div className="mb-4">
-      <span className="flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-widest mb-1.5"
-        style={{ color: "var(--primary)" }}>
-        <Mail size={11} strokeWidth={2.5} /> Email
-      </span>
-      <a href="mailto:codexclub@email.com"
-        className="text-sm font-medium transition-colors duration-200 hover:text-(--primary)"
-        style={{ color: "var(--text-dark)" }}>
-        codexclub@email.com
-      </a>
-    </div>
+    <div className="flex flex-col gap-6 mt-auto" style={{ transform: "translateZ(20px)" }}>
+      {/*email*/}
+      <div className="group/link">
+        <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-1 text-gray-400">
+          <Mail size={14} style={{ color: "var(--primary)" }} /> Email
+        </span>
+        <a href="mailto:codexclub@email.com" className="text-sm sm:text-base font-medium text-white transition-colors hover:text-(--secondary)">
+          codexclub@email.com
+        </a>
+      </div>
 
-    {/* Instagram */}
-    <div className="mb-4">
-      <span className="flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-widest mb-1.5"
-        style={{ color: "var(--primary)" }}>
-        <Instagram size={11} strokeWidth={2.5} /> Instagram
-      </span>
-      <a href="https://instagram.com/codexclub" target="_blank" rel="noreferrer"
-        className="text-sm font-medium transition-colors duration-200 hover:text-(--primary)"
-        style={{ color: "var(--text-dark)" }}>
-        @codexclub
-      </a>
-    </div>
+      {/*insta*/}
+      <div className="group/link">
+        <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-1 text-gray-400">
+          <Instagram size={14} style={{ color: "var(--primary)" }} /> Instagram
+        </span>
+        <a href="https://instagram.com/codexclub" target="_blank" rel="noreferrer" className="text-sm sm:text-base font-medium text-white transition-colors hover:text-(--secondary)">
+          @codexclub
+        </a>
+      </div>
 
-    {/* Address */}
-    <div>
-      <span className="flex items-center gap-1.5 text-[11px] font-extrabold uppercase tracking-widest mb-1.5"
-        style={{ color: "var(--primary)" }}>
-        <MapPin size={11} strokeWidth={2.5} /> Address
-      </span>
-      <p className="text-sm font-medium leading-relaxed" style={{ color: "var(--text-dark)" }}>
-        Computer Science Dept, Tech Institute Main Campus
-      </p>
+      {/*address*/}
+      <div>
+        <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-1 text-gray-400">
+          <MapPin size={14} style={{ color: "var(--primary)" }} /> Address
+        </span>
+        <p className="text-sm sm:text-base font-medium text-white/80 leading-relaxed max-w-[200px]">
+          Computer Science Dept, Tech Institute Main Campus
+        </p>
+      </div>
     </div>
   </div>
 );
 
-/* ── Lead Card ── */
-const LeadCard = ({ name, role, desc, phone, inView, delay }) => (
-  <div
-    className="flex flex-col bg-white rounded-(--radius) border p-7
-                transition-all duration-300 hover:-translate-y-1 hover:border-(--primary)"
-    style={{
-      borderColor: "var(--border)",
-      boxShadow: "0 4px 14px rgba(0,0,0,0.05)",
-      opacity: inView ? 1 : 0,
-      transform: inView ? "translateY(0)" : "translateY(36px)",
-      transition: `opacity 0.6s ease ${delay}ms, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}ms,
-                   border-color 0.3s ease, box-shadow 0.3s ease`,
-    }}
-    onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 10px 28px rgba(140,46,124,0.10)"; }}
-    onMouseLeave={e => { e.currentTarget.style.boxShadow = "0 4px 14px rgba(0,0,0,0.05)"; }}
+/*lead cards*/
+const LeadCard = ({ name, role, desc, phone }) => (
+  <div 
+    className="flex flex-col h-full bg-white rounded-2xl border border-(--border) p-8 sm:p-10 shadow-sm transition-colors duration-300 hover:border-(--primary)"
   >
-    {/* Badge */}
-    <span className="inline-flex items-center gap-1.5 w-fit text-xs font-bold px-3 py-1 rounded-full mb-4"
-      style={{ background: "var(--secondary)", color: "var(--primary-dark)" }}>
-      <User size={11} strokeWidth={2.5} />
-      {role}
-    </span>
+    <div style={{ transform: "translateZ(30px)" }}>
+      <span className="inline-flex items-center gap-1.5 w-fit text-xs font-bold px-3 py-1.5 rounded-full mb-6 uppercase tracking-wider"
+        style={{ background: "var(--secondary)", color: "var(--primary-dark)" }}>
+        <User size={12} strokeWidth={2.5} />
+        {role}
+      </span>
 
-    <h3 className="text-xl font-bold mb-1" style={{ color: "var(--primary-dark)" }}>{name}</h3>
-    <p className="text-sm mb-5 grow" style={{ color: "#777" }}>{desc}</p>
+      <h3 className="text-2xl font-black mb-2" style={{ color: "var(--text-dark)" }}>{name}</h3>
+      <p className="text-sm leading-relaxed mb-8" style={{ color: "#777" }}>{desc}</p>
+    </div>
 
-    {/* Phone CTA */}
-    <a
-      href={`tel:${phone.replace(/\s/g, "")}`}
-      className="flex items-center justify-center gap-2 font-bold text-sm px-4 py-3
-                 rounded-(--radius) border-2 transition-all duration-200"
-      style={{ color: "var(--primary)", borderColor: "var(--secondary)" }}
-      onMouseEnter={e => {
-        e.currentTarget.style.background = "var(--primary)";
-        e.currentTarget.style.color = "white";
-        e.currentTarget.style.borderColor = "var(--primary)";
-      }}
-      onMouseLeave={e => {
-        e.currentTarget.style.background = "transparent";
-        e.currentTarget.style.color = "var(--primary)";
-        e.currentTarget.style.borderColor = "var(--secondary)";
-      }}
-    >
-      <Phone size={14} strokeWidth={2.5} />
-      {phone}
-    </a>
+    <div className="mt-auto" style={{ transform: "translateZ(20px)" }}>
+      <a
+        href={`tel:${phone.replace(/\s/g, "")}`}
+        className="flex items-center justify-center gap-2 font-bold text-sm px-5 py-3.5 rounded-xl border-2 transition-all duration-300 w-full"
+        style={{ color: "var(--primary)", borderColor: "var(--secondary)" }}
+        onMouseEnter={e => {
+          e.currentTarget.style.background = "var(--primary)";
+          e.currentTarget.style.color = "white";
+          e.currentTarget.style.borderColor = "var(--primary)";
+          e.currentTarget.style.boxShadow = "0 8px 20px rgba(140,46,124,0.2)";
+        }}
+        onMouseLeave={e => {
+          e.currentTarget.style.background = "transparent";
+          e.currentTarget.style.color = "var(--primary)";
+          e.currentTarget.style.borderColor = "var(--secondary)";
+          e.currentTarget.style.boxShadow = "none";
+        }}
+      >
+        <Phone size={16} strokeWidth={2.5} />
+        {phone}
+      </a>
+    </div>
   </div>
 );
-
-
-
-/* ── Main Section ── */
 const Contact = () => {
-  const [headerRef, headerInView] = useInView(0.3);
-  const [cardsRef, cardsInView] = useInView(0.1);
-
   return (
-    <section
-      id="contact"
-      className="py-20 px-6"
-      style={{ background: "var(--bg-light)" }}
-    >
-      <div className="max-w-5xl mx-auto">
+    <section id="contact" className="py-24 px-4 sm:px-6 relative overflow-hidden" style={{ background: "var(--bg-light)" }}>
+      <div className="max-w-6xl mx-auto">
 
-        {/* Header */}
-        <div
-          ref={headerRef}
-          className="text-center mb-12"
-          style={{
-            opacity: headerInView ? 1 : 0,
-            transform: headerInView ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.6s ease, transform 0.6s ease",
-          }}
+        {/*header*/}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3"
-            style={{ color: "var(--text-dark)" }}>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4" style={{ color: "var(--text-dark)" }}>
             Get In Touch
           </h2>
-          <div className="h-1 w-16 rounded-full mx-auto"
-            style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }} />
+          <div className="h-1.5 w-20 rounded-full mx-auto" style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }} />
+        </motion.div>
+
+        {/*girds of cards */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mb-16">
+          <TiltWrapper delay={0.1}>
+            <InfoCard />
+          </TiltWrapper>
+          
+          <TiltWrapper delay={0.2}>
+            <LeadCard
+              name="Shobhit Singh"
+              role="Event Lead"
+              desc="For technical queries, track details, and platform support."
+              phone="+91 98973 01104"
+            />
+          </TiltWrapper>
+          
+          <TiltWrapper delay={0.3}>
+            <LeadCard
+              name="Ayushman Ganeriwal"
+              role="Event Lead"
+              desc="For registration, accommodation, and general logistics info."
+              phone="+91 99844 33785"
+            />
+          </TiltWrapper>
         </div>
 
-        {/* Cards grid */}
-        <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <InfoCard inView={cardsInView} delay={0} />
-          <LeadCard
-            name="Shobhit Singh"
-            role="Event Lead"
-            desc="For technical queries & platform support"
-            phone="+91 98973 01104"
-            inView={cardsInView}
-            delay={100}
-          />
-          <LeadCard
-            name="Ayushman Ganeriwal"
-            role="Event Lead"
-            desc="For registration & logistics info"
-            phone="+91 99844 33785"
-            inView={cardsInView}
-            delay={200}
-          />
-        </div>
+        {/*organization strip*/}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+        >
+          <OrganizerStrip inView={true} delay={0} />
+        </motion.div>
 
-        {/* Organizer strip */}
-        <OrganizerStrip inView={cardsInView} delay={300} />
       </div>
     </section>
   );
