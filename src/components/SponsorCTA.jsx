@@ -1,130 +1,59 @@
-import { useEffect, useRef, useState } from "react";
 import { Download, Mail } from "lucide-react";
-
-/* ── IntersectionObserver hook (fires once) ── */
-const useInView = (threshold = 0.2) => {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, inView];
-};
+import { motion } from "framer-motion";
 
 const SponsorCTA = () => {
-  const [headerRef, headerInView] = useInView(0.3);
-  const [boxRef,    boxInView]    = useInView(0.2);
-
   const handleDownloadBrochure = (e) => {
     e.preventDefault();
     window.open("https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view?usp=drivesdk", "_blank");
   };
-
   return (
-    <section className="py-20 px-5 bg-white">
-      <div className="max-w-3xl mx-auto">
+    <section className="py-24 px-4 sm:px-6 bg-[#0a0a0a] relative overflow-hidden">
+      {/*background glow*/}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-(--primary) opacity-20 blur-[120px] pointer-events-none" />
 
-        {/* Header */}
-        <div
-          ref={headerRef}
-          className="text-center mb-10"
-          style={{
-            opacity:    headerInView ? 1 : 0,
-            transform:  headerInView ? "translateY(0)" : "translateY(24px)",
-            transition: "opacity 0.65s ease 80ms, transform 0.65s ease 80ms",
-          }}
+      <div className="max-w-4xl mx-auto relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7 }}
+          className="rounded-3xl border border-[#333] bg-[#111]/80 backdrop-blur-xl text-center px-6 py-16 sm:px-16 shadow-2xl relative overflow-hidden"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold mb-3" style={{ color: "var(--primary)" }}>
+          {/*gradient accent*/}
+          <div className="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-(--primary-dark) via-(--primary) to-(--primary-dark)" />
+
+          <h2 className="text-4xl sm:text-5xl font-black mb-5 text-white tracking-tight">
             Partner With Us
           </h2>
-          <div
-            className="h-1 w-16 rounded-full mx-auto mb-5"
-            style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
-          />
-          <p className="text-base sm:text-lg leading-relaxed mx-auto max-w-xl" style={{ color: "#555" }}>
-            We are currently looking for visionary companies to help make Q-Hackathon 2026 a
-            reality. Be the first to claim your spot!
-          </p>
-        </div>
-
-        {/* CTA Box */}
-        <div
-          ref={boxRef}
-          className="rounded-(--radius) border text-center px-8 py-10 sm:px-12"
-          style={{
-            background:  "var(--bg-light)",
-            borderColor: "var(--border)",
-            boxShadow:   "0 10px 30px rgba(0,0,0,0.04)",
-            opacity:    boxInView ? 1 : 0,
-            transform:  boxInView ? "translateY(0) scale(1)" : "translateY(32px) scale(0.97)",
-            transition: "opacity 0.7s ease 180ms, transform 0.7s cubic-bezier(0.22,1,0.36,1) 180ms",
-          }}
-        >
-          <p className="text-lg sm:text-xl font-bold mb-7" style={{ color: "var(--text-dark)" }}>
-            Ready to empower the next generation of tech leaders?
+          
+          <p className="text-base sm:text-lg leading-relaxed mx-auto max-w-2xl text-gray-400 mb-10 font-medium">
+            We are currently looking for visionary companies to help make Q-Hackathon 2026 a reality. Claim your spot and empower the next generation of tech leaders.
           </p>
 
-          {/* Button group */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center">
-
-            {/* Primary — Download */}
+          {/*button group*/}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            
+            {/*download button*/}
             <button
               onClick={handleDownloadBrochure}
-              className="inline-flex items-center justify-center gap-2
-                         font-bold text-sm px-6 py-3.5 rounded-(--radius)
-                         border-2 transition-all duration-200 whitespace-nowrap cursor-pointer"
-              style={{
-                background:  "var(--primary)",
-                color:       "white",
-                borderColor: "var(--primary)",
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background  = "var(--primary-dark)";
-                e.currentTarget.style.borderColor = "var(--primary-dark)";
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background  = "var(--primary)";
-                e.currentTarget.style.borderColor = "var(--primary)";
-              }}
+              className="group flex items-center justify-center gap-2 font-bold text-sm sm:text-base px-8 py-4 rounded-xl transition-all duration-300 w-full sm:w-auto cursor-pointer"
+              style={{ background: "var(--primary)", color: "white", boxShadow: "0 4px 20px rgba(140,46,124,0.4)" }}
             >
-              <Download size={15} strokeWidth={2.5} />
-              Download Brochure (PDF)
+              <Download size={18} strokeWidth={2.5} className="group-hover:-translate-y-1 transition-transform duration-300" />
+              Download Brochure
             </button>
 
-            {/* Outline — Contact */}
+            {/*secondary contact*/}
             <a
-              href="https://mail.google.com/mail/u/0/?tab=rm&ogbl#inbox?compose=codex.club@quantumeducation.in"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center justify-center gap-2
-                         font-bold text-sm px-6 py-3.5 rounded-(--radius)
-                         border-2 bg-transparent transition-all duration-200 whitespace-nowrap"
-              style={{
-                color:       "var(--primary)",
-                borderColor: "var(--primary)",
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.background  = "var(--primary)";
-                e.currentTarget.style.color       = "white";
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.background  = "transparent";
-                e.currentTarget.style.color       = "var(--primary)";
-              }}
+              href="mailto:codex.club@quantumeducation.in"
+              className="group flex items-center justify-center gap-2 font-bold text-sm sm:text-base px-8 py-4 rounded-xl border-2 border-[#444] text-white hover:border-(--primary) hover:bg-(--primary)/10 transition-all duration-300 w-full sm:w-auto"
             >
-              <Mail size={15} strokeWidth={2.5} />
+              <Mail size={18} strokeWidth={2.5} className="group-hover:scale-110 transition-transform duration-300" />
               Contact Us
             </a>
-          </div>
-        </div>
 
+          </div>
+        </motion.div>
       </div>
     </section>
   );
