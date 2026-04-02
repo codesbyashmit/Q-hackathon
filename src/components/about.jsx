@@ -10,7 +10,6 @@ const stats = [
   { value: "₹15K", label: "Prize Pool"         },
 ];
 
-/* ── IntersectionObserver hook (fires once) ── */
 const useInView = (threshold = 0.1) => {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
