@@ -120,8 +120,7 @@ function Navbar() {
         </div>
       </header>
 
-      {/* ── Mobile Menu Overlay ── */}
-      {/* Backdrop */}
+      {/*mobile menu backgrond*/}
       <div
         onClick={closeMenu}
         style={{
@@ -134,7 +133,7 @@ function Navbar() {
         }}
       />
 
-      {/* Slide-in drawer */}
+      {/*hamburger menu*/}
       <div
         style={{
           position: "fixed", top: 0, right: 0, bottom: 0,
@@ -149,7 +148,7 @@ function Navbar() {
           transition: "transform 0.4s cubic-bezier(0.22,1,0.36,1)",
         }}
       >
-        {/* Close X */}
+        {/*close button*/}
         <button
           onClick={closeMenu}
           style={{
@@ -162,7 +161,7 @@ function Navbar() {
           ✕
         </button>
 
-        {/* Home */}
+        {/*home*/}
         <Link
           to="/"
           className="nav-item"
@@ -172,7 +171,7 @@ function Navbar() {
           Home
         </Link>
 
-        {/* Section links */}
+        {/*section link*/}
         {navLinks.map(({ label, section }, i) => (
           <button
             key={section}
@@ -190,11 +189,9 @@ function Navbar() {
             {label}
           </button>
         ))}
-
-        {/* Divider */}
         <div style={{ height: "1px", background: "var(--border)", margin: "8px 0" }} />
 
-        {/* Sponsors */}
+        {/*sponsors*/}
         <Link
           to="/sponsors"
           className="nav-item external-link"
@@ -204,7 +201,7 @@ function Navbar() {
           Sponsors
         </Link>
 
-        {/* Register CTA */}
+        {/*register*/}
         <a
           href="https://bit.ly/4st6atF"
           target="_blank"

@@ -113,14 +113,13 @@ const Hero = () => {
           initial="hidden"
           animate="show"
         >
-          {/* logo qhackathon */}
           <motion.img
             src={logo}
             alt="Q-Hackathon 2026 Logo"
             className="w-40 sm:w-56 lg:max-w-xs mb-4 drop-shadow-md"
             variants={itemVariants}
           />
-          {/* subtitle */}
+          {/*subtitle*/}
           <motion.p
             className="text-lg sm:text-2xl lg:text-3xl font-bold tracking-tight mb-1"
             style={{ color: "var(--primary)", letterSpacing: "-0.4px" }}
@@ -129,7 +128,7 @@ const Hero = () => {
             36-Hour Intercollegiate Hackathon
           </motion.p>
 
-          {/* date and location */}
+          {/*date and location*/}
           <motion.p
             className="text-xs sm:text-sm lg:text-base font-semibold mb-5 sm:mb-7 opacity-70"
             style={{ color: "var(--text-dark)" }}

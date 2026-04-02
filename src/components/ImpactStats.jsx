@@ -44,12 +44,12 @@ const StatCard = ({ Icon, to, suffix, label, index }) => (
       <Icon size={24} style={{ color: "var(--primary)" }} />
     </div>
 
-    {/* Animated Number */}
+    {/*animated number*/}
     <h3 className="text-5xl font-black mb-2 text-white relative z-10 tracking-tight drop-shadow-md">
       <AnimatedCounter to={to} suffix={suffix} />
     </h3>
 
-    {/* Label */}
+    {/*lable*/}
     <p className="text-sm font-bold uppercase tracking-widest text-gray-500 relative z-10">
       {label}
     </p>
@@ -73,7 +73,7 @@ const ImpactStats = () => {
           Q-Hackathon by the numbers
         </motion.p>
 
-        {/* Responsive Grid */}
+        {/*responsive grids*/}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, i) => (
             <StatCard key={stat.label} {...stat} index={i} />
