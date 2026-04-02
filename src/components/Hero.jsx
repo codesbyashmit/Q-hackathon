@@ -4,17 +4,17 @@ import logo from "../assets/qhackathon-name.svg";
 import robot from "../assets/hero-robo.svg";
 
 const Hero = () => {
-  const calculateTimeLeft = () => {
+    const calculateTimeLeft = () => {
     const countDate = new Date("April 24, 2026 09:00:00").getTime();
-    const gap = countDate - Date.now();
-    if (gap <= 0) return null;
+ const gap = countDate - Date.now();
+   if (gap <= 0) return null;
     const s = 1000, m = s * 60, h = m * 60, d = h * 24;
     return {
       days: Math.floor(gap / d),
       hours: Math.floor((gap % d) / h),
-      mins: Math.floor((gap % h) / m),
+ mins: Math.floor((gap % h) / m),
       secs: Math.floor((gap % m) / s),
-    };
+ };
   };
 
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -122,7 +122,7 @@ const Hero = () => {
             src={logo}
             alt="Q-Hackathon 2026 Logo"
             className="w-40 sm:w-56 lg:max-w-xs mb-4 drop-shadow-md"
-            variants={itemVariants}
+        variants={itemVariants}
           />
           {/*subtitle */}
           <motion.p
@@ -221,3 +221,4 @@ const Hero = () => {
 };
 
 export default Hero;
+
