@@ -81,10 +81,10 @@ const AbstractNetwork = () => {
         </mesh>
       </Float>
 
-      <Sparkles count={100} scale={18} size={2} speed={0.4} opacity={0.15} color="#ffffff"/ >
-      <Sparkles count={80} scale={15} size={2} speed={0.2} opacity={0.7}color="#e51a80" />
+      <Sparkles count={100} scale={18} size={2} speed={0.4} opacity={0.15} color="#ffffff" />
+      <Sparkles count={80} scale={15} size={2} speed={0.2} opacity={0.7} color="#e51a80" />
       <Sparkles count={150} scale={22} size={4} speed={0.5} opacity={0.75} color="#FF00D9" />
-      <Sparkles count={120} scale={20} size={3} speed={0.3} opacity={0.5} color="#ffffff"/>
+      <Sparkles count={120} scale={20} size={3} speed={0.3} opacity={0.5} color="#ffffff" />
     </group>
   );
 };
