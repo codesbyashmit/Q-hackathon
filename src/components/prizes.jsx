@@ -1,32 +1,7 @@
-import { useEffect, useRef, useState } from "react";
 import { Trophy, Medal, Award, Star } from "lucide-react";
-
-const useInView = (threshold = 0.15) => {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, inView];
-};
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const prizes = [
-  {
-    tier: "silver",
-    Icon: Medal,
-    label: "1st Runner-Up",
-    amount: "₹5,000",
-    perks: ["Trophy", "Merit Certificate"],
-    accentColor: "#b0b0b0",
-    glowColor: "rgba(180,180,180,0.22)",
-  },
   {
     tier: "gold",
     Icon: Trophy,
@@ -34,7 +9,20 @@ const prizes = [
     amount: "₹7,000",
     perks: ["Winner's Trophy", "Merit Certificate"],
     accentColor: "#f5c400",
-    glowColor: "rgba(245,196,0,0.22)",
+    bgGradient: "linear-gradient(135deg, #1a1500 0%, #332700 100%)",
+    desktopOrder: "md:order-2",
+    heightClass: "md:min-h-[380px]", 
+  },
+  {
+    tier: "silver",
+    Icon: Medal,
+    label: "1st Runner-Up",
+    amount: "₹5,000",
+    perks: [" Trophy", "Merit Certificate"],
+    accentColor: "#e5e7eb",
+    bgGradient: "linear-gradient(135deg, #111111 0%, #222222 100%)",
+    desktopOrder: "md:order-1",
+    heightClass: "md:min-h-[340px]",
   },
   {
     tier: "bronze",
@@ -42,156 +30,129 @@ const prizes = [
     label: "2nd Runner-Up",
     amount: "₹3,000",
     perks: ["Trophy", "Merit Certificate"],
-    accentColor: "#cd7f32",
-    glowColor: "rgba(205,127,50,0.20)",
+    accentColor: "#d97706", 
+    bgGradient: "linear-gradient(135deg, #1a0f00 0%, #2a1800 100%)",
+    desktopOrder: "md:order-3",
+    heightClass: "md:min-h-[320px]",
   },
 ];
 
-const PrizeCard = ({ tier, Icon, label, amount, perks, accentColor, glowColor, inView, index, isMobile }) => {
+const PrizeCard = ({ tier, Icon, label, amount, perks, accentColor, bgGradient, desktopOrder, heightClass, index }) => {
   const isGold = tier === "gold";
-  const delays = [1, 0, 2];
-  const delay = delays[index] * 110;
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
+  
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+    x.set(mouseX / rect.width - 0.5);
+    y.set(mouseY / rect.height - 0.5);
+  };
 
   return (
-    <div
-      className="relative flex flex-col items-center text-center rounded-(--radius)
-                 bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1"
-      style={{
-        flex: isGold ? "1.15" : "1",            // gold slightly wider on desktop
-        border: isGold ? `2px solid ${accentColor}` : "1px solid var(--border)",
-        boxShadow: isGold ? `0 12px 36px ${glowColor}` : "0 4px 14px rgba(0,0,0,0.05)",
-        // Mobile: uniform padding. Desktop: gold is taller via paddingTop/Bottom
-        paddingTop:    isGold && !isMobile ? "2rem" : "1.25rem",
-        paddingBottom: isGold && !isMobile ? "2rem" : "1.25rem",
-        paddingLeft:   "0.75rem",
-        paddingRight:  "0.75rem",
-        opacity:    inView ? 1 : 0,
-        transform:  inView ? "translateY(0) scale(1)" : "translateY(36px) scale(0.96)",
-        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s cubic-bezier(0.22,1,0.36,1) ${delay}ms, box-shadow 0.3s ease`,
-      }}
-      onMouseEnter={e => { e.currentTarget.style.boxShadow = `0 18px 42px ${glowColor}`; }}
-      onMouseLeave={e => {
-        e.currentTarget.style.boxShadow = isGold ? `0 12px 36px ${glowColor}` : "0 4px 14px rgba(0,0,0,0.05)";
-      }}
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.7, delay: index * 0.15, ease: "easeOut" }}
+      className={`w-full max-w-sm mx-auto flex ${desktopOrder}`}
+      style={{ perspective: 1000, willChange: "transform", zIndex: isGold ? 20 : 10 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
     >
-      {/* Top accent bar */}
-      <div className="absolute top-0 inset-x-0 h-0.75 sm:h-1" style={{ background: accentColor }} />
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d", background: bgGradient }}
+        className={`relative w-full flex flex-col items-center text-center p-8 rounded-2xl border border-[#333] shadow-2xl ${heightClass} justify-center transition-colors duration-300 group`}
+      >
+        <div 
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-2xl pointer-events-none"
+          style={{ background: `radial-gradient(circle at center, ${accentColor}33 0%, transparent 70%)` }}
+        />
 
-      {/* Winner badge — only on desktop (too cramped on mobile) */}
-      {isGold && !isMobile && (
-        <div
-          className="absolute top-2.5 right-2.5 text-[8px] font-black uppercase tracking-wider px-1.5 py-0.5 rounded-full"
-          style={{ background: "#fef3c7", color: "#92400e" }}
+        <div 
+          className="absolute top-0 inset-x-8 h-1 rounded-b-md" 
+          style={{ background: accentColor, boxShadow: `0 2px 10px ${accentColor}` }} 
+        />
+
+        <motion.div
+          animate={{ y: [0, -6, 0] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: index * 0.2 }}
+          style={{ transform: "translateZ(40px)" }}
+          className="mb-6 relative"
         >
-          ★ Top
-        </div>
-      )}
+          <div 
+            className="absolute inset-0 blur-md opacity-50" 
+            style={{ background: accentColor }} 
+          />
+          <Icon size={isGold ? 56 : 42} style={{ color: accentColor }} className="relative z-10 drop-shadow-lg" />
+        </motion.div>
 
-      {/* Icon */}
-      <div
-        className="w-9 h-9 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center mb-2 mt-1"
-        style={{ background: isGold ? "#fffbea" : "var(--secondary)", border: `1.5px solid ${accentColor}` }}
-      >
-        <Icon size={isMobile ? 16 : 20} strokeWidth={1.8} style={{ color: accentColor }} />
-      </div>
+        <p 
+          style={{ transform: "translateZ(30px)" }}
+          className="text-xs sm:text-sm font-black uppercase tracking-[0.2em] mb-2 text-gray-400"
+        >
+          {label}
+        </p>
 
-      {/* Label */}
-      <p className="text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider mb-0.5" style={{ color: "#aaa" }}>
-        {label}
-      </p>
+        <h3 
+          style={{ transform: "translateZ(50px)", color: accentColor }}
+          className={`font-black tracking-tight mb-6 drop-shadow-md ${isGold ? 'text-5xl sm:text-6xl' : 'text-4xl sm:text-5xl'}`}
+        >
+          {amount}
+        </h3>
 
-      {/* Amount */}
-      <div
-        className="text-lg sm:text-2xl font-black leading-none my-1.5 sm:my-2"
-        style={{ color: "var(--primary)" }}
-      >
-        {amount}
-      </div>
-
-      {/* Divider */}
-      <div className="w-6 h-0.5 rounded-full mb-2" style={{ background: accentColor }} />
-
-      {/* Perks */}
-      <ul className="flex flex-col gap-1 w-full">
-        {perks.map(text => (
-          <li
-            key={text}
-            className="flex items-center gap-1 justify-center text-[10px] sm:text-xs font-medium"
-            style={{ color: "#666" }}
-          >
-            <Star size={8} strokeWidth={2} style={{ color: accentColor, flexShrink: 0 }} />
-            <span className="leading-tight">{text}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
+        <ul className="flex flex-col gap-3 w-full" style={{ transform: "translateZ(20px)" }}>
+          {perks.map(text => (
+            <li key={text} className="flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold text-gray-300">
+              <Star size={12} style={{ color: accentColor }} />
+              <span>{text}</span>
+            </li>
+          ))}
+        </ul>
+      </motion.div>
+    </motion.div>
   );
 };
 
 const Prizes = () => {
-  const [headerRef, headerInView] = useInView(0.3);
-  const [gridRef,   gridInView]   = useInView(0.1);
-
-  // Detect mobile to pass down for conditional rendering
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 640);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
   return (
     <section
-      className="relative overflow-hidden py-12 sm:py-16 px-4 sm:px-6 text-center"
-      
+      id="prizes"
+      className="relative overflow-hidden py-20 sm:py-28 px-4 sm:px-6 text-center bg-transparent"
     >
-      <div className="relative z-10 max-w-3xl mx-auto">
+      <div className="relative z-10 max-w-5xl mx-auto">
 
         {/* Header */}
-        <div
-          ref={headerRef}
-          className="mb-7 sm:mb-10"
-          style={{
-            opacity:    headerInView ? 1 : 0,
-            transform:  headerInView ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.6s ease, transform 0.6s ease",
-          }}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7 }}
+          className="mb-16"
         >
-          <h2
-            className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight mb-2"
-            style={{ color: "var(--text-dark)" }}
-          >
-            Prize Pool
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4" style={{ color: "var(--text-dark)" }}>
+            The Prize Pool
           </h2>
           <div
-            className="h-1 w-14 sm:w-16 rounded-full mx-auto mb-3 sm:mb-4"
+            className="h-1.5 w-24 rounded-full mx-auto mb-6"
             style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
           />
-          <p className="text-sm sm:text-base font-bold" style={{ color: "var(--text-dark)" }}>
-            Total Rewards Worth{" "}
-            <span
-              className="px-2.5 py-0.5 rounded-full font-black text-xs sm:text-sm"
-              style={{ color: "var(--primary)", background: "var(--secondary)" }}
-            >
-              ₹15,000
-            </span>
-          </p>
-        </div>
+          
+          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-(--border) bg-white shadow-sm">
+            <span className="text-sm font-bold text-gray-500 uppercase tracking-widest">Total Value</span>
+            <span className="text-xl font-black text-(--primary)">₹15,000</span>
+          </div>
+        </motion.div>
 
-        {/* Always 3 in a row — but sized correctly for mobile */}
-        <div
-          ref={gridRef}
-          className="flex flex-row gap-2 sm:gap-4 items-end"
-        >
+        {/* Podium Layout */}
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-6 md:gap-4 lg:gap-8">
           {prizes.map((prize, i) => (
-            <PrizeCard
-              key={prize.tier}
-              {...prize}
-              index={i}
-              inView={gridInView}
-              isMobile={isMobile}
-            />
+            <PrizeCard key={prize.tier} {...prize} index={i} />
           ))}
         </div>
       </div>

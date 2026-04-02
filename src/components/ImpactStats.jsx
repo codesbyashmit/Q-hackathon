@@ -1,119 +1,82 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { Users, Laptop, Timer, GraduationCap } from "lucide-react";
+import { motion, useInView, animate } from "framer-motion";
 
 const stats = [
-  { Icon: Users,          value: "300+", label: "Participants"          },
-  { Icon: Laptop,         value: "60+",  label: "Diverse Teams"         },
-  { Icon: Timer,          value: "36",   label: "Hours of Hacking"      },
-  { Icon: GraduationCap,  value: "10+",  label: "Colleges Represented"  },
+  { Icon: Users,         to: 300, suffix: "+", label: "Participants"         },
+  { Icon: Laptop,        to: 60,  suffix: "+", label: "Diverse Teams"        },
+  { Icon: Timer,         to: 36,  suffix: "",  label: "Hours of Hacking"     },
+  { Icon: GraduationCap, to: 10,  suffix: "+", label: "Colleges Represented" },
 ];
+const AnimatedCounter = ({ to, suffix }) => {
+  const nodeRef = useRef(null);
+  const isInView = useInView(nodeRef, { once: true, margin: "-50px" });
 
-/* ── IntersectionObserver hook (fires once) ── */
-const useInView = (threshold = 0.15) => {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, inView];
+    if (isInView) {
+      const controls = animate(0, to, {
+        duration: 2,
+        ease: "easeOut",
+        onUpdate(value) {
+          if (nodeRef.current) {
+            nodeRef.current.textContent = Math.floor(value) + suffix;
+          }
+        },
+      });
+      return () => controls.stop();
+    }
+  }, [isInView, to, suffix]);
+
+  return <span ref={nodeRef}>0{suffix}</span>;
 };
 
-/* ── Stat Card ── */
-const StatCard = ({ Icon, value, label, index, inView }) => (
-  <div
-    className="group flex flex-col items-center text-center rounded-(--radius)
-               border px-6 py-9 transition-all duration-300 hover:-translate-y-2"
-    style={{
-      background:   "var(--text-light)",
-      borderColor:  "var(--border)",
-      boxShadow:    "0 2px 10px rgba(0,0,0,0.04)",
-      // Landing animation
-      opacity:    inView ? 1 : 0,
-      transform:  inView ? "translateY(0) scale(1)" : "translateY(36px) scale(0.96)",
-      transition: `opacity 0.6s ease ${index * 90}ms,
-                   transform 0.6s cubic-bezier(0.22,1,0.36,1) ${index * 90}ms,
-                   border-color 0.3s ease, box-shadow 0.3s ease`,
-    }}
-    onMouseEnter={e => {
-      e.currentTarget.style.boxShadow   = "0 12px 28px rgba(140,46,124,0.12)";
-      e.currentTarget.style.borderColor = "var(--primary)";
-    }}
-    onMouseLeave={e => {
-      e.currentTarget.style.boxShadow   = "0 2px 10px rgba(0,0,0,0.04)";
-      e.currentTarget.style.borderColor = "var(--border)";
-    }}
+const StatCard = ({ Icon, to, suffix, label, index }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true, margin: "-50px" }}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    className="relative group flex flex-col items-center text-center rounded-2xl p-8 overflow-hidden bg-[#111] border border-[#222] transition-colors duration-300 hover:border-(--primary)"
   >
-    {/* Icon bubble */}
-    <div
-      className="w-14 h-14 rounded-xl flex items-center justify-center mb-4
-                 transition-all duration-300 group-hover:scale-110 group-hover:rotate-6"
-      style={{ background: "var(--secondary)" }}
-    >
-      <Icon size={26} strokeWidth={1.8} style={{ color: "var(--primary)" }} />
+    <div className="absolute inset-0 bg-(--primary) opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none" />
+    
+    <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 bg-black border border-[#333] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6 relative z-10 shadow-lg">
+      <Icon size={24} style={{ color: "var(--primary)" }} />
     </div>
 
-    {/* Value */}
-    <h3
-      className="text-4xl sm:text-5xl font-extrabold leading-none mb-1"
-      style={{ color: "var(--text-dark)" }}
-    >
-      {value}
+    {/*animated number*/}
+    <h3 className="text-5xl font-black mb-2 text-white relative z-10 tracking-tight drop-shadow-md">
+      <AnimatedCounter to={to} suffix={suffix} />
     </h3>
 
-    {/* Label */}
-    <p className="text-sm sm:text-base font-semibold mt-1.5" style={{ color: "var(--primary-dark)" }}>
+    {/*lable*/}
+    <p className="text-sm font-bold uppercase tracking-widest text-gray-500 relative z-10">
       {label}
     </p>
-  </div>
+  </motion.div>
 );
 
-/* ── Main Section ── */
 const ImpactStats = () => {
-  const [subtitleRef, subtitleInView] = useInView(0.3);
-  const [gridRef,     gridInView]     = useInView(0.1);
-
   return (
-    <section
-      className="py-16 sm:py-20 px-5 text-center"
-      style={{ background: "var(--bg-light)" }}
-    >
-      <div className="max-w-5xl mx-auto">
+    <section className="py-20 px-4 sm:px-6 bg-[#0a0a0a] relative z-10">
+      
+      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#333] to-transparent" />
 
-        {/* Subtitle */}
-        <p
-          ref={subtitleRef}
-          className="text-xs font-extrabold uppercase tracking-widest mb-10"
-          style={{
-            color:      "var(--primary)",
-            opacity:    subtitleInView ? 1 : 0,
-            transform:  subtitleInView ? "translateY(0)" : "translateY(16px)",
-            transition: "opacity 0.6s ease 80ms, transform 0.6s ease 80ms",
-          }}
+      <div className="max-w-6xl mx-auto">
+        
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-xs font-black uppercase tracking-[0.2em] mb-12 text-center text-(--primary)"
         >
           Q-Hackathon by the numbers
-        </p>
+        </motion.p>
 
-        {/* Grid — 2 cols on mobile, 4 on desktop */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6"
-        >
-          {stats.map(({ Icon, value, label }, i) => (
-            <StatCard
-              key={label}
-              Icon={Icon}
-              value={value}
-              label={label}
-              index={i}
-              inView={gridInView}
-            />
+        {/*responsive grids*/}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {stats.map((stat, i) => (
+            <StatCard key={stat.label} {...stat} index={i} />
           ))}
         </div>
       </div>

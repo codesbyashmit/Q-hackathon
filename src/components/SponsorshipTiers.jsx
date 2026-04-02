@@ -1,30 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-import { Check } from "lucide-react";
-
-/* ── IntersectionObserver hook (fires once) ── */
-const useInView = (threshold = 0.1) => {
-  const ref = useRef(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return [ref, inView];
-};
-
+import { useRef } from "react";
+import { Check, Star } from "lucide-react";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { Sparkles, Float } from "@react-three/drei";
 const tiers = [
   {
     name: "Platinum",
     price: "₹40,000 – ₹60,000",
-    featured: true,
-    badge: "Most Impact",
-    benefits: [
+    badge: "MOST IMPACT",
+    color: "#e51a80",
+    glow: "rgba(229, 26, 128, 0.2)",
+    scale: "scale-105 z-20", 
+    features: [
       "Largest logo on homepage",
       "Main stage backdrop branding",
       "Opening & Closing mentions",
@@ -40,9 +27,10 @@ const tiers = [
   {
     name: "Gold",
     price: "₹25,000 – ₹40,000",
-    featured: false,
-    badge: null,
-    benefits: [
+    color: "#f5c400",
+    glow: "rgba(245, 196, 0, 0.15)",
+    scale: "scale-100 z-10",
+    features: [
       "Large logo on website",
       "Logo on major event banners",
       "Opening & Closing mentions",
@@ -57,9 +45,10 @@ const tiers = [
   {
     name: "Silver",
     price: "₹15,000 – ₹25,000",
-    featured: false,
-    badge: null,
-    benefits: [
+    color: "#e5e7eb", 
+    glow: "rgba(255, 255, 255, 0.05)",
+    scale: "scale-95 z-0 opacity-90 hover:opacity-100",
+    features: [
       "Logo on website & banners",
       "Prize distribution mention",
       "Social media acknowledgement",
@@ -72,9 +61,10 @@ const tiers = [
   {
     name: "Bronze",
     price: "₹5,000 – ₹10,000",
-    featured: false,
-    badge: null,
-    benefits: [
+    color: "#d97706", 
+    glow: "rgba(217, 119, 6, 0.05)",
+    scale: "scale-95 z-0 opacity-90 hover:opacity-100",
+    features: [
       "Logo on website section",
       "Logo in list poster",
       "Social media acknowledgement",
@@ -85,151 +75,164 @@ const tiers = [
   },
 ];
 
-/* ── Tier Card ── */
-const TierCard = ({ tier, index, inView }) => {
-  const { name, price, featured, badge, benefits } = tier;
-  const delay = index * 100;
+//3d network background 
+const BackgroundNetwork = () => {
+  const groupRef = useRef();
 
-  const handleSponsorClick = (e) => {
-    e.preventDefault();
-    window.open("https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view?usp=drivesdk", "_blank");
-  };
+  useFrame((state) => {
+    const t = state.clock.getElapsedTime();
+    groupRef.current.rotation.y = t * 0.03;
+    groupRef.current.rotation.x = Math.sin(t * 0.1) * 0.05;
+  });
 
   return (
-    <div
-      className="relative flex flex-col rounded-(--radius) border px-7 pt-10 pb-8
-                 transition-all duration-300 hover:-translate-y-1"
-      style={{
-        background:   featured
-          ? "linear-gradient(to bottom, #ffffff, var(--secondary))"
-          : "var(--text-light)",
-        border:       featured ? "2px solid var(--primary)" : "1px solid var(--border)",
-        boxShadow:    featured
-          ? "0 16px 40px rgba(140,46,124,0.18)"
-          : "0 2px 10px rgba(0,0,0,0.04)",
-        // Landing animation
-        opacity:    inView ? 1 : 0,
-        transform:  inView ? "translateY(0) scale(1)" : "translateY(40px) scale(0.96)",
-        transition: `opacity 0.65s ease ${delay}ms,
-                     transform 0.65s cubic-bezier(0.22,1,0.36,1) ${delay}ms,
-                     box-shadow 0.3s ease`,
-      }}
-      onMouseEnter={e => {
-        if (!featured) e.currentTarget.style.boxShadow = "0 12px 28px rgba(140,46,124,0.10)";
-      }}
-      onMouseLeave={e => {
-        if (!featured) e.currentTarget.style.boxShadow = "0 2px 10px rgba(0,0,0,0.04)";
-      }}
-    >
-      {/* Badge */}
-      {badge && (
-        <div
-          className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-white text-[10px]
-                     font-black uppercase tracking-widest px-4 py-1 rounded-full whitespace-nowrap"
-          style={{ background: "var(--primary)" }}
-        >
-          {badge}
-        </div>
-      )}
-
-      {/* Header */}
-      <div className="text-center mb-6">
-        <h2
-          className="text-2xl font-bold mb-1"
-          style={{ color: "var(--text-dark)" }}
-        >
-          {name}
-        </h2>
-        <p className="text-base font-extrabold" style={{ color: "var(--primary)" }}>
-          {price}
-        </p>
-      </div>
-
-      {/* Benefits */}
-      <ul className="flex flex-col gap-2.5 flex-1 mb-8">
-        {benefits.map((b, i) => (
-          <li key={i} className="flex items-start gap-2 text-sm" style={{ color: "#444" }}>
-            <Check
-              size={14}
-              strokeWidth={3}
-              className="mt-0.5 shrink-0"
-              style={{ color: "var(--primary)" }}
-            />
-            <span className={i === 0 && featured ? "font-bold" : ""}>{b}</span>
-          </li>
-        ))}
-      </ul>
-
-      {/* CTA */}
-      <button
-        onClick={handleSponsorClick}
-        className="block w-full text-center text-sm font-bold py-3 rounded-(--radius)
-                   border-2 transition-all duration-200 cursor-pointer"
-        style={
-          featured
-            ? { background: "var(--primary)", color: "white", borderColor: "var(--primary)" }
-            : { background: "transparent", color: "var(--primary)", borderColor: "var(--primary)" }
-        }
-        onMouseEnter={e => {
-          e.currentTarget.style.background   = "var(--primary-dark)";
-          e.currentTarget.style.borderColor  = "var(--primary-dark)";
-          e.currentTarget.style.color        = "white";
-        }}
-        onMouseLeave={e => {
-          if (featured) {
-            e.currentTarget.style.background  = "var(--primary)";
-            e.currentTarget.style.borderColor = "var(--primary)";
-            e.currentTarget.style.color       = "white";
-          } else {
-            e.currentTarget.style.background  = "transparent";
-            e.currentTarget.style.borderColor = "var(--primary)";
-            e.currentTarget.style.color       = "var(--primary)";
-          }
-        }}
-      >
-        Become a Sponsor
-      </button>
-    </div>
+    <group ref={groupRef}>
+      <Float speed={1} rotationIntensity={0.5} floatIntensity={1}>
+        <mesh position={[0, 0, -5]}>
+          <icosahedronGeometry args={[8, 1]} />
+          <meshBasicMaterial color="#8c2e7c" wireframe transparent opacity={0.05} />
+        </mesh>
+      </Float>
+       <Sparkles count={200} scale={20} size={2} speed={0.2} opacity={0.3} color="#ffffff" />
+      <Sparkles count={100} scale={25} size={4} speed={0.5} opacity={0.2} color="#e51a80" />
+      <Sparkles count={50} scale={15} size={6} speed={0.1} opacity={0.4} color="#f5c400" />
+    </group>
   );
 };
+const TierCard = ({ tier, index }) => {
+  const isPlatinum = tier.name === "Platinum";
+  
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
+  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
 
-/* ── Main Component ── */
-const SponsorshipTiers = () => {
-  const [headerRef, headerInView] = useInView(0.3);
-  const [gridRef,   gridInView]   = useInView(0.05);
-
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
+  };
   return (
-    <section className="py-20 px-5 bg-(--bg-light)">
-      <div className="max-w-6xl mx-auto">
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-50px" }}
+      transition={{ duration: 0.6, delay: index * 0.15 }}
+      style={{ perspective: 1000 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => { x.set(0); y.set(0); }}
+      className={`w-full flex ${tier.scale} transition-all duration-500`}
+    >
+      <motion.div
+        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
+        className="relative w-full flex flex-col h-full bg-[#0f0f0f] rounded-2xl border border-[#222] p-8 shadow-2xl group transition-colors duration-300"
+      >
+        <div 
+          className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none blur-xl"
+          style={{ background: `radial-gradient(circle at top, ${tier.glow} 0%, transparent 70%)` }}
+        />
+        <div 
+          className="absolute top-0 inset-x-0 h-1.5 rounded-t-2xl opacity-80 group-hover:opacity-100 transition-opacity" 
+          style={{ background: tier.color, boxShadow: `0 0 15px ${tier.color}` }} 
+        />
+        <div style={{ transform: "translateZ(30px)" }} className="flex flex-col h-full relative z-10">
+             {tier.badge && (
+            <div className="absolute -top-12 left-1/2 -translate-x-1/2">
+              <span 
+                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-b-lg text-white shadow-lg"
+                style={{ background: tier.color }}
+              >
+                <Star size={12} fill="currentColor" /> {tier.badge}
+              </span>
+            </div>
+          )}
+          <h3 className="text-3xl font-black text-white text-center tracking-tight mb-2">
+            {tier.name}
+          </h3>
+          <p className="text-sm font-bold text-center tracking-widest mb-8" style={{ color: tier.color }}>
+            {tier.price}
+          </p>
 
-        {/* Heading */}
-        <div
-          ref={headerRef}
-          className="text-center mb-12"
-          style={{
-            opacity:    headerInView ? 1 : 0,
-            transform:  headerInView ? "translateY(0)" : "translateY(20px)",
-            transition: "opacity 0.6s ease 80ms, transform 0.6s ease 80ms",
-          }}
+          <div className="w-full h-[1px] bg-[#333] mb-8" />
+
+          <ul className="flex flex-col gap-4 mb-10 flex-grow">
+            {tier.features.map((feature, i) => (
+              <li key={i} className="flex items-start gap-3 text-sm text-gray-300 font-medium leading-snug">
+                <div className="mt-0.5 shrink-0">
+                  <Check size={16} style={{ color: tier.color }} strokeWidth={3} />
+                </div>
+                {feature}
+              </li>
+            ))}
+          </ul>
+
+          {/*button*/}
+          <a
+            href="https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view"
+            target="_blank"
+            rel="noreferrer"
+            className="mt-auto w-full py-3.5 rounded-xl font-bold text-sm text-center transition-all duration-300 border-2"
+            style={{ 
+              borderColor: isPlatinum ? tier.color : '#333',
+              background: isPlatinum ? tier.color : 'transparent',
+              color: 'white'
+            }}
+            onMouseEnter={(e) => {
+              if (!isPlatinum) {
+                e.currentTarget.style.borderColor = tier.color;
+                e.currentTarget.style.color = tier.color;
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!isPlatinum) {
+                e.currentTarget.style.borderColor = '#333';
+                e.currentTarget.style.color = 'white';
+              }
+            }}
+          >
+            Become a Sponsor
+          </a>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+const SponsorshipTiers = () => {
+  return (
+    <section className="relative py-24 sm:py-32 px-4 sm:px-6 bg-[#0a0a0a] overflow-hidden">
+      
+      {/*background canvas */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-60">
+        <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+          <BackgroundNetwork />
+        </Canvas>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto">
+        
+        {/*header*/}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7 }}
+          className="text-center mb-20"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold" style={{ color: "var(--primary)" }}>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4 text-white">
             Sponsorship Tiers
           </h2>
-          <div
-            className="h-1 w-16 rounded-full mx-auto mt-3"
-            style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
-          />
-        </div>
+          <div className="h-1.5 w-24 rounded-full mx-auto" style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }} />
+        </motion.div>
 
-        {/* Grid — 1 col mobile → 2 col tablet → 4 col desktop */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 items-start"
-        >
+        {/*tier grids*/}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-center">
           {tiers.map((tier, i) => (
-            <TierCard key={tier.name} tier={tier} index={i} inView={gridInView} />
+            <TierCard key={tier.name} tier={tier} index={i} />
           ))}
         </div>
+
       </div>
     </section>
   );

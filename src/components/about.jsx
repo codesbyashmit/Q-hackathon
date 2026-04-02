@@ -10,7 +10,6 @@ const stats = [
   { value: "₹15K", label: "Prize Pool"         },
 ];
 
-/* ── IntersectionObserver hook (fires once) ── */
 const useInView = (threshold = 0.1) => {
   const ref = useRef(null);
   const [inView, setInView] = useState(false);
@@ -134,7 +133,6 @@ const About = () => {
           </p>
         </div>
 
-        {/* Stats — always 2×2 on mobile, 4-col on desktop */}
         <div
           ref={statsRef}
           className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5"

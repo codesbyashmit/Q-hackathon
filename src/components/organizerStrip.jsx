@@ -53,8 +53,6 @@ function OrganizerStrip() {
         transition: "opacity 0.6s ease, transform 0.6s ease",
       }}
     >
-
-      {/* ── Mobile layout: logos in a row at top, text below ── */}
       <div className="sm:hidden">
         <div className="flex flex-row items-center justify-center gap-4 mb-4 px-2">
           <img src={quantumLogo} alt="Quantum University" className="h-10 w-auto object-contain" />
@@ -64,8 +62,6 @@ function OrganizerStrip() {
           <OrganizerText />
         </p>
       </div>
-
-      {/* ── Desktop layout: logo | text | logo in one row ── */}
       <div className="hidden sm:flex flex-row items-center justify-between gap-5">
         <img src={quantumLogo} alt="Quantum University" className="h-14 w-auto object-contain shrink-0" />
         <p className="text-base leading-relaxed text-center flex-1" style={{ color: "var(--text-dark)" }}>
