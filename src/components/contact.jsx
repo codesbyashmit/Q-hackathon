@@ -76,7 +76,7 @@ const InfoCard = () => (
         <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-1 text-gray-400">
           <MapPin size={14} style={{ color: "var(--primary)" }} /> Address
         </span>
-        <p className="text-sm sm:text-base font-medium text-white/80 leading-relaxed max-w-[200px]">
+        <p className="text-sm sm:text-base font-medium text-white/80 leading-relaxed max-w-50">
           Computer Science Dept, Tech Institute Main Campus
         </p>
       </div>
