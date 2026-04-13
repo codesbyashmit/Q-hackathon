@@ -5,7 +5,7 @@ import ImpactStats from "../components/ImpactStats";
 import SponsorshipTiers from "../components/SponsorshipTiers";
 import Partnerships from "../components/Partnerships";
 import SponsorCTA from "../components/SponsorCTA";
-
+import Partners from "../components/Partners";
 function Sponsors() {
   return (
     <>
@@ -16,6 +16,7 @@ function Sponsors() {
         <SponsorshipTiers />
         <Partnerships />
         <SponsorCTA />
+        <Partners />
       </main>
       <Footer />
     </>

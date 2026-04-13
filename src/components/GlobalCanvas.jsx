@@ -39,7 +39,6 @@ const CinematicBokeh = ({ scrollOpacity }) => {
       }
     });
   });
-
   return (
     <group>
       {orbs.map((orb, i) => (

@@ -1,239 +1,222 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import logo from "/logo.svg";
+
+const navLinks = [
+  { label: "Home", section: "home" },
+  { label: "About", section: "about" },
+  { label: "Tracks", section: "tracks" },
+  { label: "Roadmap", section: "timeline-section" },
+  { label: "FAQ", section: "faq" },
+  { label: "Contact", section:"contact"}
+];
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  
   const location = useLocation();
   const navigate = useNavigate();
-
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 10);
+    const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
+  useEffect(() => {
+    if (location.pathname !== "/") return;
+
+    const observers = [];
+        navLinks.forEach(({ section }) => {
+      if (section === "home") {
+        const handleScroll = () => {
+          if (window.scrollY < 300) setActiveSection("home");
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+      }
+
+      const el = document.getElementById(section);
+      if (el) {
+        const observer = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting) {
+              setActiveSection(section);
+            }
+          },
+          { threshold: 0.4 } 
+        );
+        observer.observe(el);
+        observers.push(observer);
+      }
+    });
+
+    return () => observers.forEach(obs => obs.disconnect());
+  }, [location.pathname]);
 
   const closeMenu = () => setMenuOpen(false);
 
-  const scrollToTop = () => {
-    closeMenu();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const scrollToSection = (sectionId) => {
     closeMenu();
+    setActiveSection(sectionId);
+
     if (location.pathname !== "/") {
       navigate("/");
       setTimeout(() => {
-        document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+        if (sectionId === "home") window.scrollTo({ top: 0, behavior: "smooth" });
+        else document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     } else {
-      document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
+      if (sectionId === "home") window.scrollTo({ top: 0, behavior: "smooth" });
+      else document.getElementById(sectionId)?.scrollIntoView({ behavior: "smooth" });
     }
   };
-
-  const navLinks = [
-    { label: "About", section: "about" },
-    { label: "Tracks", section: "tracks" },
-    { label: "Roadmap", section: "timeline-section" },
-    { label: "FAQ", section: "faq" },
-  ];
 
   return (
     <>
       <header
-        className="navbar"
-        style={{
-          transition: "box-shadow 0.3s ease",
-          boxShadow: scrolled ? "0 2px 16px rgba(0,0,0,0.08)" : "none",
-        }}
+        className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+          scrolled 
+            ? "bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.05)] py-3" 
+            : "bg-transparent py-5"
+        }`}
       >
-        <div className="container">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
 
           {/* Logo */}
-          <Link to="/" className="logo" onClick={scrollToTop}>
-            <img src={logo} className="nav-logo" alt="Q-Hackathon" />
+          <Link to="/" className="relative z-10 flex items-center gap-2" onClick={() => scrollToSection("home")}>
+            <img src={logo} className="h-8 sm:h-10 w-auto drop-shadow-sm" alt="Q-Hackathon" />
           </Link>
 
           {/* Desktop Nav */}
-          <nav className="nav-links hidden-mobile">
-            <div className="page-links">
-              <Link to="/" className="nav-item" onClick={scrollToTop}>Home</Link>
-              {navLinks.map(({ label, section }) => (
+          <nav className="hidden md:flex items-center gap-1 p-1.5 rounded-full bg-white/40 backdrop-blur-md border border-white/40 shadow-inner">
+            {navLinks.map(({ label, section }) => {
+              const isActive = activeSection === section && location.pathname === "/";
+              return (
                 <button
                   key={section}
-                  className="nav-item nav-btn-link"
                   onClick={() => scrollToSection(section)}
+                  className={`relative px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${
+                    isActive ? "text-white" : "text-(--text-dark) hover:text-(--primary)"
+                  }`}
                 >
+                  {isActive && (
+                    <motion.div
+                      layoutId="activeNavIndicator"
+                      className="absolute inset-0 bg-(--primary) rounded-full -z-10 shadow-md"
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                    />
+                  )}
                   {label}
                 </button>
-              ))}
-            </div>
-            <div className="action-links">
-              <Link to="/sponsors" className="nav-item external-link" onClick={scrollToTop}>
-                Sponsors
-              </Link>
-              <a
-                href="https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-nav"
-              >
-                Register Now
-              </a>
-            </div>
+              );
+            })}
           </nav>
+          <div className="hidden md:flex items-center gap-4">
+            <Link 
+              to="/sponsors" 
+              className={`text-sm font-bold transition-colors ${location.pathname === '/sponsors' ? 'text-(--primary)' : 'text-(--text-dark) hover:text-(--primary)'}`}
+              onClick={closeMenu}
+            >
+              Sponsors
+            </Link>
+            <a
+              href="https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-6 py-2.5 rounded-full bg-(--primary) text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-[0_0_20px_rgba(140,46,124,0.4)] hover:-translate-y-0.5 transition-all duration-300"
+            >
+              Register
+            </a>
+          </div>
 
-          {/* Mobile Hamburger */}
+          {/*mobile menu */}
           <button
-            className={`menu-toggle ${menuOpen ? "active" : ""}`}
-            onClick={() => setMenuOpen(o => !o)}
+            className="md:hidden relative z-50 p-2"
+            onClick={() => setMenuOpen(!menuOpen)}
             aria-label="Toggle menu"
-            style={{ background: "none", border: "none", cursor: "pointer", padding: "8px" }}
           >
-            <span className="bar" style={{
-              display: "block", width: "24px", height: "2px",
-              background: "var(--primary)", borderRadius: "2px", marginBottom: "5px",
-              transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.25s ease",
-              transform: menuOpen ? "translateY(7px) rotate(45deg)" : "none",
-            }} />
-            <span className="bar" style={{
-              display: "block", width: "24px", height: "2px",
-              background: "var(--primary)", borderRadius: "2px", marginBottom: "5px",
-              transition: "opacity 0.2s ease",
-              opacity: menuOpen ? 0 : 1,
-            }} />
-            <span className="bar" style={{
-              display: "block", width: "24px", height: "2px",
-              background: "var(--primary)", borderRadius: "2px",
-              transition: "transform 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.25s ease",
-              transform: menuOpen ? "translateY(-7px) rotate(-45deg)" : "none",
-            }} />
+            <div className="w-6 flex flex-col gap-1.5">
+              <span className={`block h-0.5 bg-(--primary) rounded-full transition-transform duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
+              <span className={`block h-0.5 bg-(--primary) rounded-full transition-opacity duration-300 ${menuOpen ? "opacity-0" : ""}`} />
+              <span className={`block h-0.5 bg-(--primary) rounded-full transition-transform duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
+            </div>
           </button>
 
         </div>
       </header>
 
-      {/*mobile menu backgrond*/}
-      <div
-        onClick={closeMenu}
-        style={{
-          position: "fixed", inset: 0, zIndex: 40,
-          background: "rgba(0,0,0,0.35)",
-          backdropFilter: "blur(3px)",
-          opacity: menuOpen ? 1 : 0,
-          pointerEvents: menuOpen ? "auto" : "none",
-          transition: "opacity 0.3s ease",
-        }}
-      />
+      {/* Mobile Menu Overlay */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={closeMenu}
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
+          />
+        )}
+      </AnimatePresence>
 
-      {/*hamburger menu*/}
-      <div
-        style={{
-          position: "fixed", top: 0, right: 0, bottom: 0,
-          width: "min(80vw, 300px)",
-          zIndex: 50,
-          background: "var(--bg-light)",
-          boxShadow: "-8px 0 40px rgba(0,0,0,0.12)",
-          display: "flex", flexDirection: "column",
-          padding: "80px 28px 36px",
-          gap: "8px",
-          transform: menuOpen ? "translateX(0)" : "translateX(100%)",
-          transition: "transform 0.4s cubic-bezier(0.22,1,0.36,1)",
-        }}
-      >
-        {/*close button*/}
-        <button
-          onClick={closeMenu}
-          style={{
-            position: "absolute", top: "20px", right: "20px",
-            background: "none", border: "none", cursor: "pointer",
-            fontSize: "1.4rem", color: "var(--text-dark)", lineHeight: 1,
-          }}
-          aria-label="Close menu"
-        >
-          ✕
-        </button>
-
-        {/*home*/}
-        <Link
-          to="/"
-          className="nav-item"
-          onClick={scrollToTop}
-          style={drawerLinkStyle}
-        >
-          Home
-        </Link>
-
-        {/*section link*/}
-        {navLinks.map(({ label, section }, i) => (
-          <button
-            key={section}
-            onClick={() => scrollToSection(section)}
-            style={{
-              ...drawerLinkStyle,
-              background: "none", border: "none", cursor: "pointer",
-              textAlign: "left", fontFamily: "inherit",
-              // Stagger fade-in when drawer opens
-              opacity: menuOpen ? 1 : 0,
-              transform: menuOpen ? "translateX(0)" : "translateX(20px)",
-              transition: `opacity 0.35s ease ${80 + i * 50}ms, transform 0.35s ease ${80 + i * 50}ms`,
-            }}
+      {/* Mobile Menu Drawer */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "spring", bounce: 0, duration: 0.4 }}
+            className="fixed top-0 right-0 bottom-0 w-[80vw] max-w-sm z-50 bg-(--bg-light) shadow-2xl flex flex-col pt-24 px-6 md:hidden"
           >
-            {label}
-          </button>
-        ))}
-        <div style={{ height: "1px", background: "var(--border)", margin: "8px 0" }} />
+            <div className="flex flex-col gap-2">
+              {navLinks.map(({ label, section }, i) => {
+                const isActive = activeSection === section && location.pathname === "/";
+                return (
+                  <motion.button
+                    key={section}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.1 + i * 0.05 }}
+                    onClick={() => scrollToSection(section)}
+                    className={`text-left text-lg font-bold py-3 px-4 rounded-xl transition-colors ${
+                      isActive ? "bg-(--primary)/10 text-(--primary)" : "text-(--text-dark)"
+                    }`}
+                  >
+                    {label}
+                  </motion.button>
+                )
+              })}
+              
+              <div className="h-px bg-(--border) my-4 w-full" />
 
-        {/*sponsors*/}
-        <Link
-          to="/sponsors"
-          className="nav-item external-link"
-          onClick={scrollToTop}
-          style={drawerLinkStyle}
-        >
-          Sponsors
-        </Link>
+              <Link
+                to="/sponsors"
+                className={`text-lg font-bold py-3 px-4 rounded-xl ${location.pathname === '/sponsors' ? 'text-(--primary)' : 'text-(--text-dark)'}`}
+                onClick={closeMenu}
+              >
+                Sponsors
+              </Link>
 
-        {/*register*/}
-        <a
-          href="https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126"
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{
-            marginTop: "8px",
-            display: "block",
-            textAlign: "center",
-            padding: "12px 0",
-            borderRadius: "var(--radius)",
-            background: "var(--primary)",
-            color: "white",
-            fontWeight: 700,
-            fontSize: "0.95rem",
-            textDecoration: "none",
-          }}
-        >
-          Register Now
-        </a>
-      </div>
+              <a
+                href="https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 text-center py-4 rounded-xl bg-(--primary) text-white font-black tracking-widest uppercase shadow-md"
+              >
+                Register Now
+              </a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }
-
-const drawerLinkStyle = {
-  display: "block",
-  padding: "10px 0",
-  fontSize: "1rem",
-  fontWeight: 600,
-  color: "var(--text-dark)",
-  textDecoration: "none",
-  borderBottom: "1px solid var(--border)",
-};
 
 export default Navbar;

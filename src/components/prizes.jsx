@@ -1,4 +1,4 @@
-import { Trophy, Medal, Award, Star } from "lucide-react";
+import { Trophy, Medal, Award, Star, Globe, Gift, GraduationCap, Rocket } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const prizes = [
@@ -6,8 +6,8 @@ const prizes = [
     tier: "gold",
     Icon: Trophy,
     label: "Winner",
-    amount: "₹7,000",
-    perks: ["Winner's Trophy", "Merit Certificate"],
+    amount: "Cash Prize",
+    perks: ["Premium Goodies", "Special Recognition"],
     accentColor: "#f5c400",
     bgGradient: "linear-gradient(135deg, #1a1500 0%, #332700 100%)",
     desktopOrder: "md:order-2",
@@ -17,8 +17,8 @@ const prizes = [
     tier: "silver",
     Icon: Medal,
     label: "1st Runner-Up",
-    amount: "₹5,000",
-    perks: [" Trophy", "Merit Certificate"],
+    amount: "Cash Prize",
+    perks: ["Exclusive Goodies", "Merit Certificate"],
     accentColor: "#e5e7eb",
     bgGradient: "linear-gradient(135deg, #111111 0%, #222222 100%)",
     desktopOrder: "md:order-1",
@@ -28,13 +28,40 @@ const prizes = [
     tier: "bronze",
     Icon: Award,
     label: "2nd Runner-Up",
-    amount: "₹3,000",
-    perks: ["Trophy", "Merit Certificate"],
+    amount: "Cash Prize",
+    perks: ["Swag Kits", "Merit Certificate"],
     accentColor: "#d97706", 
     bgGradient: "linear-gradient(135deg, #1a0f00 0%, #2a1800 100%)",
     desktopOrder: "md:order-3",
     heightClass: "md:min-h-[320px]",
   },
+];
+
+const generalPerks = [
+  {
+    Icon: Globe,
+    title: "1-Year .xyz Domain",
+    desc: "Worth ₹1L+ for all participants",
+    color: "#3b82f6"
+  },
+  {
+    Icon: Gift,
+    title: "Hackathon Kits",
+    desc: "Notebooks, Pens, Stickers & More",
+    color: "#ef4444"
+  },
+  {
+    Icon: GraduationCap,
+    title: "Certificates",
+    desc: "Official participation certificates",
+    color: "#a855f7" 
+  },
+  {
+    Icon: Rocket,
+    title: "Exposure",
+    desc: "Networking & industry mentorship",
+    color: "#f97316"
+  }
 ];
 
 const PrizeCard = ({ tier, Icon, label, amount, perks, accentColor, bgGradient, desktopOrder, heightClass, index }) => {
@@ -101,7 +128,7 @@ const PrizeCard = ({ tier, Icon, label, amount, perks, accentColor, bgGradient, 
 
         <h3 
           style={{ transform: "translateZ(50px)", color: accentColor }}
-          className={`font-black tracking-tight mb-6 drop-shadow-md ${isGold ? 'text-5xl sm:text-6xl' : 'text-4xl sm:text-5xl'}`}
+          className={`font-black tracking-tight mb-6 drop-shadow-md ${isGold ? 'text-3xl sm:text-4xl' : 'text-2xl sm:text-3xl'}`}
         >
           {amount}
         </h3>
@@ -125,9 +152,7 @@ const Prizes = () => {
       id="prizes"
       className="relative overflow-hidden py-20 sm:py-28 px-4 sm:px-6 text-center bg-transparent"
     >
-      <div className="relative z-10 max-w-5xl mx-auto">
-
-        {/* Header */}
+      <div className="relative z-10 max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -143,18 +168,51 @@ const Prizes = () => {
             style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
           />
           
-          <div className="inline-flex items-center gap-3 px-6 py-3 rounded-full border border-(--border) bg-white shadow-sm">
+
+      
+          <div className="inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-4 px-6 py-3 rounded-2xl sm:rounded-full border border-(--border) bg-white/60 backdrop-blur-md shadow-sm">
             <span className="text-sm font-bold text-gray-500 uppercase tracking-widest">Total Value</span>
-            <span className="text-xl font-black text-(--primary)">₹15,000</span>
+            <span className="text-xl sm:text-2xl font-black text-(--primary)">₹1,50,000+ Worth</span>
           </div>
         </motion.div>
-
-        {/* Podium Layout */}
-        <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-6 md:gap-4 lg:gap-8">
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-6 md:gap-4 lg:gap-8 mb-24">
           {prizes.map((prize, i) => (
             <PrizeCard key={prize.tier} {...prize} index={i} />
           ))}
         </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+        >
+          <h3 className="text-2xl sm:text-3xl font-black tracking-tight mb-8" style={{ color: "var(--text-dark)" }}>
+            Perks for Everyone
+          </h3>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            {generalPerks.map((perk, i) => (
+              <motion.div 
+                key={perk.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.3 + (i * 0.1) }}
+                className="flex flex-col items-center text-center p-6 rounded-2xl border border-(--border) bg-white/40 backdrop-blur-md shadow-sm hover:bg-white/80 hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+              >
+                <div 
+                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  style={{ background: `${perk.color}15` }}
+                >
+                  <perk.Icon size={24} style={{ color: perk.color }} />
+                </div>
+                <h4 className="text-base font-bold mb-2 text-(--text-dark)">{perk.title}</h4>
+                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{perk.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
       </div>
     </section>
   );

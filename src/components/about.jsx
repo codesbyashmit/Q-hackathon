@@ -26,7 +26,7 @@ const useInView = (threshold = 0.1) => {
   return [ref, inView];
 };
 
-/* ── Stat Card ── */
+/* ── Stat Card ──  -+*/
 const StatCard = ({ value, label, index, inView }) => (
   <div
     className="group relative overflow-hidden rounded-(--radius) text-center
