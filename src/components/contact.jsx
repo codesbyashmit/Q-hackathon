@@ -163,7 +163,7 @@ const Contact = () => {
           
           <TiltWrapper delay={0.3}>
             <LeadCard
-              name="Ayushman Ganeriwal"
+              name="Ayushman Ganeriwala"
               role="Event Lead"
               desc="For registration, accommodation, and general logistics info."
               phone="+91 99844 33785"
