@@ -4,7 +4,7 @@ import { motion, useScroll, useTransform, useSpring, useMotionValue } from "fram
 
 const events = [
   {
-    date: "April 01, 2026",
+    date: "April 15, 2026",
     title: "Registration Opens",
     description: "Secure your spot and start forming your dream team.",
     Icon: ClipboardList,
@@ -16,19 +16,19 @@ const events = [
     Icon: ClipboardX,
   },
   {
-    date: "May 01, 09:00 AM",
+    date: "May 08, 09:00 AM",
     title: "Opening Ceremony",
     description: "Keynote speeches, track reveals, and the 36-hour hack begins!",
     Icon: PartyPopper,
   },
   {
-    date: "May 02, 10:00 AM",
+    date: "May 09, 10:00 AM",
     title: "Mid Evaluation",
     description: "Mentors will review your progress and provide technical guidance.",
     Icon: ScanSearch,
   },
   {
-    date: "May 02, 09:00 PM",
+    date: "May 09, 12:00 PM",
     title: "Final Presentation",
     description: "Pitch your solution to our panel of industry experts.",
     Icon: Trophy,
