@@ -106,7 +106,7 @@ const Timeline = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-20"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4" style={{ color: "var(--text-dark)" }}>
+          <h2 className="section-heading mb-4">
             Event Roadmap
           </h2>
           <div
@@ -116,13 +116,13 @@ const Timeline = () => {
         </motion.div>
         <div className="relative">
           <div 
-            className="absolute top-0 bottom-0 left-7.25 md:left-[calc(30%-3px)] w-1.5 rounded-full"
+            className="absolute top-0 bottom-0 left-7.25 md:left-1/2 md:-translate-x-1/2 w-1.5 rounded-full"
             style={{ background: "var(--border)" }}
           />
           
           {/*progressline*/}
           <motion.div 
-            className="absolute top-0 bottom-0 left-7.25 md:left-[calc(30%-3px)] w-1.5 rounded-full origin-top drop-shadow-[0_0_8px_rgba(140,46,124,0.6)]"
+            className="absolute top-0 bottom-0 left-7.25 md:left-1/2 md:-translate-x-1/2 w-1.5 rounded-full origin-top drop-shadow-[0_0_8px_rgba(140,46,124,0.6)]"
             style={{ background: "var(--primary)", scaleY }}
           />
 
@@ -134,8 +134,22 @@ const Timeline = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="flex flex-col md:flex-row items-start"
+                className="relative flex flex-col md:flex-row items-start md:items-center"
               >
+                {/* desktop zig-zag side */}
+                {index % 2 === 0 ? (
+                  <div className="hidden md:flex w-1/2 pr-12 justify-end">
+                    <div className="w-full max-w-md text-right">
+                      <span className="block mb-3 text-sm lg:text-base font-black uppercase tracking-widest text-(--primary)">
+                        {evt.date}
+                      </span>
+                      <PipelineCard title={evt.title} description={evt.description} Icon={evt.Icon} />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="hidden md:block w-1/2" />
+                )}
+
                 {/*mobile date*/}
                 <div className="md:hidden pl-16 mb-3">
                    <span className="text-sm font-black uppercase tracking-widest" style={{ color: "var(--primary)" }}>
@@ -143,20 +157,26 @@ const Timeline = () => {
                   </span>
                 </div>
 
-                {/*leftside*/}
-                <div className="hidden md:flex w-[30%] pr-10 pt-4 justify-end text-right">
-                  <span className="text-lg lg:text-xl font-black uppercase tracking-widest text-(--primary)">
-                    {evt.date.split(',')[0]} <br/> 
-                    <span className="text-sm opacity-60 text-(--text-dark)">{evt.date.split(',')[1]}</span>
-                  </span>
-                </div>
-
                 {/*center*/}
-                <div className="absolute left-4 md:static md:flex shrink-0 w-8 h-8 rounded-full border-4 border-white shadow-md bg-(--primary) z-20 mt-1 md:mt-4 md:-ml-4" />
+                <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 shrink-0 w-8 h-8 rounded-full border-4 border-white shadow-md bg-(--primary) z-20 mt-1 md:mt-0" />
 
-                <div className="pl-16 md:pl-10 w-full md:w-[70%]">
+                <div className="pl-16 md:hidden w-full">
                   <PipelineCard title={evt.title} description={evt.description} Icon={evt.Icon} />
                 </div>
+
+                {/* desktop zig-zag opposite side */}
+                {index % 2 !== 0 ? (
+                  <div className="hidden md:flex w-1/2 pl-12 justify-start">
+                    <div className="w-full max-w-md text-left">
+                      <span className="block mb-3 text-sm lg:text-base font-black uppercase tracking-widest text-(--primary)">
+                        {evt.date}
+                      </span>
+                      <PipelineCard title={evt.title} description={evt.description} Icon={evt.Icon} />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="hidden md:block w-1/2" />
+                )}
               </motion.div>
             ))}
           </div>

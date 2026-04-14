@@ -131,8 +131,8 @@ const Hero = () => {
 
           {/*date and location*/}
           <motion.p
-            className="text-xs sm:text-sm lg:text-base font-semibold mb-5 sm:mb-7 opacity-70"
-            style={{ color: "var(--text-dark)" }}
+            className="text-xs sm:text-sm lg:text-base font-semibold mb-5 sm:mb-7"
+            style={{ color: "var(--text-muted)" }}
             variants={itemVariants}
           >
             08th - 09th May 2026 &bull; Quantum University
@@ -162,17 +162,17 @@ const Hero = () => {
               }}
               className="w-full sm:w-auto font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-(--radius) cursor-pointer"
               style={{
-                border: "2px solid var(--border)",
-                color: "var(--text-dark)",
-                background: "transparent",
+                border: "2px solid var(--border-soft)",
+                color: "var(--text-light)",
+                background: "var(--bg-card-dark)",
                 fontFamily: "inherit"
               }}
               whileHover={{
                 scale: 1.05,
                 y: -2,
                 borderColor: "var(--primary)",
-                color: "var(--primary)",
-                backgroundColor: "var(--secondary)"
+                color: "var(--text-light)",
+                backgroundColor: "var(--primary-soft)"
               }}
               whileTap={{ scale: 0.95 }}
             >

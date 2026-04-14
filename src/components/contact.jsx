@@ -140,7 +140,7 @@ const Contact = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4" style={{ color: "var(--text-dark)" }}>
+          <h2 className="section-heading mb-4">
             Get In Touch
           </h2>
           <div className="h-1.5 w-20 rounded-full mx-auto" style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }} />

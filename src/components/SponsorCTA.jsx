@@ -7,7 +7,7 @@ const SponsorCTA = () => {
     window.open("https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view?usp=drivesdk", "_blank");
   };
   return (
-    <section id="sponsor-cta" className="py-24 px-4 sm:px-6 bg-[#0a0a0a] relative overflow-hidden">
+    <section id="sponsor-cta" className="py-24 px-4 sm:px-6 bg-(--bg-page-elevated) relative overflow-hidden">
       {/*background glow*/}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-150 h-75 bg-(--primary) opacity-20 blur-[120px] pointer-events-none" />
 
@@ -17,16 +17,16 @@ const SponsorCTA = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.7 }}
-          className="rounded-3xl border border-[#333] bg-[#111]/80 backdrop-blur-xl text-center px-6 py-16 sm:px-16 shadow-2xl relative overflow-hidden"
+          className="rounded-3xl border border-(--border-soft) bg-(--bg-card-dark) backdrop-blur-xl text-center px-6 py-16 sm:px-16 shadow-2xl relative overflow-hidden"
         >
           {/*gradient accent*/}
           <div className="absolute top-0 inset-x-0 h-1.5 bg-linear-to-r from-(--primary-dark) via-(--primary) to-(--primary-dark)" />
 
-          <h2 className="text-4xl sm:text-5xl font-black mb-5 text-white tracking-tight">
+          <h2 className="section-heading mb-5">
             Partner With Us
           </h2>
           
-          <p className="text-base sm:text-lg leading-relaxed mx-auto max-w-2xl text-gray-400 mb-10 font-medium">
+          <p className="text-base sm:text-lg leading-relaxed mx-auto max-w-2xl text-(--text-muted) mb-10 font-medium">
             We are currently looking for visionary companies to help make Q-Hackathon 2026 a reality. Claim your spot and empower the next generation of tech leaders.
           </p>
 
@@ -37,7 +37,7 @@ const SponsorCTA = () => {
             <button
               onClick={handleDownloadBrochure}
               className="group flex items-center justify-center gap-2 font-bold text-sm sm:text-base px-8 py-4 rounded-xl transition-all duration-300 w-full sm:w-auto cursor-pointer"
-              style={{ background: "var(--primary)", color: "white", boxShadow: "0 4px 20px rgba(140,46,124,0.4)" }}
+              style={{ background: "var(--primary)", color: "var(--text-light)", boxShadow: "0 4px 20px var(--primary-soft)" }}
             >
               <Download size={18} strokeWidth={2.5} className="group-hover:-translate-y-1 transition-transform duration-300" />
               Download Brochure
@@ -46,7 +46,7 @@ const SponsorCTA = () => {
             {/*secondary contact*/}
             <a
               href="mailto:codex.club@quantumeducation.in"
-              className="group flex items-center justify-center gap-2 font-bold text-sm sm:text-base px-8 py-4 rounded-xl border-2 border-[#444] text-white hover:border-(--primary) hover:bg-(--primary)/10 transition-all duration-300 w-full sm:w-auto"
+              className="group flex items-center justify-center gap-2 font-bold text-sm sm:text-base px-8 py-4 rounded-xl border-2 border-(--border-soft) text-(--text-light) hover:border-(--primary) hover:bg-(--primary)/10 transition-all duration-300 w-full sm:w-auto"
             >
               <Mail size={18} strokeWidth={2.5} className="group-hover:scale-110 transition-transform duration-300" />
               Contact Us

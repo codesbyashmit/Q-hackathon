@@ -186,7 +186,7 @@ const Tracks = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-12 sm:mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-3" style={{ color: "var(--text-dark)" }}>
+          <h2 className="section-heading mb-3">
             Hackathon Tracks
           </h2>
           <p className="text-sm sm:text-base mb-4 font-medium" style={{ color: "#777" }}>

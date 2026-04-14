@@ -1,14 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap");
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+/* Theme Tokens: keep all design values centralized here. */
+:root {
+  --font-family-base: "Space Grotesk", sans-serif;
 
-/* --- User Defined Variables --- */
+  /* Brand scale */
+  --brand-50: #f9edf6;
+  --brand-100: #f2dceb;
+  --brand-200: #e6b8d8;
+  --brand-300: #d386bc;
+  --brand-400: #b9579e;
+  --brand-500: #8c2e7c;
+  --brand-600: #6f2362;
+  --brand-700: #551a4b;
+  --brand-800: #3b1234;
+  --brand-900: #230a1f;
 
-/* --- Base Styles --- */
+  /* Accent scale */
+  --accent-400: #ff5ca8;
+  --accent-500: #ff3f98;
+  --accent-600: #e51a80;
+
+  /* Neutral scale */
+  --neutral-0: #ffffff;
+  --neutral-50: #f8f8fa;
+  --neutral-100: #ececf0;
+  --neutral-200: #d9d9e0;
+  --neutral-300: #b8b8c4;
+  --neutral-400: #8f8fa0;
+  --neutral-500: #69697b;
+  --neutral-600: #4a4a5a;
+  --neutral-700: #31313f;
+  --neutral-800: #191925;
+  --neutral-900: #0b0b11;
+
+  /* Semantic tokens */
+  --primary: var(--brand-500);
+  --primary-dark: var(--brand-600);
+  --primary-soft: rgba(140, 46, 124, 0.14);
+  --secondary: var(--brand-100);
+
+  --text-dark: #16161d;
+  --text-light: var(--neutral-0);
+  --text-body: #f3f2f8;
+  --text-muted: #c0bfca;
+
+  --bg-page: #05050a;
+  --bg-page-elevated: #0a0a12;
+  --bg-light: var(--neutral-50);
+  --bg-card-dark: rgba(255, 255, 255, 0.05);
+
+  --border: var(--neutral-200);
+  --border-soft: rgba(255, 255, 255, 0.14);
+
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+  --info: #38bdf8;
+
+  --radius: 10px;
+  --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
 body {
-  font-family: 'Space Grotesk', sans-serif;
   margin: 0;
-  color: var(--text-dark);
-  background-color: #050505;
+  font-family: var(--font-family-base);
+  color: var(--text-body);
+  background:
+    radial-gradient(900px 520px at 85% 8%, rgba(229, 26, 128, 0.09), transparent 70%),
+    radial-gradient(800px 420px at 10% 70%, rgba(140, 46, 124, 0.14), transparent 72%),
+    linear-gradient(180deg, var(--bg-page-elevated) 0%, var(--bg-page) 48%, var(--bg-page) 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+}
+
+.section-heading {
+  font-size: clamp(2.25rem, 4vw, 3.75rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--text-light);
 }
 
 

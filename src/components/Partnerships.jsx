@@ -60,8 +60,8 @@ const PartnerBox = ({ partner, index }) => {
     >
       <motion.div
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className={`relative flex flex-col w-full rounded-2xl bg-[#0f0f0f] border p-8 transition-colors duration-300 group
-                   ${highlight ? 'border-[#333] hover:border-(--primary)' : 'border-[#222] hover:border-gray-500'}`}
+        className={`relative flex flex-col w-full rounded-2xl bg-(--bg-card-dark) border p-8 transition-colors duration-300 group
+                   ${highlight ? 'border-(--border-soft) hover:border-(--primary)' : 'border-(--border-soft) hover:border-(--text-muted)'}`}
       >
         <div 
           className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none blur-2xl"
@@ -79,16 +79,16 @@ const PartnerBox = ({ partner, index }) => {
           <div className="flex items-center justify-between mb-6">
             <div
               className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
-              style={{ background: highlight ? "var(--primary-dark)" : "#1a1a1a", border: `1px solid ${highlight ? color : '#333'}` }}
+              style={{ background: highlight ? "var(--primary-dark)" : "var(--bg-page)", border: `1px solid ${highlight ? color : 'var(--border-soft)'}` }}
             >
-              <Icon size={24} strokeWidth={2} color={highlight ? "white" : "#aaa"} />
+              <Icon size={24} strokeWidth={2} color={highlight ? "var(--text-light)" : "var(--text-muted)"} />
             </div>
             <span
               className="text-xs font-bold px-4 py-2 rounded-full border"
               style={{ 
-                background: highlight ? `${color}20` : "#1a1a1a", 
-                color: highlight ? color : "#aaa",
-                borderColor: highlight ? `${color}40` : "#333"
+                background: highlight ? `${color}20` : "var(--bg-page)", 
+                color: highlight ? color : "var(--text-muted)",
+                borderColor: highlight ? `${color}40` : "var(--border-soft)"
               }}
             >
               {price}
@@ -99,15 +99,15 @@ const PartnerBox = ({ partner, index }) => {
             {title}
           </h3>
 
-          <p className="text-sm leading-relaxed mb-6 text-gray-400">
+          <p className="text-sm leading-relaxed mb-6 text-(--text-muted)">
             {desc}
           </p>
-          <div className="w-full h-[1px] bg-[#222] mb-6" />
-          <ul className="flex flex-col gap-3 mb-8 flex-grow">
+          <div className="w-full h-px bg-(--border-soft) mb-6" />
+          <ul className="flex flex-col gap-3 mb-8 grow">
             {perks.map((p, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-gray-300 font-medium">
+              <li key={i} className="flex items-start gap-3 text-sm text-(--text-body) font-medium">
                 <div className="mt-0.5 shrink-0">
-                  <Check size={16} strokeWidth={3} color={highlight ? color : "#888"} />
+                  <Check size={16} strokeWidth={3} color={highlight ? color : "var(--text-muted)"} />
                 </div>
                 {p}
               </li>
@@ -120,8 +120,8 @@ const PartnerBox = ({ partner, index }) => {
             className="block w-full text-center text-sm font-bold py-3.5 rounded-xl border-2 transition-all duration-300 mt-auto"
             style={
               highlight
-                ? { background: "var(--primary)", color: "white", borderColor: "var(--primary)" }
-                : { background: "transparent", color: "white", borderColor: "#333" }
+                ? { background: "var(--primary)", color: "var(--text-light)", borderColor: "var(--primary)" }
+                : { background: "transparent", color: "var(--text-light)", borderColor: "var(--border-soft)" }
             }
             onMouseEnter={e => {
               if (highlight) {
@@ -129,8 +129,8 @@ const PartnerBox = ({ partner, index }) => {
                 e.currentTarget.style.borderColor = "var(--primary-dark)";
                 e.currentTarget.style.boxShadow   = `0 4px 20px ${glow}`;
               } else {
-                e.currentTarget.style.background  = "#222";
-                e.currentTarget.style.borderColor = "#444";
+                e.currentTarget.style.background  = "var(--bg-card-dark)";
+                e.currentTarget.style.borderColor = "var(--text-muted)";
               }
             }}
             onMouseLeave={e => {
@@ -140,7 +140,7 @@ const PartnerBox = ({ partner, index }) => {
                 e.currentTarget.style.boxShadow   = "none";
               } else {
                 e.currentTarget.style.background  = "transparent";
-                e.currentTarget.style.borderColor = "#333";
+                e.currentTarget.style.borderColor = "var(--border-soft)";
               }
             }}
           >
@@ -153,7 +153,7 @@ const PartnerBox = ({ partner, index }) => {
 };
 const Partnerships = () => {
   return (
-    <section id="partnerships" className="py-20 sm:py-24 px-4 sm:px-6 relative z-10 bg-[#0a0a0a]">
+    <section id="partnerships" className="py-20 sm:py-24 px-4 sm:px-6 relative z-10 bg-(--bg-page-elevated)">
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -162,7 +162,7 @@ const Partnerships = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight mb-4">
+          <h2 className="section-heading mb-4">
             More Ways to Partner
           </h2>
           <div

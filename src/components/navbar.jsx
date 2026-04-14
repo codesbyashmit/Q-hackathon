@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import logo from "/logo.svg";
 
 const homeNavLinks = [
@@ -48,7 +49,8 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [activeSections, setActiveSections] = useState(() => getStoredActiveSections());
   const isClickScrolling = useRef(false);
-  const clickScrollTimer = useRef(null);
+  const clickScrollUnlockTimer = useRef(null);
+  const clickTargetSection = useRef(null);
   const routeScrollRetryTimer = useRef(null);
   
   const location = useLocation();
@@ -92,7 +94,28 @@ function Navbar() {
     if (!isSectionPage) return;
 
     const updateActiveSection = () => {
-      if (isClickScrolling.current) return;
+      if (isClickScrolling.current) {
+        const pendingSection = clickTargetSection.current;
+        const headerOffset = 96;
+
+        if (pendingSection === "home" || pendingSection === "sponsor-home") {
+          if (window.scrollY <= 4) {
+            isClickScrolling.current = false;
+            clickTargetSection.current = null;
+          }
+        } else if (pendingSection) {
+          const pendingEl = document.getElementById(pendingSection);
+          if (pendingEl) {
+            const targetTop = Math.max(0, pendingEl.offsetTop - headerOffset);
+            if (Math.abs(window.scrollY - targetTop) <= 10) {
+              isClickScrolling.current = false;
+              clickTargetSection.current = null;
+            }
+          }
+        }
+
+        if (isClickScrolling.current) return;
+      }
 
       const scrollMarker = window.scrollY + 160;
       const sectionIds = currentNavLinks.map(({ section }) => section);
@@ -137,8 +160,8 @@ function Navbar() {
 
   useEffect(() => {
     return () => {
-      if (clickScrollTimer.current) {
-        clearTimeout(clickScrollTimer.current);
+      if (clickScrollUnlockTimer.current) {
+        clearTimeout(clickScrollUnlockTimer.current);
       }
       if (routeScrollRetryTimer.current) {
         clearTimeout(routeScrollRetryTimer.current);
@@ -166,12 +189,15 @@ function Navbar() {
     closeMenu();
 
     isClickScrolling.current = true;
-    if (clickScrollTimer.current) {
-      clearTimeout(clickScrollTimer.current);
+    clickTargetSection.current = sectionId;
+
+    if (clickScrollUnlockTimer.current) {
+      clearTimeout(clickScrollUnlockTimer.current);
     }
-    clickScrollTimer.current = setTimeout(() => {
+    clickScrollUnlockTimer.current = setTimeout(() => {
       isClickScrolling.current = false;
-    }, 1800);
+      clickTargetSection.current = null;
+    }, 5000);
 
     const targetPath = getTargetPathBySection(sectionId);
     setPageActiveSection(targetPath, sectionId);
@@ -218,9 +244,9 @@ function Navbar() {
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.05)] py-3" 
+            ? "bg-black/75 md:bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.05)] py-3" 
             : "bg-transparent py-5"
-        }`}
+        } md:z-50 z-60`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
 
@@ -258,14 +284,16 @@ function Navbar() {
             <nav className="hidden md:flex items-center gap-4 p-1.5 rounded-full bg-white/40 backdrop-blur-md border border-white/40 shadow-inner">
               <button
                 onClick={() => scrollToSection("home")}
-                className="px-5 py-2 rounded-full text-sm font-bold text-(--text-dark) hover:text-(--primary) transition-colors duration-300"
+                className={`px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${scrolled ? 'hover:text-(--primary-dark)' : 'hover:text-(--secondary)'}`}
+                style={{ color: scrolled ? "var(--primary)" : "var(--text-light)" }}
               >
                 Home
               </button>
               <span className="h-5 w-px bg-(--border)" />
               <Link
                 to="/sponsors"
-                className={`px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${location.pathname === '/sponsors' ? 'bg-(--primary) text-white' : 'text-(--text-dark) hover:text-(--primary)'}`}
+                className={`px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${location.pathname === '/sponsors' ? 'bg-(--primary) text-white' : (scrolled ? 'hover:text-(--primary-dark)' : 'hover:text-(--secondary)')}`}
+                style={location.pathname === '/sponsors' ? undefined : { color: scrolled ? "var(--primary)" : "var(--text-light)" }}
                 onClick={closeMenu}
               >
                 Sponsors
@@ -276,7 +304,8 @@ function Navbar() {
             {isSponsorsPage ? (
               <Link 
                 to="/" 
-                className="text-sm font-bold text-(--text-dark) hover:text-(--primary) transition-colors"
+                className={`text-sm font-bold transition-colors ${scrolled ? 'hover:text-(--primary-dark)' : 'hover:text-(--secondary)'}`}
+                style={{ color: scrolled ? "var(--primary)" : "var(--text-light)" }}
                 onClick={closeMenu}
               >
                 Home
@@ -284,7 +313,8 @@ function Navbar() {
             ) : (
               <Link 
                 to="/sponsors" 
-                className={`text-sm font-bold transition-colors ${location.pathname === '/sponsors' ? 'text-(--primary)' : 'text-(--text-dark) hover:text-(--primary)'}`}
+                className={`text-sm font-bold transition-colors ${location.pathname === '/sponsors' ? 'text-(--primary)' : (scrolled ? 'hover:text-(--primary-dark)' : 'hover:text-(--secondary)')}`}
+                style={location.pathname === '/sponsors' ? undefined : { color: scrolled ? "var(--primary)" : "var(--text-light)" }}
                 onClick={closeMenu}
               >
                 Sponsors
@@ -302,15 +332,15 @@ function Navbar() {
 
           {/*mobile menu */}
           <button
-            className="md:hidden relative z-50 p-2"
+            className="md:hidden relative z-70 p-2"
             onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
-            <div className="w-6 flex flex-col gap-1.5">
-              <span className={`block h-0.5 bg-(--primary) rounded-full transition-transform duration-300 ${menuOpen ? "rotate-45 translate-y-2" : ""}`} />
-              <span className={`block h-0.5 bg-(--primary) rounded-full transition-opacity duration-300 ${menuOpen ? "opacity-0" : ""}`} />
-              <span className={`block h-0.5 bg-(--primary) rounded-full transition-transform duration-300 ${menuOpen ? "-rotate-45 -translate-y-2" : ""}`} />
-            </div>
+            {menuOpen ? (
+              <X size={24} className="text-(--text-light) drop-shadow" strokeWidth={2.5} />
+            ) : (
+              <Menu size={24} className="text-(--primary) drop-shadow" strokeWidth={2.5} />
+            )}
           </button>
 
         </div>
@@ -337,7 +367,7 @@ function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            className="fixed top-0 right-0 bottom-0 w-[80vw] max-w-sm z-50 bg-(--bg-light) shadow-2xl flex flex-col pt-24 px-6 md:hidden"
+            className="fixed top-0 right-0 bottom-0 w-[80vw] max-w-sm z-50 bg-(--bg-page-elevated) shadow-2xl flex flex-col pt-24 px-6 md:hidden"
           >
             <div className="flex flex-col gap-2">
               {(isSectionPage ? currentNavLinks : [{ label: "Home", section: "home" }]).map(({ label, section }, i) => {
@@ -352,7 +382,7 @@ function Navbar() {
                     className={`text-left text-lg font-bold py-3 px-4 rounded-xl transition-colors ${
                       isActive
                         ? "bg-(--primary)/10 text-(--primary)"
-                        : "text-(--text-dark)"
+                        : "text-(--text-light)"
                     }`}
                   >
                     {label}
@@ -360,11 +390,11 @@ function Navbar() {
                 )
               })}
               
-              <div className="h-px bg-(--border) my-4 w-full" />
+              <div className="h-px bg-(--border-soft) my-4 w-full" />
 
               <Link
                 to={isSponsorsPage ? "/" : "/sponsors"}
-                className={`text-lg font-bold py-3 px-4 rounded-xl ${isSponsorsPage ? 'text-(--text-dark)' : (location.pathname === '/sponsors' ? 'text-(--primary)' : 'text-(--text-dark)')}`}
+                className={`text-lg font-bold py-3 px-4 rounded-xl ${isSponsorsPage ? 'text-(--text-light)' : (location.pathname === '/sponsors' ? 'text-(--primary)' : 'text-(--text-light)')}`}
                 onClick={closeMenu}
               >
                 {isSponsorsPage ? "Home" : "Sponsors"}

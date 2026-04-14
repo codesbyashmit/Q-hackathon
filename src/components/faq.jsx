@@ -27,7 +27,7 @@ const FAQItem = ({ question, answer, index }) => {
       className={`cursor-pointer border rounded-2xl p-5 sm:p-7 transition-colors duration-400 ease-in-out ${
         isOpen 
           ? "bg-(--primary) border-(--primary) shadow-[0_10px_30px_rgba(140,46,124,0.3)]" 
-          : "bg-white border-(--border) hover:border-(--primary) shadow-sm hover:shadow-md"
+          : "bg-(--bg-light) border-(--border) hover:border-(--primary) shadow-sm hover:shadow-md"
       }`}
     >
       <motion.div layout className="flex justify-between items-center gap-4">
@@ -91,25 +91,25 @@ const FAQ = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
           >
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4" style={{ color: "var(--text-dark)" }}>
+            <h2 className="section-heading mb-4 text-center lg:text-left">
               Got<br />Questions?
             </h2>
             <div
-              className="h-1.5 w-20 rounded-full mb-6"
+              className="h-1.5 w-20 rounded-full mb-6 mx-auto lg:mx-0"
               style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
             />
-            <p className="text-base sm:text-lg mb-8" style={{ color: "#666" }}>
+            <p className="text-base sm:text-lg mb-8 text-(--text-muted) text-center lg:text-left">
               Everything you need to know about participating in Q-Hackathon 2026. Can't find the answer you're looking for?
             </p>
 
             {/*supportbox*/}
-            <div className="p-6 rounded-2xl border border-(--border) bg-white shadow-sm flex items-start gap-4">
+            <div className="p-6 rounded-2xl border border-(--border-soft) bg-(--bg-card-dark) shadow-sm flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)" }}>
                 <Mail size={24} style={{ color: "var(--primary)" }} />
               </div>
               <div>
-                <h4 className="font-bold text-(--text-dark) mb-1">Email Support</h4>
-                <p className="text-sm text-gray-500 mb-2">Our team will contact you back as soon as possible.</p>
+                <h4 className="font-bold text-(--text-light) mb-1">Email Support</h4>
+                <p className="text-sm text-(--text-muted) mb-2">Our team will contact you back as soon as possible.</p>
                 <a 
                   href="mailto:codex.club@quantumeducation.in" 
                   className="text-sm font-bold hover:underline transition-all"

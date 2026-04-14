@@ -127,7 +127,7 @@ const TierCard = ({ tier, index }) => {
     >
       <motion.div
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="relative w-full flex flex-col h-full bg-[#0f0f0f] rounded-2xl border border-[#222] p-8 shadow-2xl group transition-colors duration-300"
+        className="relative w-full flex flex-col h-full bg-(--bg-card-dark) rounded-2xl border border-(--border-soft) p-8 shadow-2xl group transition-colors duration-300"
       >
         <div 
           className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none blur-xl"
@@ -155,7 +155,7 @@ const TierCard = ({ tier, index }) => {
             {tier.price}
           </p>
 
-          <div className="w-full h-px bg-[#333] mb-8" />
+          <div className="w-full h-px bg-(--border-soft) mb-8" />
 
           <ul className="flex flex-col gap-4 mb-10 grow">
             {tier.features.map((feature, i) => (
@@ -175,9 +175,9 @@ const TierCard = ({ tier, index }) => {
             rel="noreferrer"
             className="mt-auto w-full py-3.5 rounded-xl font-bold text-sm text-center transition-all duration-300 border-2"
             style={{ 
-              borderColor: isPlatinum ? tier.color : '#333',
+              borderColor: isPlatinum ? tier.color : 'var(--border-soft)',
               background: isPlatinum ? tier.color : 'transparent',
-              color: 'white'
+              color: 'var(--text-light)'
             }}
             onMouseEnter={(e) => {
               if (!isPlatinum) {
@@ -187,8 +187,8 @@ const TierCard = ({ tier, index }) => {
             }}
             onMouseLeave={(e) => {
               if (!isPlatinum) {
-                e.currentTarget.style.borderColor = '#333';
-                e.currentTarget.style.color = 'white';
+                e.currentTarget.style.borderColor = 'var(--border-soft)';
+                e.currentTarget.style.color = 'var(--text-light)';
               }
             }}
           >
@@ -201,7 +201,7 @@ const TierCard = ({ tier, index }) => {
 };
 const SponsorshipTiers = () => {
   return (
-    <section id="sponsorship-tiers" className="relative py-24 sm:py-32 px-4 sm:px-6 bg-[#0a0a0a] overflow-hidden">
+    <section id="sponsorship-tiers" className="relative py-24 sm:py-32 px-4 sm:px-6 bg-(--bg-page-elevated) overflow-hidden">
       
       {/*background canvas */}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-60">
@@ -224,7 +224,7 @@ const SponsorshipTiers = () => {
           transition={{ duration: 0.7 }}
           className="text-center mb-20"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4 text-white">
+          <h2 className="section-heading mb-4">
             Sponsorship Tiers
           </h2>
           <div className="h-1.5 w-24 rounded-full mx-auto" style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }} />

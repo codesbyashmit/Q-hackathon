@@ -26,7 +26,7 @@ const Partners = () => {
           transition={{ duration: 0.7 }}
           className="mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl font-black tracking-tight mb-4 text-white">
+          <h2 className="section-heading mb-4">
             Our Partners
           </h2>
           <p className="text-base sm:text-lg font-medium text-gray-400">

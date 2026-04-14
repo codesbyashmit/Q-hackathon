@@ -36,11 +36,11 @@ const StatCard = ({ Icon, to, suffix, label, index }) => (
     whileInView={{ opacity: 1, y: 0 }}
     viewport={{ once: true, margin: "-50px" }}
     transition={{ duration: 0.6, delay: index * 0.1 }}
-    className="relative group flex flex-col items-center text-center rounded-2xl p-8 overflow-hidden bg-[#111] border border-[#222] transition-colors duration-300 hover:border-(--primary)"
+    className="relative group flex flex-col items-center text-center rounded-2xl p-8 overflow-hidden bg-(--bg-card-dark) border border-(--border-soft) transition-colors duration-300 hover:border-(--primary)"
   >
     <div className="absolute inset-0 bg-(--primary) opacity-0 group-hover:opacity-5 transition-opacity duration-500 pointer-events-none" />
     
-    <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 bg-black border border-[#333] transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6 relative z-10 shadow-lg">
+    <div className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 bg-(--bg-page) border border-(--border-soft) transition-transform duration-500 group-hover:scale-110 group-hover:-rotate-6 relative z-10 shadow-lg">
       <Icon size={24} style={{ color: "var(--primary)" }} />
     </div>
 
@@ -50,7 +50,7 @@ const StatCard = ({ Icon, to, suffix, label, index }) => (
     </h3>
 
     {/*lable*/}
-    <p className="text-sm font-bold uppercase tracking-widest text-gray-500 relative z-10">
+    <p className="text-sm font-bold uppercase tracking-widest text-(--text-muted) relative z-10">
       {label}
     </p>
   </motion.div>
@@ -58,9 +58,9 @@ const StatCard = ({ Icon, to, suffix, label, index }) => (
 
 const ImpactStats = () => {
   return (
-    <section id="impact-stats" className="py-20 px-4 sm:px-6 bg-[#0a0a0a] relative z-10">
+    <section id="impact-stats" className="py-20 px-4 sm:px-6 bg-(--bg-page-elevated) relative z-10">
       
-      <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-[#333] to-transparent" />
+      <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-(--border-soft) to-transparent" />
 
       <div className="max-w-6xl mx-auto">
         

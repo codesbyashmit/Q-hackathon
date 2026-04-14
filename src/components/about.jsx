@@ -119,7 +119,7 @@ const About = () => {
             transition: "opacity 0.7s ease 100ms, transform 0.7s cubic-bezier(0.22,1,0.36,1) 100ms",
           }}
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-3">
+          <h2 className="section-heading mb-3">
             About the Hackathon
           </h2>
           <div

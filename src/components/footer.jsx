@@ -1,5 +1,6 @@
 import logo from "../assets/qhackathon-name.svg";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Instagram, Linkedin, Globe } from "lucide-react";
 
 const exploreLinks = [
   { name: "Home", to: "/" },
@@ -30,23 +31,47 @@ function Footer() {
   };
 
   return (
-    <footer className="bg-[#050505] pt-16 pb-8 border-t border-[#1a1a1a] relative overflow-hidden">
-          <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-(--primary) to-transparent opacity-50" />
+    <footer className="bg-(--bg-page) pt-16 pb-8 border-t border-(--border-soft) relative overflow-hidden">
+          <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-(--primary) to-transparent opacity-50" />
 
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
           <div className="md:col-span-5 lg:col-span-6 flex flex-col items-start">
           <Link to="/" className="mb-6 inline-block">
             <img src={logo} alt="Q-Hackathon Logo" className="h-10 sm:h-12 w-auto opacity-90 hover:opacity-100 transition-opacity" />
           </Link>
-          <p className="text-gray-400 text-sm sm:text-base leading-relaxed max-w-md mb-8 font-medium">
+          <p className="text-(--text-muted) text-sm sm:text-base leading-relaxed max-w-md mb-8 font-medium">
             Empowering the next generation of innovators through code, collaboration, and creativity.
           </p>
           
           {/* Socials */}
           <div className="flex gap-3">
-            <a href="https://www.instagram.com/qu_codex/" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl bg-[#111] border border-[#222] flex items-center justify-center text-xs font-black tracking-wider text-gray-400 hover:bg-(--primary) hover:border-(--primary) hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-sm">IG</a>
-            <a href="https://www.linkedin.com/company/qucodex/" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl bg-[#111] border border-[#222] flex items-center justify-center text-xs font-black tracking-wider text-gray-400 hover:bg-(--primary) hover:border-(--primary) hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-sm">IN</a>
-            <a href="https://www.qucodex.com" target="_blank" rel="noreferrer" className="w-11 h-11 rounded-xl bg-[#111] border border-[#222] flex items-center justify-center text-xs font-black tracking-wider text-gray-400 hover:bg-(--primary) hover:border-(--primary) hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-sm">WEB</a>
+            <a
+              href="https://www.instagram.com/qu_codex/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Instagram"
+              className="w-11 h-11 rounded-xl bg-(--bg-card-dark) border border-(--border-soft) flex items-center justify-center text-(--text-muted) hover:bg-(--primary) hover:border-(--primary) hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-sm"
+            >
+              <Instagram size={18} strokeWidth={2.2} />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/qucodex/"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="LinkedIn"
+              className="w-11 h-11 rounded-xl bg-(--bg-card-dark) border border-(--border-soft) flex items-center justify-center text-(--text-muted) hover:bg-(--primary) hover:border-(--primary) hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-sm"
+            >
+              <Linkedin size={18} strokeWidth={2.2} />
+            </a>
+            <a
+              href="https://www.qucodex.com"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Website"
+              className="w-11 h-11 rounded-xl bg-(--bg-card-dark) border border-(--border-soft) flex items-center justify-center text-(--text-muted) hover:bg-(--primary) hover:border-(--primary) hover:text-white hover:-translate-y-1 transition-all duration-300 shadow-sm"
+            >
+              <Globe size={18} strokeWidth={2.2} />
+            </a>
           </div>
         </div>
 
@@ -57,13 +82,13 @@ function Footer() {
             {exploreLinks.map((link, i) => (
               <li key={i}>
                 {link.to ? (
-                  <Link to={link.to} className="text-gray-400 hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
-                    <span className="w-0 h-[2px] bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
+                  <Link to={link.to} className="text-(--text-muted) hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
+                    <span className="w-0 h-0.5 bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
                     {link.name}
                   </Link>
                 ) : (
-                  <button onClick={() => handleScroll(link.section)} className="text-gray-400 hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group cursor-pointer bg-transparent border-none p-0 text-left w-fit">
-                    <span className="w-0 h-[2px] bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
+                  <button onClick={() => handleScroll(link.section)} className="text-(--text-muted) hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group cursor-pointer bg-transparent border-none p-0 text-left w-fit">
+                    <span className="w-0 h-0.5 bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
                     {link.name}
                   </button>
                 )}
@@ -79,13 +104,13 @@ function Footer() {
             {engageLinks.map((link, i) => (
               <li key={i}>
                 {link.to.startsWith("http") ? (
-                  <a href={link.to} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
-                    <span className="w-0 h-[2px] bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
+                  <a href={link.to} target="_blank" rel="noopener noreferrer" className="text-(--text-muted) hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
+                    <span className="w-0 h-0.5 bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
                     {link.name}
                   </a>
                 ) : (
-                  <Link to={link.to} className="text-gray-400 hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
-                    <span className="w-0 h-[2px] bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
+                  <Link to={link.to} className="text-(--text-muted) hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
+                    <span className="w-0 h-0.5 bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
                     {link.name}
                   </Link>
                 )}
@@ -96,7 +121,7 @@ function Footer() {
       </div>
 
       {/* Bottom Copyright & Location */}
-      <div className="max-w-6xl mx-auto px-6 pt-8 border-t border-[#1a1a1a] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-bold tracking-wide text-gray-500">
+      <div className="max-w-6xl mx-auto px-6 pt-8 border-t border-(--border-soft) flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-bold tracking-wide text-(--text-muted)">
         <p>© 2026 CodeX Club. Built with <span className="text-(--primary) text-sm animate-pulse">♥</span></p>
         <p className="flex items-center gap-2">
           <span className="text-(--primary) text-sm">📍</span> Quantum University

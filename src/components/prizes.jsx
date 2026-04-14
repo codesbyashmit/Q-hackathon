@@ -160,7 +160,7 @@ const Prizes = () => {
           transition={{ duration: 0.7 }}
           className="mb-16"
         >
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight mb-4" style={{ color: "var(--text-dark)" }}>
+          <h2 className="section-heading mb-4">
             The Prize Pool
           </h2>
           <div
@@ -170,8 +170,8 @@ const Prizes = () => {
           
 
       
-          <div className="inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-4 px-6 py-3 rounded-2xl sm:rounded-full border border-(--border) bg-white/60 backdrop-blur-md shadow-sm">
-            <span className="text-sm font-bold text-gray-500 uppercase tracking-widest">Total Value</span>
+          <div className="inline-flex flex-col sm:flex-row items-center gap-2 sm:gap-4 px-6 py-3 rounded-2xl sm:rounded-full border border-(--border-soft) bg-(--bg-card-dark) backdrop-blur-md shadow-sm">
+            <span className="text-sm font-bold text-(--text-muted) uppercase tracking-widest">Total Value</span>
             <span className="text-xl sm:text-2xl font-black text-(--primary)">₹1,50,000+ Worth</span>
           </div>
         </motion.div>
@@ -186,7 +186,7 @@ const Prizes = () => {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.7, delay: 0.2 }}
         >
-          <h3 className="text-2xl sm:text-3xl font-black tracking-tight mb-8" style={{ color: "var(--text-dark)" }}>
+          <h3 className="text-2xl sm:text-3xl font-black tracking-tight mb-8" style={{ color: "var(--text-light)" }}>
             Perks for Everyone
           </h3>
           
@@ -198,7 +198,7 @@ const Prizes = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: 0.3 + (i * 0.1) }}
-                className="flex flex-col items-center text-center p-6 rounded-2xl border border-(--border) bg-white/40 backdrop-blur-md shadow-sm hover:bg-white/80 hover:shadow-md hover:-translate-y-1 transition-all duration-300"
+                className="flex flex-col items-center text-center p-6 rounded-2xl border border-(--border-soft) bg-(--bg-card-dark) backdrop-blur-md shadow-sm hover:bg-(--bg-card-dark) hover:shadow-md hover:-translate-y-1 transition-all duration-300"
               >
                 <div 
                   className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
@@ -206,8 +206,8 @@ const Prizes = () => {
                 >
                   <perk.Icon size={24} style={{ color: perk.color }} />
                 </div>
-                <h4 className="text-base font-bold mb-2 text-(--text-dark)">{perk.title}</h4>
-                <p className="text-xs sm:text-sm text-gray-500 leading-relaxed">{perk.desc}</p>
+                <h4 className="text-base font-bold mb-2 text-(--text-light)">{perk.title}</h4>
+                <p className="text-xs sm:text-sm text-(--text-muted) leading-relaxed">{perk.desc}</p>
               </motion.div>
             ))}
           </div>

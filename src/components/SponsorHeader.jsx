@@ -89,7 +89,7 @@ const AbstractNetwork = () => {
 };
 const SponsorHeader = () => {
   return (
-    <header id="sponsor-home" className="relative h-[70vh] min-h-137.5 w-full bg-[#0a0a0a] overflow-hidden flex items-center justify-center">
+    <header id="sponsor-home" className="relative h-[70vh] min-h-137.5 w-full bg-(--bg-page-elevated) overflow-hidden flex items-center justify-center">
       
       <div className="absolute inset-0 z-0 opacity-90">
         <Canvas
@@ -103,7 +103,13 @@ const SponsorHeader = () => {
         </Canvas>
       </div>
 
-      <div className="absolute inset-0 z-0 bg-linear-to-b from-[#0a0a0a]/60 via-[#0a0a0a]/40 to-[#0a0a0a]" />
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--bg-page-elevated) 60%, transparent), color-mix(in srgb, var(--bg-page-elevated) 40%, transparent), var(--bg-page-elevated))",
+        }}
+      />
 
       <div className="relative z-10 max-w-4xl mx-auto px-6 text-center mt-12">
         <motion.div
@@ -111,7 +117,7 @@ const SponsorHeader = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
         >
-          <span className="inline-block py-1.5 px-4 rounded-full bg-white/5 border border-white/10 text-gray-300 text-xs font-black uppercase tracking-[0.2em] mb-6 backdrop-blur-md shadow-lg">
+          <span className="inline-block py-1.5 px-4 rounded-full bg-white/5 border border-white/10 text-(--text-muted) text-xs font-black uppercase tracking-[0.2em] mb-6 backdrop-blur-md shadow-lg">
             Partner With Us
           </span>
         </motion.div>
@@ -130,7 +136,7 @@ const SponsorHeader = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2, ease: "easeOut" }}
-          className="text-lg sm:text-xl font-medium text-gray-400 max-w-2xl mx-auto leading-relaxed"
+          className="text-lg sm:text-xl font-medium text-(--text-muted) max-w-2xl mx-auto leading-relaxed"
         >
           Support the next generation of innovators and secure prime brand visibility among India's top student developers, designers, and tech enthusiasts.
         </motion.p>
