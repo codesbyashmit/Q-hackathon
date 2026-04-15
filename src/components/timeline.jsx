@@ -1,78 +1,158 @@
 import { useRef } from "react";
-import { ClipboardList, ClipboardX, PartyPopper, ScanSearch, Trophy } from "lucide-react";
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { 
+  ClipboardList, ClipboardX, PartyPopper, ScanSearch, 
+  Trophy, CheckCircle2, Target, BookOpen 
+} from "lucide-react";
+import { motion, useScroll, useSpring, useMotionValue, useTransform } from "framer-motion";
 
 const events = [
   {
     date: "April 15, 2026",
     title: "Registration Opens",
     description: "Secure your spot and start forming your dream team.",
+    instructions: [
+      "Register individually or as a team of 2-4 members.",
+      "Finalize tech stack and brainstorm core problem statements.",
+      "Early preparation is encouraged for a smoother dev phase."
+    ],
     Icon: ClipboardList,
   },
   {
-    date: "April 28, 2026",
+    date: "April 30, 2026",
     title: "Registration Closes",
     description: "Final call for applications. No entries accepted after midnight.",
+    instructions: [
+      "No entries will be accepted after 11:59 PM.",
+      "Ensure all team member details are verified.",
+      "Teams should be fully formed and ready for the opening ceremony."
+    ],
     Icon: ClipboardX,
   },
   {
     date: "May 08, 09:00 AM",
     title: "Opening Ceremony",
     description: "Keynote speeches, track reveals, and the 36-hour hack begins!",
+    instructions: [
+      "Welcome address and keynote sessions.",
+      "Hackathon rules and judging criteria explained.",
+      "Problem tracks officially revealed — Timer starts!"
+    ],
     Icon: PartyPopper,
   },
   {
+    date: "May 08, 09:00 PM",
+    title: "Round 1: Dev Phase",
+    description: "Intensive building period with mentor support.",
+    deliverables: [
+      "Functional prototype or working model.",
+      "Clear problem definition and solution approach.",
+      "Basic UI/UX (if applicable)."
+    ],
+    instructions: [
+      "Mentors will be available throughout the night for guidance.",
+      "Continuous progress is expected (avoid last-minute builds)."
+    ],
+    Icon: ScanSearch,
+  },
+  {
     date: "May 09, 10:00 AM",
-    title: "Mid Evaluation",
-    description: "Mentors will review your progress and provide technical guidance.",
+    title: "Round 1 Evaluation",
+    description: "Progress check-in with the judging panel.",
+    evaluation: [
+      "Innovation and idea clarity.",
+      "Technical implementation progress.",
+      "Feasibility and potential impact."
+    ],
+    instructions: [
+      "Shortlisting of top teams for the Final Presentation."
+    ],
     Icon: ScanSearch,
   },
   {
     date: "May 09, 12:00 PM",
     title: "Final Presentation",
     description: "Pitch your solution to our panel of industry experts.",
+    instructions: [
+      "5-8 minutes: Solution presentation.",
+      "3-5 minutes: Q&A with judges.",
+      "Focus: Technical depth and real-world applicability."
+    ],
     Icon: Trophy,
   },
 ];
 
-const PipelineCard = ({ title, description, Icon }) => {
+const PipelineCard = ({ title, description, instructions, deliverables, evaluation, Icon }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
   const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["8deg", "-8deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-8deg", "8deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["5deg", "-5deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-5deg", "5deg"]);
 
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
-    x.set(mouseX / rect.width - 0.5);
-    y.set(mouseY / rect.height - 0.5);
+    x.set((e.clientX - rect.left) / rect.width - 0.5);
+    y.set((e.clientY - rect.top) / rect.height - 0.5);
   };
 
   return (
     <motion.div
-      style={{ perspective: 1000, willChange: "transform" }}
+      style={{ perspective: 1000 }}
       onMouseMove={handleMouseMove}
       onMouseLeave={() => { x.set(0); y.set(0); }}
       className="w-full"
     >
       <motion.div
         style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        className="relative overflow-hidden rounded-(--radius) border border-(--border) bg-white p-6 sm:p-8 shadow-sm hover:border-(--primary) hover:shadow-lg transition-colors duration-300"
+        className="relative overflow-hidden rounded-2xl border bg-white/80 backdrop-blur-sm border-(--border) shadow-sm hover:shadow-lg hover:border-(--primary)/50 p-6 sm:p-7 transition-all duration-500 text-left"
       >
         <div className="flex items-start gap-4" style={{ transform: "translateZ(30px)" }}>
-          <div className="shrink-0 w-12 h-12 rounded-xl flex items-center justify-center bg-(--secondary)">
-            <Icon size={24} style={{ color: "var(--primary)" }} strokeWidth={2} />
+          <div className="shrink-0 w-12 h-12 rounded-xl flex items-center justify-center bg-(--secondary) shadow-inner">
+            <Icon size={24} className="text-(--primary)" strokeWidth={2.5} />
           </div>
-          <div>
-            <h3 className="text-xl font-extrabold text-(--text-dark) mb-2">
-              {title}
-            </h3>
-            <p className="text-sm sm:text-base leading-relaxed" style={{ color: "#666" }}>
-              {description}
-            </p>
+          <div className="flex-1">
+            <h3 className="text-lg sm:text-xl font-black text-(--text-dark) mb-1">{title}</h3>
+            <p className="text-sm text-gray-500 font-medium mb-4">{description}</p>
+            
+            {/* Details are now permanently visible */}
+            <div className="space-y-4 border-t border-gray-200 pt-4 mt-2">
+              {instructions && (
+                  <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-(--primary) font-bold text-xs uppercase tracking-tighter">
+                    <BookOpen size={14} /> Guidelines
+                  </div>
+                  {instructions.map((item, i) => (
+                    <div key={i} className="flex gap-2 text-xs sm:text-sm text-gray-600">
+                      <CheckCircle2 size={14} className="shrink-0 mt-0.5 text-green-500" /> {item}
+                    </div>
+                  ))}
+                  </div>
+              )}
+              {deliverables && (
+                  <div className="space-y-2">
+                  <div className="flex items-center gap-2 text-blue-600 font-bold text-xs uppercase tracking-tighter">
+                    <Target size={14} /> Deliverables
+                  </div>
+                  {deliverables.map((item, i) => (
+                    <div key={i} className="flex gap-2 text-xs sm:text-sm text-gray-600 italic">
+                      • {item}
+                    </div>
+                  ))}
+                  </div>
+              )}
+              {evaluation && (
+                  <div className="p-3 bg-white border border-gray-100 shadow-sm rounded-lg space-y-2 mt-2">
+                  <div className="text-(--text-dark) font-bold text-xs uppercase tracking-tighter flex items-center gap-2">
+                    <ScanSearch size={14} /> Evaluation Criteria
+                  </div>
+                  {evaluation.map((item, i) => (
+                    <div key={i} className="text-xs sm:text-sm text-gray-500 flex items-center gap-2">
+                      <div className="w-1.5 h-1.5 rounded-full bg-(--primary) shrink-0" /> {item}
+                    </div>
+                  ))}
+                  </div>
+              )}
+            </div>
           </div>
         </div>
       </motion.div>
@@ -82,103 +162,78 @@ const PipelineCard = ({ title, description, Icon }) => {
 
 const Timeline = () => {
   const containerRef = useRef(null);
-
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start center", "end center"],
   });
-  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 20, restDelta: 0.001 });
+  const scaleY = useSpring(scrollYProgress, { stiffness: 100, damping: 20 });
 
   return (
-    <section
-      id="timeline-section"
-      ref={containerRef}
-      style={{ position: "relative" }}
-      className="relative py-24 px-4 sm:px-6 bg-transparent overflow-hidden"
-    >
-      <div className="relative z-10 max-w-5xl mx-auto">
-        
-        {/* Header */}
+    <section id="timeline-section" ref={containerRef} className="relative py-24 px-4 bg-transparent overflow-hidden">
+      <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-20"
+          viewport={{ once: true }}
+          className="text-center mb-24"
         >
-          <h2 className="section-heading mb-4">
-            Event Roadmap
-          </h2>
-          <div
-            className="h-1.5 w-24 rounded-full mx-auto"
-            style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
-          />
+          <h2 className="section-heading mb-4 text-4xl sm:text-5xl font-black tracking-tight text-white">Event Roadmap</h2>
+          <div className="h-1.5 w-24 rounded-full mx-auto bg-gradient-to-r from-(--primary) to-(--secondary)" />
+          <p className="mt-4 text-gray-400 font-medium">Detailed schedule, deliverables, and expectations.</p>
         </motion.div>
+
         <div className="relative">
-          <div 
-            className="absolute top-0 bottom-0 left-7.25 md:left-1/2 md:-translate-x-1/2 w-1.5 rounded-full"
-            style={{ background: "var(--border)" }}
-          />
-          
-          {/*progressline*/}
-          <motion.div 
-            className="absolute top-0 bottom-0 left-7.25 md:left-1/2 md:-translate-x-1/2 w-1.5 rounded-full origin-top drop-shadow-[0_0_8px_rgba(140,46,124,0.6)]"
-            style={{ background: "var(--primary)", scaleY }}
+          <div className="absolute top-0 bottom-0 left-7 md:left-1/2 md:-translate-x-1/2 w-1 rounded-full bg-white/10" />
+                    <motion.div 
+            className="absolute top-0 bottom-0 left-7 md:left-1/2 md:-translate-x-1/2 w-1 rounded-full origin-top bg-(--primary) shadow-[0_0_15px_rgba(140,46,124,0.6)]"
+            style={{ scaleY }}
           />
 
-          <div className="relative z-10 flex flex-col gap-12 sm:gap-16">
-            {events.map((evt, index) => (
-              <motion.div
-                key={evt.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="relative flex flex-col md:flex-row items-start md:items-center"
-              >
-                {/* desktop zig-zag side */}
-                {index % 2 === 0 ? (
-                  <div className="hidden md:flex w-1/2 pr-12 justify-end">
-                    <div className="w-full max-w-md text-right">
-                      <span className="block mb-3 text-sm lg:text-base font-black uppercase tracking-widest text-(--primary)">
-                        {evt.date}
-                      </span>
-                      <PipelineCard title={evt.title} description={evt.description} Icon={evt.Icon} />
-                    </div>
+          <div className="relative z-10 space-y-16">
+            {events.map((evt, index) => {
+              const isEven = index % 2 === 0;
+              
+              return (
+                <motion.div
+                  key={evt.title}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  className="relative flex flex-col md:flex-row items-start w-full"
+                >
+                  <div className="absolute left-7 md:left-1/2 md:-translate-x-1/2 top-0 md:top-6 w-5 h-5 rounded-full border-4 border-(--bg-light) bg-(--primary) z-20 shadow-lg -ml-[10px]" />
+
+                  <div className="md:hidden w-full pl-16">
+                    <span className="block mb-2 text-sm font-black uppercase tracking-widest text-(--primary)">{evt.date}</span>
+                    <PipelineCard {...evt} />
                   </div>
-                ) : (
-                  <div className="hidden md:block w-1/2" />
-                )}
-
-                {/*mobile date*/}
-                <div className="md:hidden pl-16 mb-3">
-                   <span className="text-sm font-black uppercase tracking-widest" style={{ color: "var(--primary)" }}>
-                    {evt.date}
-                  </span>
-                </div>
-
-                {/*center*/}
-                <div className="absolute left-4 md:left-1/2 md:-translate-x-1/2 shrink-0 w-8 h-8 rounded-full border-4 border-white shadow-md bg-(--primary) z-20 mt-1 md:mt-0" />
-
-                <div className="pl-16 md:hidden w-full">
-                  <PipelineCard title={evt.title} description={evt.description} Icon={evt.Icon} />
-                </div>
-
-                {/* desktop zig-zag opposite side */}
-                {index % 2 !== 0 ? (
-                  <div className="hidden md:flex w-1/2 pl-12 justify-start">
-                    <div className="w-full max-w-md text-left">
-                      <span className="block mb-3 text-sm lg:text-base font-black uppercase tracking-widest text-(--primary)">
-                        {evt.date}
-                      </span>
-                      <PipelineCard title={evt.title} description={evt.description} Icon={evt.Icon} />
-                    </div>
+                  <div className="hidden md:flex w-full">
+                    {isEven ? (
+                      <>
+                        <div className="w-1/2 pr-16 flex flex-col items-end">
+                          <span className="block mb-3 text-sm font-black uppercase tracking-widest text-(--primary)">{evt.date}</span>
+                          <div className="w-full max-w-lg">
+                            <PipelineCard {...evt} />
+                          </div>
+                        </div>
+                        <div className="w-1/2 pl-16"></div>
+                      </>
+                    ) : (
+                      <>
+                        <div className="w-1/2 pr-16"></div>
+                        <div className="w-1/2 pl-16 flex flex-col items-start">
+                          <span className="block mb-3 text-sm font-black uppercase tracking-widest text-(--primary)">{evt.date}</span>
+                          <div className="w-full max-w-lg">
+                            <PipelineCard {...evt} />
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
-                ) : (
-                  <div className="hidden md:block w-1/2" />
-                )}
-              </motion.div>
-            ))}
+
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>
