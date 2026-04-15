@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import heroBg from "../assets/hero-bg.JPG";
-import hero6 from "../assets/hero6-min.JPG";
-import hero7 from "../assets/hero7-min.JPG";
+import { getOptimizedUrl } from "../utils/imageOptimizer";
 
 const stats = [
   { value: "36",   label: "Hours of Hacking" },
@@ -84,12 +82,12 @@ const About = () => {
 
       {/* ── Cinematic Background Carousel ── */}
       <div className="absolute inset-0 z-0">
-        {[heroBg, hero6, hero7].map((src, i) => (
+        {[getOptimizedUrl("hero-bg.jpg"), getOptimizedUrl("hero6-min.jpg"), getOptimizedUrl("hero7-min.jpg")].map((src, i) => (
           <div
             key={i}
             className="absolute inset-0 bg-cover bg-center opacity-0"
             style={{
-              backgroundImage: `url(${src})`,
+              backgroundImage: `url('${src}')`,
               animation:       "cinematicFade 18s infinite linear",
               animationDelay:  `${i * 6}s`,
             }}
@@ -145,7 +143,7 @@ const About = () => {
 
       <style>{`
         @keyframes cinematicFade {
-          0%   { opacity: 0; transform: scale(1);    }
+          0%   { opacity: 0; transform: scale(1);   }
           10%  { opacity: 1;                         }
           33%  { opacity: 1;                         }
           43%  { opacity: 0;                         }

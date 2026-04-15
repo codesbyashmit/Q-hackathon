@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import quantumLogo from "../assets/quntum-logo.png";
-import codexLogo from "../assets/codex-logo.png";
+import { getOptimizedUrl } from "../utils/imageOptimizer";
 
 const useInView = (threshold = 0.2) => {
   const ref = useRef(null);
@@ -55,19 +54,19 @@ function OrganizerStrip() {
     >
       <div className="sm:hidden">
         <div className="flex flex-row items-center justify-center gap-4 mb-4 px-2">
-          <img src={quantumLogo} alt="Quantum University" className="h-10 w-auto object-contain" />
-          <img src={codexLogo}   alt="CodeX Club"         className="h-10 w-auto object-contain" />
+          <img src={getOptimizedUrl("quntum-logo.png")} alt="Quantum University" className="h-10 w-auto object-contain" />
+          <img src={getOptimizedUrl("codex-logo.png")}   alt="CodeX Club"         className="h-10 w-auto object-contain" />
         </div>
         <p className="text-sm leading-relaxed text-center" style={{ color: "var(--text-dark)" }}>
           <OrganizerText />
         </p>
       </div>
       <div className="hidden sm:flex flex-row items-center justify-between gap-5">
-        <img src={quantumLogo} alt="Quantum University" className="h-14 w-auto object-contain shrink-0" />
+        <img src={getOptimizedUrl("quntum-logo.png")} alt="Quantum University" className="h-14 w-auto object-contain shrink-0" />
         <p className="text-base leading-relaxed text-center flex-1" style={{ color: "var(--text-dark)" }}>
           <OrganizerText />
         </p>
-        <img src={codexLogo} alt="CodeX Club" className="h-14 w-auto object-contain shrink-0" />
+        <img src={getOptimizedUrl("codex-logo.png")} alt="CodeX Club" className="h-14 w-auto object-contain shrink-0" />
       </div>
 
     </div>

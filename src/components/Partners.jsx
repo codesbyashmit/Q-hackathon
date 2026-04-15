@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
+import { getOptimizedUrl } from "../utils/imageOptimizer";
 
 const partners = [
-  { id: 1, name: "Unstop", logoUrl: "/sponsors/unstop.png" },
-  { id: 2, name: ".xyz", logoUrl: "/sponsors/xyz.png" },
+  { id: 1, name: "Unstop", logoUrl: getOptimizedUrl("unstop.png") },
+  { id: 2, name: ".xyz", logoUrl: getOptimizedUrl("xyz.png") },
 ];
 
 const Partners = () => {
@@ -37,6 +38,7 @@ const Partners = () => {
             style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
           />
         </motion.div>
+        
         <div className="flex flex-col sm:flex-row justify-center items-center gap-6 sm:gap-10">
           {partners.map((partner, i) => (
             <motion.div
