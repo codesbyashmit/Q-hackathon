@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import Home from "./pages/Home";
-import Sponsors from "./pages/Sponsors";
 import { Suspense, lazy, useEffect, useRef } from "react";
+const Home = lazy(() => import("./pages/Home"));
+const Sponsors = lazy(() => import("./pages/Sponsors"));
 const GlobalCanvas = lazy(() => import("./components/GlobalCanvas"));
 
 const NAV_ACTIVE_STORAGE_KEY = "navbar-active-sections";
@@ -88,18 +88,20 @@ function AppContent() {
   const showGlobalCanvas = pathname === "/";
 
   return (
-    <div className="relative min-h-screen bg-[var(--bg-page)] font-sans">
+    <div className="relative min-h-screen bg-(--bg-page) font-sans">
       {showGlobalCanvas ? (
-        <Suspense fallback={<div className="absolute inset-0 bg-[var(--bg-page)] -z-20" />}>
+        <Suspense fallback={<div className="absolute inset-0 bg-(--bg-page) -z-20" />}>
           <GlobalCanvas />
         </Suspense>
       ) : null}
 
       <div className="relative z-10 flex flex-col min-h-screen">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/sponsors" element={<Sponsors />} />
-        </Routes>
+        <Suspense fallback={<div className="min-h-screen bg-(--bg-page)" />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/sponsors" element={<Sponsors />} />
+          </Routes>
+        </Suspense>
       </div>
     </div>
   );

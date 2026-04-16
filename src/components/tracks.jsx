@@ -120,7 +120,7 @@ const TrackCard = ({ Icon, title, description, tags, quote, backKeyword, backTit
               className="z-10 flex flex-col items-center"
             >
               <Icon size={42} style={{ color: "var(--secondary)" }} className="mb-4 opacity-90" />
-              <p className="font-bold text-lg sm:text-xl tracking-[0.2em] uppercase text-white shadow-sm text-center">
+              <p className="font-bold text-lg sm:text-xl tracking-[0.2em] uppercase text-(--text-inverse) shadow-sm text-center">
                 {backTitle}
               </p>
             </motion.div>
@@ -130,7 +130,7 @@ const TrackCard = ({ Icon, title, description, tags, quote, backKeyword, backTit
           <div
             style={{ backfaceVisibility: "hidden" }}
             className="absolute inset-0 flex flex-col items-start text-left p-5 sm:p-7 
-                       rounded-(--radius) border border-(--border) overflow-hidden bg-white
+                       rounded-(--radius) border border-(--border) overflow-hidden bg-(--bg-page-elevated)
                        hover:border-(--primary) transition-colors duration-300"
           >
             <div
@@ -145,7 +145,7 @@ const TrackCard = ({ Icon, title, description, tags, quote, backKeyword, backTit
               >
                 <Icon size={20} style={{ color: "var(--primary)" }} />
               </div>
-              <h3 className="text-[17px] sm:text-lg font-extrabold text-(--text-dark) leading-tight">
+              <h3 className="text-[17px] sm:text-lg font-extrabold text-(--text-light) leading-tight">
                 {title}
               </h3>
             </div>
@@ -154,7 +154,7 @@ const TrackCard = ({ Icon, title, description, tags, quote, backKeyword, backTit
               "{quote}"
             </p>
 
-            <p className="text-[13px] sm:text-sm leading-relaxed mb-5 flex-1" style={{ color: "#555" }}>
+            <p className="text-[13px] sm:text-sm leading-relaxed mb-5 flex-1" style={{ color: "var(--text-muted)" }}>
               {description}
             </p>
             <div className="mt-auto flex flex-wrap gap-1.5 sm:gap-2 w-full">
@@ -193,7 +193,7 @@ const Tracks = () => {
           <h2 className="section-heading mb-3">
             Hackathon Tracks
           </h2>
-          <p className="text-sm sm:text-base mb-4 font-medium" style={{ color: "#777" }}>
+          <p className="text-sm sm:text-base mb-4 font-medium" style={{ color: "var(--text-muted)" }}>
             Select a domain and build the future.
           </p>
           <div
@@ -201,9 +201,14 @@ const Tracks = () => {
             style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
           />
         </motion.div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 place-items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6 sm:gap-8 place-items-center">
           {tracks.map((track, i) => (
-            <div key={track.title} className="w-full max-w-md h-full">
+            <div
+              key={track.title}
+              className={`w-full max-w-md h-full lg:col-span-2 ${
+                i === 3 ? "lg:col-start-2" : i === 4 ? "lg:col-start-4" : ""
+              }`}
+            >
               <TrackCard {...track} index={i} />
             </div>
           ))}

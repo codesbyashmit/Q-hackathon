@@ -12,7 +12,7 @@ const Partners = () => {
       id="partners" 
       className="relative py-20 sm:py-32 px-4 sm:px-6 overflow-hidden"
       style={{ 
-        background: "rgba(5, 5, 5, 0.88)", 
+        background: "var(--bg-page-elevated)", 
         backdropFilter: "blur(24px)", 
         WebkitBackdropFilter: "blur(24px)" 
       }}
@@ -30,7 +30,7 @@ const Partners = () => {
           <h2 className="section-heading mb-4">
             Our Partners
           </h2>
-          <p className="text-base sm:text-lg font-medium text-gray-400">
+          <p className="text-base sm:text-lg font-medium text-(--text-muted)">
             Proudly collaborating with amazing organizations
           </p>
           <div
@@ -47,7 +47,7 @@ const Partners = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.15 }}
-              className="w-full sm:w-1/2 max-w-sm flex flex-col items-center justify-center p-12 sm:p-16 rounded-2xl border border-white/10 bg-white/5 shadow-2xl"
+              className="w-full sm:w-1/2 max-w-sm flex flex-col items-center justify-center p-12 sm:p-16 rounded-2xl border border-(--border-soft) bg-(--bg-card-dark) shadow-2xl"
             >
               <img 
                 src={partner.logoUrl} 

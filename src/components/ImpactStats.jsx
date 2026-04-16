@@ -45,7 +45,7 @@ const StatCard = ({ Icon, to, suffix, label, index }) => (
     </div>
 
     {/*animated number*/}
-    <h3 className="text-5xl font-black mb-2 text-white relative z-10 tracking-tight drop-shadow-md">
+    <h3 className="text-5xl font-black mb-2 text-(--text-light) relative z-10 tracking-tight drop-shadow-md">
       <AnimatedCounter to={to} suffix={suffix} />
     </h3>
 

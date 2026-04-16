@@ -66,6 +66,8 @@ const generalPerks = [
 
 const PrizeCard = ({ tier, Icon, label, amount, perks, accentColor, bgGradient, desktopOrder, heightClass, index }) => {
   const isGold = tier === "gold";
+  const isWinner = tier === "gold";
+  const isRunnerUp = tier === "silver" || tier === "bronze";
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
@@ -121,7 +123,7 @@ const PrizeCard = ({ tier, Icon, label, amount, perks, accentColor, bgGradient, 
 
         <p 
           style={{ transform: "translateZ(30px)" }}
-          className="text-xs sm:text-sm font-black uppercase tracking-[0.2em] mb-2 text-gray-400"
+          className={`text-xs sm:text-sm font-black uppercase tracking-[0.2em] mb-2 ${isWinner ? "prize-winner-text" : isRunnerUp ? "text-white" : "text-(--text-muted)"}`}
         >
           {label}
         </p>
@@ -135,7 +137,10 @@ const PrizeCard = ({ tier, Icon, label, amount, perks, accentColor, bgGradient, 
 
         <ul className="flex flex-col gap-3 w-full" style={{ transform: "translateZ(20px)" }}>
           {perks.map(text => (
-            <li key={text} className="flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold text-gray-300">
+            <li
+              key={text}
+              className={`flex items-center justify-center gap-2 text-xs sm:text-sm font-semibold ${isWinner ? "prize-winner-text" : isRunnerUp ? "text-white" : "text-(--text-muted)"}`}
+            >
               <Star size={12} style={{ color: accentColor }} />
               <span>{text}</span>
             </li>

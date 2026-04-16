@@ -36,8 +36,7 @@ const SponsorCTA = () => {
             {/*download button*/}
             <button
               onClick={handleDownloadBrochure}
-              className="group flex items-center justify-center gap-2 font-bold text-sm sm:text-base px-8 py-4 rounded-xl transition-all duration-300 w-full sm:w-auto cursor-pointer"
-              style={{ background: "var(--primary)", color: "var(--text-light)", boxShadow: "0 4px 20px var(--primary-soft)" }}
+              className="btn-ui btn-ui-primary group w-full sm:w-auto"
             >
               <Download size={18} strokeWidth={2.5} className="group-hover:-translate-y-1 transition-transform duration-300" />
               Download Brochure
@@ -46,7 +45,7 @@ const SponsorCTA = () => {
             {/*secondary contact*/}
             <a
               href="mailto:codex.club@quantumeducation.in"
-              className="group flex items-center justify-center gap-2 font-bold text-sm sm:text-base px-8 py-4 rounded-xl border-2 border-(--border-soft) text-(--text-light) hover:border-(--primary) hover:bg-(--primary)/10 transition-all duration-300 w-full sm:w-auto"
+              className="btn-ui btn-ui-outline group w-full sm:w-auto"
             >
               <Mail size={18} strokeWidth={2.5} className="group-hover:scale-110 transition-transform duration-300" />
               Contact Us

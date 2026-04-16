@@ -77,17 +77,17 @@ function Footer() {
 
         {/* Explore Links */}
         <div className="md:col-span-3 lg:col-span-3">
-          <h4 className="text-white font-black tracking-widest uppercase mb-6 text-sm">Explore</h4>
+          <h4 className="text-(--text-inverse) font-black tracking-widest uppercase mb-6 text-sm">Explore</h4>
           <ul className="flex flex-col gap-4">
             {exploreLinks.map((link, i) => (
               <li key={i}>
                 {link.to ? (
-                  <Link to={link.to} className="text-(--text-muted) hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
+                  <Link to={link.to} className="text-(--text-muted) hover:text-(--text-inverse) text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
                     <span className="w-0 h-0.5 bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
                     {link.name}
                   </Link>
                 ) : (
-                  <button onClick={() => handleScroll(link.section)} className="text-(--text-muted) hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group cursor-pointer bg-transparent border-none p-0 text-left w-fit">
+                  <button onClick={() => handleScroll(link.section)} className="text-(--text-muted) hover:text-(--text-inverse) text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group cursor-pointer bg-transparent border-none p-0 text-left w-fit">
                     <span className="w-0 h-0.5 bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
                     {link.name}
                   </button>
@@ -99,17 +99,17 @@ function Footer() {
 
         {/* Engage Links */}
         <div className="md:col-span-4 lg:col-span-3">
-          <h4 className="text-white font-black tracking-widest uppercase mb-6 text-sm">Engage</h4>
+          <h4 className="text-(--text-inverse) font-black tracking-widest uppercase mb-6 text-sm">Engage</h4>
           <ul className="flex flex-col gap-4">
             {engageLinks.map((link, i) => (
               <li key={i}>
                 {link.to.startsWith("http") ? (
-                  <a href={link.to} target="_blank" rel="noopener noreferrer" className="text-(--text-muted) hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
+                  <a href={link.to} target="_blank" rel="noopener noreferrer" className="text-(--text-muted) hover:text-(--text-inverse) text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
                     <span className="w-0 h-0.5 bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
                     {link.name}
                   </a>
                 ) : (
-                  <Link to={link.to} className="text-(--text-muted) hover:text-white text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
+                  <Link to={link.to} className="text-(--text-muted) hover:text-(--text-inverse) text-sm font-semibold transition-colors duration-200 flex items-center gap-3 group w-fit">
                     <span className="w-0 h-0.5 bg-(--primary) transition-all duration-300 group-hover:w-4"></span>
                     {link.name}
                   </Link>

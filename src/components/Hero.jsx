@@ -142,13 +142,8 @@ const Hero = () => {
           <motion.div className="flex flex-col sm:flex-row gap-2.5 sm:gap-4 mb-6 sm:mb-10 w-full sm:w-auto" variants={itemVariants}>
             <a href="https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126" className="w-full sm:w-auto">
               <motion.button
-                className="w-full font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-(--radius) border-none cursor-pointer"
-                style={{
-                  background: "var(--primary)",
-                  color: "var(--text-light)",
-                  boxShadow: "0 6px 18px rgba(140,46,124,0.28)",
-                  fontFamily: "inherit",
-                }}
+                className="btn-ui btn-ui-primary w-full"
+                style={{ fontFamily: "inherit" }}
                 whileHover={{ scale: 1.05, y: -2, backgroundColor: "var(--primary-dark)" }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -160,20 +155,9 @@ const Hero = () => {
                 const el = document.getElementById("tracks");
                 if (el) el.scrollIntoView({ behavior: "smooth" });
               }}
-              className="w-full sm:w-auto font-bold text-sm px-5 sm:px-8 py-2.5 sm:py-3.5 rounded-(--radius) cursor-pointer"
-              style={{
-                border: "2px solid var(--border-soft)",
-                color: "var(--text-light)",
-                background: "var(--bg-card-dark)",
-                fontFamily: "inherit"
-              }}
-              whileHover={{
-                scale: 1.05,
-                y: -2,
-                borderColor: "var(--primary)",
-                color: "var(--text-light)",
-                backgroundColor: "var(--primary-soft)"
-              }}
+              className="btn-ui btn-ui-view-tracks w-full sm:w-auto"
+              style={{ fontFamily: "inherit" }}
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
               View Tracks

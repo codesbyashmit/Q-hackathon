@@ -4,6 +4,7 @@ import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { Center, Float } from "@react-three/drei";
 import { SVGLoader } from "three-stdlib";
 import { useScroll, useTransform, useSpring } from "framer-motion";
+import { usePerformanceMode } from "../utils/usePerformanceMode";
 
 const CinematicBokeh = ({ scrollOpacity }) => {
   const bokehTexture = useMemo(() => {
@@ -116,6 +117,7 @@ const TravelingLogo = ({ smoothProgress }) => {
 };
 
 const GlobalCanvas = () => {
+  const { shouldReduceMotion } = usePerformanceMode();
   const { scrollYProgress } = useScroll();
 
   const smoothProgress = useSpring(scrollYProgress, {
@@ -125,6 +127,14 @@ const GlobalCanvas = () => {
   });
 
   const bokehOpacity = useTransform(smoothProgress, [0, 0.15], [1, 0.3]);
+
+  if (shouldReduceMotion) {
+    return (
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-gradient(900px_520px_at_85%_8%,var(--bg-orb-1),transparent_70%),radial-gradient(800px_420px_at_10%_70%,var(--bg-orb-2),transparent_72%)]" />
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">

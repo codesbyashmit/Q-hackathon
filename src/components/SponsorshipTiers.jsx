@@ -3,6 +3,7 @@ import { Check, Star } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Sparkles, Float } from "@react-three/drei";
+import { usePerformanceMode } from "../utils/usePerformanceMode";
 const tiers = [
   {
     name: "Platinum",
@@ -141,14 +142,14 @@ const TierCard = ({ tier, index }) => {
              {tier.badge && (
             <div className="absolute -top-12 left-1/2 -translate-x-1/2">
               <span 
-                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-b-lg text-white shadow-lg"
+                className="flex items-center gap-1.5 text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-b-lg text-(--text-inverse) shadow-lg"
                 style={{ background: tier.color }}
               >
                 <Star size={12} fill="currentColor" /> {tier.badge}
               </span>
             </div>
           )}
-          <h3 className="text-3xl font-black text-white text-center tracking-tight mb-2">
+          <h3 className="text-3xl font-black text-(--text-light) text-center tracking-tight mb-2">
             {tier.name}
           </h3>
           <p className="text-sm font-bold text-center tracking-widest mb-8" style={{ color: tier.color }}>
@@ -159,7 +160,7 @@ const TierCard = ({ tier, index }) => {
 
           <ul className="flex flex-col gap-4 mb-10 grow">
             {tier.features.map((feature, i) => (
-              <li key={i} className="flex items-start gap-3 text-sm text-gray-300 font-medium leading-snug">
+              <li key={i} className="flex items-start gap-3 text-sm text-(--text-muted) font-medium leading-snug">
                 <div className="mt-0.5 shrink-0">
                   <Check size={16} style={{ color: tier.color }} strokeWidth={3} />
                 </div>
@@ -173,22 +174,24 @@ const TierCard = ({ tier, index }) => {
             href="https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view"
             target="_blank"
             rel="noreferrer"
-            className="mt-auto w-full py-3.5 rounded-xl font-bold text-sm text-center transition-all duration-300 border-2"
+            className={`btn-ui mt-auto w-full py-3.5 rounded-xl text-sm text-center ${isPlatinum ? "btn-ui-primary" : "btn-ui-outline"}`}
             style={{ 
               borderColor: isPlatinum ? tier.color : 'var(--border-soft)',
-              background: isPlatinum ? tier.color : 'transparent',
-              color: 'var(--text-light)'
+              background: isPlatinum ? tier.color : 'var(--btn-outline-bg)',
+              color: isPlatinum ? 'var(--text-inverse)' : 'var(--btn-outline-text)'
             }}
             onMouseEnter={(e) => {
               if (!isPlatinum) {
                 e.currentTarget.style.borderColor = tier.color;
                 e.currentTarget.style.color = tier.color;
+                e.currentTarget.style.background = "var(--btn-outline-hover-bg)";
               }
             }}
             onMouseLeave={(e) => {
               if (!isPlatinum) {
                 e.currentTarget.style.borderColor = 'var(--border-soft)';
-                e.currentTarget.style.color = 'var(--text-light)';
+                e.currentTarget.style.color = 'var(--btn-outline-text)';
+                e.currentTarget.style.background = "var(--btn-outline-bg)";
               }
             }}
           >
@@ -200,19 +203,25 @@ const TierCard = ({ tier, index }) => {
   );
 };
 const SponsorshipTiers = () => {
+  const { shouldReduceMotion } = usePerformanceMode();
+
   return (
     <section id="sponsorship-tiers" className="relative py-24 sm:py-32 px-4 sm:px-6 bg-(--bg-page-elevated) overflow-hidden">
       
       {/*background canvas */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-60">
-        <Canvas
-          camera={{ position: [0, 0, 5], fov: 45 }}
-          dpr={[1, 1.25]}
-          gl={{ antialias: false, powerPreference: "high-performance" }}
-        >
-          <BackgroundNetwork />
-        </Canvas>
-      </div>
+      {shouldReduceMotion ? (
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-60 bg-[radial-gradient(circle_at_20%_20%,var(--primary-soft)_0%,transparent_45%),radial-gradient(circle_at_80%_25%,rgba(245,196,0,0.12)_0%,transparent_40%)]" />
+      ) : (
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-60">
+          <Canvas
+            camera={{ position: [0, 0, 5], fov: 45 }}
+            dpr={[1, 1.25]}
+            gl={{ antialias: false, powerPreference: "high-performance" }}
+          >
+            <BackgroundNetwork />
+          </Canvas>
+        </div>
+      )}
 
       <div className="relative z-10 max-w-7xl mx-auto">
         

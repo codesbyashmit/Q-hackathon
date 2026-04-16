@@ -2,6 +2,9 @@ import { Mail, Instagram, MapPin, Phone, User } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import OrganizerStrip from "./organizerStrip";
 
+const infoLabelClass = "flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-1 text-white";
+const infoValueClass = "text-sm sm:text-base font-medium text-gray-300 transition-colors hover:text-(--text-inverse) leading-relaxed";
+
 const TiltWrapper = ({ children, delay = 0 }) => {
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -40,43 +43,45 @@ const TiltWrapper = ({ children, delay = 0 }) => {
 };
 
 const InfoCard = () => (
-  <div 
+  <div
     className="flex flex-col h-full rounded-2xl p-8 sm:p-10 shadow-xl overflow-hidden relative group"
     style={{ background: "linear-gradient(135deg, #111 0%, var(--primary-dark) 150%)" }}
   >
-    <div 
+    <div
       className="absolute top-0 right-0 w-40 h-40 bg-(--primary) rounded-full blur-[80px] opacity-30 group-hover:opacity-50 transition-opacity duration-500"
       style={{ transform: "translateZ(0)" }}
     />
 
-    <h3 className="text-2xl font-black mb-8 text-white tracking-tight" style={{ transform: "translateZ(30px)" }}>
+    <h3 className="text-2xl font-black mb-8 text-(--text-inverse) tracking-tight" style={{ transform: "translateZ(30px)" }}>
       General Inquiries
     </h3>
 
     <div className="flex flex-col gap-6 mt-auto" style={{ transform: "translateZ(20px)" }}>
       <div className="group/link">
-        <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-1 text-gray-400">
+        <span className={infoLabelClass}>
           <Mail size={14} style={{ color: "var(--primary)" }} /> Email
         </span>
-        <a href="mailto:codex.club@quantumeducation.in" className="text-sm sm:text-base font-medium text-white transition-colors hover:text-(--secondary)">
-          codex.club@quantumeducation.in
+        <a href="mailto:codex.club@quantumeducation.in" >
+          <p className={infoValueClass}>
+            codex.club@quantumeducation.in
+          </p>
         </a>
       </div>
 
       <div className="group/link">
-        <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-1 text-gray-400">
+        <span className={infoLabelClass}>
           <Instagram size={14} style={{ color: "var(--primary)" }} /> Instagram
         </span>
-        <a href="https://instagram.com/codexclub" target="_blank" rel="noreferrer" className="text-sm sm:text-base font-medium text-white transition-colors hover:text-(--secondary)">
-          @codexclub
+        <a href="https://www.instagram.com/qu_codex/" target="_blank" rel="noreferrer">
+          <p className={infoValueClass}>@codexclub</p>
         </a>
       </div>
 
       <div>
-        <span className="flex items-center gap-2 text-xs font-black uppercase tracking-widest mb-1 text-gray-400">
+        <span className={infoLabelClass}>
           <MapPin size={14} style={{ color: "var(--primary)" }} /> Address
         </span>
-        <p className="text-sm sm:text-base font-medium text-white/80 leading-relaxed max-w-50">
+        <p className={infoValueClass}>
           Computer Science Dept, Tech Institute Main Campus
         </p>
       </div>
@@ -85,8 +90,8 @@ const InfoCard = () => (
 );
 
 const LeadCard = ({ name, role, desc, phone }) => (
-  <div 
-    className="flex flex-col h-full bg-white rounded-2xl border border-(--border) p-8 sm:p-10 shadow-sm transition-colors duration-300 hover:border-(--primary)"
+  <div
+    className="flex flex-col h-full bg-(--bg-page-elevated) rounded-2xl border border-(--border) p-8 sm:p-10 shadow-sm transition-colors duration-300 hover:border-(--primary)"
   >
     <div style={{ transform: "translateZ(30px)" }}>
       <span className="inline-flex items-center gap-1.5 w-fit text-xs font-bold px-3 py-1.5 rounded-full mb-6 uppercase tracking-wider"
@@ -95,18 +100,18 @@ const LeadCard = ({ name, role, desc, phone }) => (
         {role}
       </span>
 
-      <h3 className="text-2xl font-black mb-2" style={{ color: "var(--text-dark)" }}>{name}</h3>
-      <p className="text-sm leading-relaxed mb-8" style={{ color: "#777" }}>{desc}</p>
+      <h3 className="text-2xl font-black mb-2" style={{ color: "var(--text-light)" }}>{name}</h3>
+      <p className="text-sm leading-relaxed mb-8" style={{ color: "var(--text-muted)" }}>{desc}</p>
     </div>
 
     <div className="mt-auto" style={{ transform: "translateZ(20px)" }}>
       <a
         href={`tel:${phone.replace(/\s/g, "")}`}
-        className="flex items-center justify-center gap-2 font-bold text-sm px-5 py-3.5 rounded-xl border-2 transition-all duration-300 w-full"
-        style={{ color: "var(--primary)", borderColor: "var(--secondary)" }}
+        className="btn-ui btn-ui-outline w-full"
+        style={{ color: "var(--primary)", borderColor: "var(--secondary)", minHeight: "52px" }}
         onMouseEnter={e => {
           e.currentTarget.style.background = "var(--primary)";
-          e.currentTarget.style.color = "white";
+          e.currentTarget.style.color = "var(--text-inverse)";
           e.currentTarget.style.borderColor = "var(--primary)";
           e.currentTarget.style.boxShadow = "0 8px 20px rgba(140,46,124,0.2)";
         }}
@@ -126,8 +131,8 @@ const LeadCard = ({ name, role, desc, phone }) => (
 
 const Contact = () => {
   return (
-    <section 
-      id="contact" 
+    <section
+      id="contact"
       className="py-24 px-4 sm:px-6 relative overflow-hidden bg-transparent"
     >
       <div className="max-w-6xl mx-auto">
@@ -151,7 +156,7 @@ const Contact = () => {
           <TiltWrapper delay={0.1}>
             <InfoCard />
           </TiltWrapper>
-          
+
           <TiltWrapper delay={0.2}>
             <LeadCard
               name="Shobhit Singh"
@@ -160,7 +165,7 @@ const Contact = () => {
               phone="+91 98973 01104"
             />
           </TiltWrapper>
-          
+
           <TiltWrapper delay={0.3}>
             <LeadCard
               name="Ayushman Ganeriwala"

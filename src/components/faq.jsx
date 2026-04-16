@@ -34,7 +34,7 @@ const FAQItem = ({ question, answer, index }) => {
         <motion.h3 
           layout="position"
           className={`font-bold text-base sm:text-lg transition-colors duration-400 ${
-            isOpen ? "text-white" : "text-(--text-dark)"
+            isOpen ? "text-(--text-inverse)" : "text-(--text-dark)"
           }`}
         >
           {question}
@@ -45,7 +45,7 @@ const FAQItem = ({ question, answer, index }) => {
           animate={{ rotate: isOpen ? 135 : 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
           className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center transition-colors duration-400 ${
-            isOpen ? "bg-white/20 text-white" : "bg-(--secondary) text-(--primary)"
+            isOpen ? "bg-white/20 text-(--text-inverse)" : "bg-(--secondary) text-(--primary)"
           }`}
         >
           <Plus size={20} strokeWidth={2.5} />
@@ -64,7 +64,7 @@ const FAQItem = ({ question, answer, index }) => {
           >
             <motion.p 
               layout="position"
-              className="mt-4 text-sm sm:text-base leading-relaxed text-white/90"
+              className="mt-4 text-sm sm:text-base leading-relaxed text-(--text-inverse)/90"
             >
               {answer}
             </motion.p>

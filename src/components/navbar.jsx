@@ -239,7 +239,7 @@ function Navbar() {
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
           scrolled
-            ? "bg-black/75 md:bg-white/70 backdrop-blur-xl border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.05)] py-3" 
+            ? "bg-(--nav-surface-scrolled) backdrop-blur-xl border-b border-(--nav-border) shadow-[0_4px_30px_rgba(0,0,0,0.05)] py-3"
             : "bg-transparent py-5"
         } md:z-50 z-60`}
       >
@@ -252,7 +252,7 @@ function Navbar() {
 
           {/* Desktop Nav */}
           {isSectionPage ? (
-            <nav className="hidden md:flex items-center gap-1 p-1.5 rounded-full bg-white/40 backdrop-blur-md border border-white/40 shadow-inner">
+            <nav className="hidden md:flex items-center gap-1 p-1.5 rounded-full bg-(--bg-card-dark) backdrop-blur-md border border-(--border-soft) shadow-inner">
               {currentNavLinks.map(({ label, section }) => {
                 const isActive = activeSection === section && isSectionPage;
                 return (
@@ -260,7 +260,7 @@ function Navbar() {
                     key={section}
                     onClick={() => scrollToSection(section)}
                     className={`relative px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${
-                      isActive ? "text-white" : "text-(--text-dark) hover:text-(--primary)"
+                      isActive ? "text-(--text-inverse)" : "text-(--nav-link) hover:text-(--nav-link-hover)"
                     }`}
                   >
                     {isActive && (
@@ -276,19 +276,27 @@ function Navbar() {
               })}
             </nav>
           ) : (
-            <nav className="hidden md:flex items-center gap-4 p-1.5 rounded-full bg-white/40 backdrop-blur-md border border-white/40 shadow-inner">
+            <nav className="hidden md:flex items-center gap-4 p-1.5 rounded-full bg-(--nav-pill-bg) backdrop-blur-md border border-(--nav-pill-border) shadow-inner">
               <button
                 onClick={() => scrollToSection("home")}
-                className={`px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${scrolled ? 'hover:text-(--primary-dark)' : 'hover:text-(--secondary)'}`}
-                style={{ color: scrolled ? "var(--primary)" : "var(--text-light)" }}
+                className="px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300"
+                style={{ color: "var(--nav-link)" }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "var(--nav-link-hover)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "var(--nav-link)"; }}
               >
                 Home
               </button>
-              <span className="h-5 w-px bg-(--border)" />
+              <span className="h-5 w-px bg-(--nav-border)" />
               <Link
                 to="/sponsors"
-                className={`px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${location.pathname === '/sponsors' ? 'bg-(--primary) text-white' : (scrolled ? 'hover:text-(--primary-dark)' : 'hover:text-(--secondary)')}`}
-                style={location.pathname === '/sponsors' ? undefined : { color: scrolled ? "var(--primary)" : "var(--text-light)" }}
+                className={`px-5 py-2 rounded-full text-sm font-bold transition-colors duration-300 ${location.pathname === '/sponsors' ? 'bg-(--nav-pill-active-bg) text-(--nav-pill-text-active)' : ''}`}
+                style={location.pathname === '/sponsors' ? undefined : { color: "var(--nav-link)" }}
+                onMouseEnter={(e) => {
+                  if (location.pathname !== '/sponsors') e.currentTarget.style.color = "var(--nav-link-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  if (location.pathname !== '/sponsors') e.currentTarget.style.color = "var(--nav-link)";
+                }}
                 onClick={closeMenu}
               >
                 Sponsors
@@ -299,8 +307,10 @@ function Navbar() {
             {isSponsorsPage ? (
               <Link 
                 to="/" 
-                className={`text-sm font-bold transition-colors ${scrolled ? 'hover:text-(--primary-dark)' : 'hover:text-(--secondary)'}`}
-                style={{ color: scrolled ? "var(--primary)" : "var(--text-light)" }}
+                className="text-sm font-bold transition-colors"
+                style={{ color: "var(--nav-link)" }}
+                onMouseEnter={(e) => { e.currentTarget.style.color = "var(--nav-link-hover)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.color = "var(--nav-link)"; }}
                 onClick={closeMenu}
               >
                 Home
@@ -308,8 +318,14 @@ function Navbar() {
             ) : (
               <Link 
                 to="/sponsors" 
-                className={`text-sm font-bold transition-colors ${location.pathname === '/sponsors' ? 'text-(--primary)' : (scrolled ? 'hover:text-(--primary-dark)' : 'hover:text-(--secondary)')}`}
-                style={location.pathname === '/sponsors' ? undefined : { color: scrolled ? "var(--primary)" : "var(--text-light)" }}
+                className={`text-sm font-bold transition-colors ${location.pathname === '/sponsors' ? 'text-(--primary)' : ''}`}
+                style={location.pathname === '/sponsors' ? undefined : { color: "var(--nav-link)" }}
+                onMouseEnter={(e) => {
+                  if (location.pathname !== '/sponsors') e.currentTarget.style.color = "var(--nav-link-hover)";
+                }}
+                onMouseLeave={(e) => {
+                  if (location.pathname !== '/sponsors') e.currentTarget.style.color = "var(--nav-link)";
+                }}
                 onClick={closeMenu}
               >
                 Sponsors
@@ -322,7 +338,7 @@ function Navbar() {
               href="https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-2.5 rounded-full bg-(--primary) text-white font-bold text-sm tracking-wide shadow-lg hover:shadow-[0_0_20px_rgba(140,46,124,0.4)] hover:-translate-y-0.5 transition-all duration-300"
+              className="btn-ui btn-ui-primary rounded-full px-6 py-2.5 text-sm tracking-wide hover:shadow-[0_0_20px_rgba(140,46,124,0.4)] hover:-translate-y-0.5"
             >
               Register
             </a>
@@ -337,9 +353,9 @@ function Navbar() {
               aria-label={menuOpen ? "Close menu" : "Open menu"}
             >
               {menuOpen ? (
-                <X size={24} className="text-(--text-light) drop-shadow" strokeWidth={2.5} />
+                <X size={22} className="text-(--text-light) drop-shadow" strokeWidth={2.5} />
               ) : (
-                <Menu size={24} className="text-(--primary) drop-shadow" strokeWidth={2.5} />
+                <Menu size={22} className="text-(--primary) drop-shadow" strokeWidth={2.5} />
               )}
             </button>
           </div>
@@ -354,7 +370,7 @@ function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={closeMenu}
-            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm md:hidden"
+            className="fixed inset-0 z-40 bg-black/45 backdrop-blur-sm md:hidden"
           />
         )}
       </AnimatePresence>
@@ -367,9 +383,10 @@ function Navbar() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", bounce: 0, duration: 0.4 }}
-            className="fixed top-0 right-0 bottom-0 w-[80vw] max-w-sm z-50 bg-(--bg-page-elevated) shadow-2xl flex flex-col pt-24 px-6 md:hidden"
+            className="fixed top-0 right-0 bottom-0 w-[80vw] max-w-sm z-50 bg-(--nav-mobile-bg) border-l border-(--nav-mobile-border) shadow-2xl flex flex-col pt-24 px-6 md:hidden"
           >
             <div className="flex flex-col gap-2">
+
               {(isSectionPage ? currentNavLinks : [{ label: "Home", section: "home" }]).map(({ label, section }, i) => {
                 const isActive = activeSection === section && isSectionPage;
                 return (
@@ -381,8 +398,8 @@ function Navbar() {
                     onClick={() => scrollToSection(section)}
                     className={`text-left text-lg font-bold py-3 px-4 rounded-xl transition-colors ${
                       isActive
-                        ? "bg-(--primary)/10 text-(--primary)"
-                        : "text-(--text-light)"
+                        ? "bg-(--nav-pill-active-bg) text-(--nav-pill-text-active)"
+                        : "text-(--nav-link) hover:bg-(--nav-mobile-item-hover) hover:text-(--nav-link-hover)"
                     }`}
                   >
                     {label}
@@ -394,7 +411,7 @@ function Navbar() {
 
               <Link
                 to={isSponsorsPage ? "/" : "/sponsors"}
-                className={`text-lg font-bold py-3 px-4 rounded-xl ${isSponsorsPage ? 'text-(--text-light)' : (location.pathname === '/sponsors' ? 'text-(--primary)' : 'text-(--text-light)')}`}
+                className={`text-lg font-bold py-3 px-4 rounded-xl ${isSponsorsPage ? 'text-(--nav-link-hover)' : (location.pathname === '/sponsors' ? 'text-(--primary)' : 'text-(--nav-link) hover:bg-(--nav-mobile-item-hover) hover:text-(--nav-link-hover)')}`}
                 onClick={closeMenu}
               >
                 {isSponsorsPage ? "Home" : "Sponsors"}
@@ -404,7 +421,7 @@ function Navbar() {
                 href="https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="mt-6 text-center py-4 rounded-xl bg-(--primary) text-white font-black tracking-widest uppercase shadow-md"
+                className="btn-ui btn-ui-primary mt-6 text-center rounded-xl font-black tracking-widest uppercase"
               >
                 Register Now
               </a>

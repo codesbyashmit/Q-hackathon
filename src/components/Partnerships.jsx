@@ -95,7 +95,7 @@ const PartnerBox = ({ partner, index }) => {
             </span>
           </div>
 
-          <h3 className="text-2xl font-black mb-3 text-white tracking-tight">
+          <h3 className="text-2xl font-black mb-3 text-(--text-light) tracking-tight">
             {title}
           </h3>
 
@@ -117,19 +117,20 @@ const PartnerBox = ({ partner, index }) => {
             href="https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view?usp=drivesdk"
             target="_blank"
             rel="noreferrer"
-            className="block w-full text-center text-sm font-bold py-3.5 rounded-xl border-2 transition-all duration-300 mt-auto"
+            className={`btn-ui block w-full text-center text-sm py-3.5 rounded-xl mt-auto ${highlight ? "btn-ui-primary" : "btn-ui-outline"}`}
             style={
               highlight
-                ? { background: "var(--primary)", color: "var(--text-light)", borderColor: "var(--primary)" }
-                : { background: "transparent", color: "var(--text-light)", borderColor: "var(--border-soft)" }
+                ? { borderColor: "var(--primary)" }
+                : { borderColor: "var(--border-soft)" }
             }
             onMouseEnter={e => {
               if (highlight) {
                 e.currentTarget.style.background  = "var(--primary-dark)";
                 e.currentTarget.style.borderColor = "var(--primary-dark)";
                 e.currentTarget.style.boxShadow   = `0 4px 20px ${glow}`;
+                e.currentTarget.style.color       = "var(--text-inverse)";
               } else {
-                e.currentTarget.style.background  = "var(--bg-card-dark)";
+                e.currentTarget.style.background  = "var(--btn-outline-hover-bg)";
                 e.currentTarget.style.borderColor = "var(--text-muted)";
               }
             }}
@@ -138,8 +139,9 @@ const PartnerBox = ({ partner, index }) => {
                 e.currentTarget.style.background  = "var(--primary)";
                 e.currentTarget.style.borderColor = "var(--primary)";
                 e.currentTarget.style.boxShadow   = "none";
+                e.currentTarget.style.color       = "var(--text-inverse)";
               } else {
-                e.currentTarget.style.background  = "transparent";
+                e.currentTarget.style.background  = "var(--btn-outline-bg)";
                 e.currentTarget.style.borderColor = "var(--border-soft)";
               }
             }}

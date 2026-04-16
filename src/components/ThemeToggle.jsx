@@ -29,10 +29,10 @@ const ThemeToggle = () => {
     <div className="relative z-50" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2.5 rounded-full border border-[var(--toggle-border)] bg-[var(--toggle-bg)] hover:bg-[var(--toggle-bg-hover)] transition-all backdrop-blur-md shadow-sm"
+        className="p-2.5 rounded-full border border-(--toggle-border) bg-(--toggle-bg) hover:bg-(--toggle-bg-hover) transition-all backdrop-blur-md shadow-sm"
         aria-label="Toggle theme"
       >
-        <CurrentIcon size={18} className="text-[var(--toggle-icon)] drop-shadow-md" />
+        <CurrentIcon size={18} className="text-(--toggle-icon) drop-shadow-md" />
       </button>
 
       <AnimatePresence>
@@ -42,7 +42,7 @@ const ThemeToggle = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-3 w-36 rounded-xl border border-[var(--toggle-menu-border)] bg-[var(--toggle-menu-bg)] backdrop-blur-xl shadow-2xl overflow-hidden"
+            className="absolute right-0 mt-3 w-36 rounded-xl border border-(--toggle-menu-border) bg-(--toggle-menu-bg) backdrop-blur-xl shadow-2xl overflow-hidden"
           >
             <div className="flex flex-col p-1.5 gap-1">
               {options.map(({ value, label, Icon }) => (
@@ -54,8 +54,8 @@ const ThemeToggle = () => {
                   }}
                   className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-bold transition-all ${
                     theme === value 
-                      ? "bg-(--primary) text-white shadow-md" 
-                      : "text-[var(--toggle-item-text)] hover:bg-[var(--toggle-item-hover-bg)] hover:text-[var(--toggle-item-hover-text)]"
+                      ? "bg-(--primary) text-(--text-inverse) shadow-md" 
+                      : "text-(--toggle-item-text) hover:bg-(--toggle-item-hover-bg) hover:text-(--toggle-item-hover-text)"
                   }`}
                 >
                   <Icon size={16} />
