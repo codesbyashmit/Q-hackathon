@@ -7,50 +7,50 @@ const tracks = [
     Icon: Brain,
     backKeyword: "AI",
     backTitle: "Intelligence",
-    title: "AI for Impact",
-    quote: "Computing with a conscience.",
-    description: "Leverage Machine Learning and Neural Networks to solve pressing societal challenges.",
-    tag: "Deep Tech",
+    title: "AI for Real-World Impact",
+    quote: "Intelligence that solves, not just predicts.",
+    description: "Build AI systems that tackle real problems in healthcare, agriculture, education, finance, or public services. Focus on automation, prediction, and decision support.",
+    tags: ["AI", "Machine Learning", "Neural Networks"],
   },
   {
     Icon: ShieldCheck,
     backKeyword: "SEC",
     backTitle: "Cybersecurity",
-    title: "Cybersecurity",
-    quote: "Secure the digital frontier.",
-    description: "Defend the digital ecosystem with encryption, ethical hacking, and secure protocols.",
-    tag: "Security",
+    title: "Cybersecurity & Digital Safety",
+    quote: "Secure what matters.",
+    description: "Develop solutions to protect systems and users from cyber threats. Work on threat detection, authentication, vulnerability analysis, and data protection across web, mobile, and cloud.",
+    tags: ["Cybersecurity", "Ethical Hacking", "Encryption"],
   },
   {
     Icon: Link2,
     backKeyword: "WEB3",
     backTitle: "Economy",
-    title: "Blockchain",
-    quote: "Decentralize everything.",
-    description: "Build decentralized apps (DApps) and smart contracts for a transparent future.",
-    tag: "Web3",
+    title: "Blockchain & Digital Economy",
+    quote: "Trust through decentralization.",
+    description: "Create blockchain-based systems that improve transparency and efficiency. Build DApps, smart contracts, or decentralized financial and record systems.",
+    tags: ["Blockchain", "Web3", "Smart Contracts"],
   },
   {
     Icon: Leaf,
     backKeyword: "ECO",
     backTitle: "Sustainability",
-    title: "Smart India",
-    quote: "Innovate for tomorrow.",
-    description: "Develop sustainable solutions for rural development, energy efficiency, and smart cities.",
-    tag: "Sustainability",
+    title: "Smart India & Sustainable Tech",
+    quote: "Engineering solutions for scale.",
+    description: "Design solutions for large-scale challenges in India, including smart infrastructure, environmental monitoring, energy, and agriculture. Leverage Web2, IoT, or data-driven systems.",
+    tags: ["Sustainability", "IoT", "Web2", "Smart Systems"],
   },
   {
     Icon: Rocket,
     backKeyword: "OPEN",
     backTitle: "Innovation",
-    title: "Open Innovation",
-    quote: "No limits, just logic.",
-    description: "Have a unique idea? This track is for wildcards and groundbreaking, disruptive concepts.",
-    tag: "Any Theme",
+    title: "Open Innovation Track",
+    quote: "No theme. No excuses.",
+    description: "Bring any original idea with strong technical depth and real-world value. Clear problem, solid execution—that’s all that matters.",
+    tags: ["Any Domain", "Any Technology"],
   },
 ];
 
-const TrackCard = ({ Icon, title, description, tag, quote, backKeyword, backTitle, index }) => {
+const TrackCard = ({ Icon, title, description, tags, quote, backKeyword, backTitle, index }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -84,7 +84,7 @@ const TrackCard = ({ Icon, title, description, tag, quote, backKeyword, backTitl
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onMouseEnter={() => setIsFlipped(true)}
-      className="w-full h-full min-h-70 sm:min-h-75 cursor-default"
+      className="w-full h-full min-h-75 sm:min-h-80 cursor-default"
     >
       <motion.div
         style={{ rotateX, rotateY, transformStyle: "preserve-3d", willChange: "transform" }}
@@ -96,7 +96,7 @@ const TrackCard = ({ Icon, title, description, tag, quote, backKeyword, backTitl
           style={{ transformStyle: "preserve-3d", willChange: "transform" }}
           className="relative w-full h-full shadow-lg rounded-(--radius)"
         >
-          {/* backside */}
+          {/* Backside */}
           <div
             style={{ 
               backfaceVisibility: "hidden", 
@@ -120,13 +120,13 @@ const TrackCard = ({ Icon, title, description, tag, quote, backKeyword, backTitl
               className="z-10 flex flex-col items-center"
             >
               <Icon size={42} style={{ color: "var(--secondary)" }} className="mb-4 opacity-90" />
-              <p className="font-bold text-lg sm:text-xl tracking-[0.2em] uppercase text-white shadow-sm">
+              <p className="font-bold text-lg sm:text-xl tracking-[0.2em] uppercase text-white shadow-sm text-center">
                 {backTitle}
               </p>
             </motion.div>
           </div>
 
-          {/* frontside */}
+          {/* Frontside */}
           <div
             style={{ backfaceVisibility: "hidden" }}
             className="absolute inset-0 flex flex-col items-start text-left p-5 sm:p-7 
@@ -138,32 +138,36 @@ const TrackCard = ({ Icon, title, description, tag, quote, backKeyword, backTitl
               style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
             />
 
-            <div className="flex items-center gap-4 mb-1">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 mb-2">
               <div
                 className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-xl shrink-0"
                 style={{ background: "var(--secondary)" }}
               >
                 <Icon size={20} style={{ color: "var(--primary)" }} />
               </div>
-              <h3 className="text-lg sm:text-xl font-extrabold text-(--text-dark)">
+              <h3 className="text-[17px] sm:text-lg font-extrabold text-(--text-dark) leading-tight">
                 {title}
               </h3>
             </div>
 
-            <p className="text-sm font-semibold italic mb-3 mt-2" style={{ color: "var(--primary)" }}>
+            <p className="text-[13px] sm:text-sm font-semibold italic mb-3 mt-1" style={{ color: "var(--primary)" }}>
               "{quote}"
             </p>
 
-            <p className="text-xs sm:text-sm leading-relaxed mb-4 sm:mb-6 flex-1" style={{ color: "#555" }}>
+            <p className="text-[13px] sm:text-sm leading-relaxed mb-5 flex-1" style={{ color: "#555" }}>
               {description}
             </p>
-
-            <span
-              className="mt-auto text-[10px] sm:text-xs font-bold uppercase tracking-widest px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full"
-              style={{ color: "var(--primary)", background: "var(--secondary)" }}
-            >
-              {tag}
-            </span>
+            <div className="mt-auto flex flex-wrap gap-1.5 sm:gap-2 w-full">
+              {tags.map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-full"
+                  style={{ color: "var(--primary)", background: "var(--secondary)" }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         </motion.div>
       </motion.div>
@@ -177,7 +181,7 @@ const Tracks = () => {
       id="tracks"
       className="py-14 sm:py-20 lg:py-24 px-4 sm:px-6 overflow-hidden bg-transparent"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -197,14 +201,9 @@ const Tracks = () => {
             style={{ background: "linear-gradient(90deg, var(--primary), var(--secondary))" }}
           />
         </motion.div>
-
-        {/* grid */}
-        <div className="flex flex-wrap justify-center gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 place-items-center">
           {tracks.map((track, i) => (
-            <div 
-              key={track.title} 
-              className="w-full sm:w-[calc(50%-1.5rem)] lg:w-[calc(33.333%-2rem)] max-w-md"
-            >
+            <div key={track.title} className="w-full max-w-md h-full">
               <TrackCard {...track} index={i} />
             </div>
           ))}
