@@ -3,15 +3,18 @@ import { Plus, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faqData = [
-  { question: "Who can participate?", answer: "Students from invited colleges and universities can participate. Only undergraduate and postgraduate students are eligible." },
-  { question: "What is the registration fee?", answer: "₹500 per team. Additional ₹250–₹300 per participant for accommodation and food (optional)." },
-  { question: "What is the team size?", answer: "Each team must have 4 to 6 members." },
-  { question: "Is the hackathon online or offline?", answer: "It is a 36-hour offline hackathon on-campus at Quantum University." },
-  { question: "What are the hackathon tracks?", answer: "AI, Cybersecurity, Blockchain, Smart India & Sustainability, and Open Innovation." },
+  { question: "Who can participate in Q-Hackathon 2026?", answer: "Any undergraduate or postgraduate student from any recognized college or university in India can participate. It is an open inter-university event — not restricted to Quantum University students."}, 
+  { question: "What is the registration fee?", answer: "₹500 per team. This is a one-time payment regardless of team size. Additional ₹250–₹300 per participant for accommodation and food (optional)." },
+  { question: "What is the registration deadline?", answer: "Registration closes on 30th April 2026 at 3:00 PM IST. No registrations will be accepted after this deadline.",},
+  { question: "Can we use open-source libraries and APIs?", answer: "Yes. Open-source tools, libraries, frameworks, and APIs are permitted. The core idea and implementation must be original and built during the hackathon." },
+  { question: "Can team members be from different colleges?", answer: "Yes. Cross-college teams are allowed as long as all members are enrolled students who meet the eligibility criteria.",},
+  // { question: "What are the hackathon tracks?", answer: "AI, Cybersecurity, Blockchain, Smart India & Sustainability, and Open Innovation." },
   { question: "What is the duration?", answer: "36 hours of continuous development including evaluation rounds and final presentations." },
-  { question: "How are projects evaluated?", answer: "Projects go through internal shortlisting followed by final jury evaluation based on innovation, technical depth, and usability." },
-  { question: "Is accommodation available?", answer: "Yes, separate accommodation for boys and girls is available with ID verification and monitoring." },
-  { question: "What are the prizes?", answer: "Winners and runners-up receive trophies, certificates, and cash prizes from a ₹15,000–₹25,000 pool." },
+  { question: "What should I bring?", answer: "Bring your own laptop, charger, and a valid college ID card. ID is mandatory for entry and accommodation."},
+  // { question: "How are projects evaluated?", answer: "Projects go through internal shortlisting followed by final jury evaluation based on innovation, technical depth, and usability." },
+  { question: "Is accommodation available for outstation participants?", answer: "Yes. Separate accommodation for male and female participants is available on campus with ID verification. Contact codex.club@quantumeducation.in or +91 9897301104 for availability and charges.", },
+  { question: "How are projects evaluated?", answer: "Projects are shortlisted in Round 1, and top teams present in the Final Round on 9th May. Judging is based on innovation, technical depth, real-world relevance, feasibility, and presentation quality." },
+  { question: "What are the prizes?", answer: "Winner: ₹15,000 cash + Trophy + Certificate + Goodies. 1st Runner-Up: ₹10,000 cash + Trophy + Certificate + Goodies. 2nd Runner-Up: ₹5,000 cash + Trophy + Certificate + Goodies. All participants receive goodies (notebook, stickers, pens, bookmark), a free .xyz domain, and a participation certificate." },
 ];
 
 const FAQItem = ({ question, answer, index }) => {
