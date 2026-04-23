@@ -41,8 +41,14 @@ const generalPerks = [
   {
     Icon: Globe,
     title: "1-Year .xyz Domain",
-    desc: "Worth ₹1L+ for all participants",
+    desc: "Worth ₹1L+ for selected participants",
     color: "#3b82f6"
+  },
+  {
+    Icon: Star,
+    title: "Three CodeChef Pro Subscriptions",
+    desc: "One each to a selected student from each of the top 3 teams",
+    color: "#10b981"
   },
   {
     Icon: Gift,
