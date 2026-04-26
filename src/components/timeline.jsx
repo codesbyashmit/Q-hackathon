@@ -133,9 +133,10 @@ const PipelineCard = ({ title, description, instructions, deliverables, evaluati
                 <motion.div 
                   animate={{ rotate: isOpen ? 180 : 0 }} 
                   transition={{ type: "spring", stiffness: 200, damping: 20 }}
-                  className="shrink-0 mt-1 p-1.5 rounded-full bg-gray-200 dark:bg-white/10 text-gray-800 dark:text-gray-100 transition-colors"
+                  className="shrink-0 mt-1 p-1.5 rounded-full transition-colors shadow-sm bg-black/5 dark:bg-white/10"
+                  style={{ color: "var(--primary)" }}
                 >
-                  <ChevronDown size={18} strokeWidth={2.5} />
+                  <ChevronDown size={24} strokeWidth={2.5} />
                 </motion.div>
               )}
             </div>
