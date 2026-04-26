@@ -31,7 +31,7 @@ const events = [
   {
     date: "May 08, 09:00 AM",
     title: "Opening Ceremony",
-    description: "Keynote speeches, track reveals, and the 36-hour hack begins!",
+    description: "Keynote speeches and the 36-hour hack begins!",
     instructions: [
       "Welcome address and keynote sessions.",
       "Hackathon rules and judging criteria explained."
@@ -125,7 +125,7 @@ const PipelineCard = ({ title, description, instructions, deliverables, evaluati
           <div className="flex-1 w-full">
             <div className="flex justify-between items-start gap-3">
               <div>
-                <h3 className="roadmap-card-title text-lg sm:text-xl font-black mb-1 text-(--text-dark)">{title}</h3>
+              <h3 className="roadmap-card-title text-lg sm:text-xl font-black mb-1 text-(--text-dark)">{title}</h3>
                 <p className="roadmap-card-desc text-sm font-medium text-(--text-muted)">{description}</p>
               </div>
               

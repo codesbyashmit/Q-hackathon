@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Mail } from "lucide-react";
+import { Plus, Mail, MessageSquare, MapPin } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const faqData = [
@@ -84,10 +84,10 @@ const FAQ = () => {
       id="faq"
       className="py-20 sm:py-32 px-4 sm:px-6 relative bg-transparent overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
+      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-12 lg:gap-16 items-start">
         
-        {/*left side*/}
-        <div className="w-full lg:w-[40%] lg:sticky lg:top-32">
+        {/* Left Side */}
+        <div className="w-full lg:w-[35%] lg:sticky lg:top-32 flex flex-col gap-5">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -104,8 +104,6 @@ const FAQ = () => {
             <p className="text-base sm:text-lg mb-8 text-(--text-muted) text-center lg:text-left">
               Everything you need to know about participating in Q-Hackathon 2026. Can't find the answer you're looking for?
             </p>
-
-            {/*supportbox*/}
             <div className="p-6 rounded-2xl border border-(--border-soft) bg-(--bg-card-dark) shadow-sm flex items-start gap-4">
               <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)" }}>
                 <Mail size={24} style={{ color: "var(--primary)" }} />
@@ -118,15 +116,48 @@ const FAQ = () => {
                   className="text-sm font-bold hover:underline transition-all"
                   style={{ color: "var(--primary)" }}
                 >
-                  codex.club@quantumeducation.in &rarr;
+                  codex.club@quantumeducation.in →
                 </a>
               </div>
             </div>
+            <div className="mt-5 p-6 rounded-2xl border border-(--border-soft) bg-(--bg-card-dark) shadow-sm flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)" }}>
+                <MessageSquare size={24} style={{ color: "var(--primary)" }} />
+              </div>
+              <div>
+                <h4 className="font-bold text-(--text-light) mb-1">Unstop Portal</h4>
+                <p className="text-sm text-(--text-muted) mb-2">Visit the Unstop Page for More Information.</p>
+                <a 
+                  href="https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126" 
+                  className="text-sm font-bold hover:underline transition-all"
+                  style={{ color: "var(--primary)" }}
+                >
+                  Unstop →
+                </a>
+              </div>
+            </div>
+            <div className="mt-5 p-6 rounded-2xl border border-(--border-soft) bg-(--bg-card-dark) shadow-sm flex items-start gap-4">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shrink-0" style={{ background: "var(--secondary)" }}>
+                <MapPin size={24} style={{ color: "var(--primary)" }} />
+              </div>
+              <div>
+                <h4 className="font-bold text-(--text-light) mb-1">Hackathon Venue</h4>
+                <p className="text-sm text-(--text-muted) mb-2">Quantum University Campus, Roorkee, Uttarakhand.</p>
+                <a 
+                  href="https://maps.app.goo.gl/aCz5xghw61opyN84A" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm font-bold hover:underline transition-all"
+                  style={{ color: "var(--primary)" }}
+                >
+                  Get Directions →
+                </a>
+              </div>
+            </div>
+
           </motion.div>
         </div>
-
-        {/*right side*/}
-        <div className="w-full lg:w-[60%] flex flex-col gap-4">
+        <div className="w-full lg:w-[65%] flex flex-col gap-4">
           {faqData.map((item, i) => (
             <FAQItem key={item.question} {...item} index={i} />
           ))}
