@@ -1,4 +1,4 @@
-import { Store, Handshake, Check, Star } from "lucide-react";
+import { Store, Handshake, Check } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 
 const partners = [
@@ -42,11 +42,13 @@ const PartnerBox = ({ partner, index }) => {
   const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["6deg", "-6deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-6deg", "6deg"]);
+  
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     x.set((e.clientX - rect.left) / rect.width - 0.5);
     y.set((e.clientY - rect.top) / rect.height - 0.5);
   };
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 40 }}
@@ -78,11 +80,15 @@ const PartnerBox = ({ partner, index }) => {
           
           <div className="flex items-center justify-between mb-6">
             <div
-              className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110"
-              style={{ background: highlight ? "var(--primary-dark)" : "var(--bg-page)", border: `1px solid ${highlight ? color : 'var(--border-soft)'}` }}
+              className="w-14 h-14 rounded-xl flex items-center justify-center transition-transform duration-500 group-hover:scale-110 shadow-sm"
+              style={{ 
+                background: highlight ? "var(--primary)" : "var(--bg-light)", 
+                border: `1px solid ${highlight ? "var(--primary-dark)" : "var(--border-soft)"}` 
+              }}
             >
-              <Icon size={24} strokeWidth={2} color={highlight ? "var(--text-light)" : "var(--text-muted)"} />
+              <Icon size={24} strokeWidth={2.5} color={highlight ? "#ffffff" : "var(--primary)"} />
             </div>
+            
             <span
               className="text-xs font-bold px-4 py-2 rounded-full border"
               style={{ 
@@ -95,7 +101,7 @@ const PartnerBox = ({ partner, index }) => {
             </span>
           </div>
 
-          <h3 className="text-2xl font-black mb-3 text-(--text-light) tracking-tight">
+          <h3 className="text-2xl font-black mb-3 text-(--text-heading) tracking-tight">
             {title}
           </h3>
 
@@ -107,28 +113,25 @@ const PartnerBox = ({ partner, index }) => {
             {perks.map((p, i) => (
               <li key={i} className="flex items-start gap-3 text-sm text-(--text-body) font-medium">
                 <div className="mt-0.5 shrink-0">
-                  <Check size={16} strokeWidth={3} color={highlight ? color : "var(--text-muted)"} />
+                  <Check size={16} strokeWidth={3} color={highlight ? color : "var(--primary)"} />
                 </div>
                 {p}
               </li>
             ))}
           </ul>
+          
           <a
             href="https://drive.google.com/file/d/1nZfTdO8etlti3NfCVrHc0nu5bReZBJME/view?usp=drivesdk"
             target="_blank"
             rel="noreferrer"
             className={`btn-ui block w-full text-center text-sm py-3.5 rounded-xl mt-auto ${highlight ? "btn-ui-primary" : "btn-ui-outline"}`}
-            style={
-              highlight
-                ? { borderColor: "var(--primary)" }
-                : { borderColor: "var(--border-soft)" }
-            }
+            style={highlight ? { borderColor: "var(--primary)" } : { borderColor: "var(--border-soft)" }}
             onMouseEnter={e => {
               if (highlight) {
                 e.currentTarget.style.background  = "var(--primary-dark)";
                 e.currentTarget.style.borderColor = "var(--primary-dark)";
                 e.currentTarget.style.boxShadow   = `0 4px 20px ${glow}`;
-                e.currentTarget.style.color       = "var(--text-inverse)";
+                e.currentTarget.style.color       = "#ffffff";
               } else {
                 e.currentTarget.style.background  = "var(--btn-outline-hover-bg)";
                 e.currentTarget.style.borderColor = "var(--text-muted)";
@@ -139,7 +142,7 @@ const PartnerBox = ({ partner, index }) => {
                 e.currentTarget.style.background  = "var(--primary)";
                 e.currentTarget.style.borderColor = "var(--primary)";
                 e.currentTarget.style.boxShadow   = "none";
-                e.currentTarget.style.color       = "var(--text-inverse)";
+                e.currentTarget.style.color       = "#ffffff";
               } else {
                 e.currentTarget.style.background  = "var(--btn-outline-bg)";
                 e.currentTarget.style.borderColor = "var(--border-soft)";
@@ -153,6 +156,7 @@ const PartnerBox = ({ partner, index }) => {
     </motion.div>
   );
 };
+
 const Partnerships = () => {
   return (
     <section id="partnerships" className="py-20 sm:py-24 px-4 sm:px-6 relative z-10 bg-(--bg-page-elevated)">

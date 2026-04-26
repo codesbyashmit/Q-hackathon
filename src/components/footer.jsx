@@ -1,6 +1,9 @@
-import logo from "../assets/qhackathon-name.svg";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Instagram, Linkedin, Globe } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
+import logoWhite from "../assets/qhackathon-name.svg";
+import logoBlack from "../assets/qhackathon-name-black.svg";
 
 const exploreLinks = [
   { name: "Home", to: "/" },
@@ -14,9 +17,30 @@ const engageLinks = [
   { name: "Register Now", to: "https://unstop.com/p/qhackathon-2026-quantum-university-roorkee-1663126" },
   { name: "Sponsor Us", to: "/sponsors" }
 ];
+
 function Footer() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { theme } = useTheme();
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  useEffect(() => {
+    const checkTheme = () => {
+      if (theme === "system") {
+        setIsDarkTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      } else {
+        setIsDarkTheme(theme === "dark");
+      }
+    };
+    
+    checkTheme();
+    
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQuery.addEventListener("change", checkTheme);
+    return () => mediaQuery.removeEventListener("change", checkTheme);
+  }, [theme]);
+
+  const currentLogo = isDarkTheme ? logoWhite : logoBlack;
+
   const handleScroll = (sectionId) => {
     if (location.pathname !== "/") {
       navigate("/");
@@ -37,7 +61,7 @@ function Footer() {
       <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-16">
         <div className="md:col-span-5 lg:col-span-6 flex flex-col items-start">
           <Link to="/" className="mb-6 inline-block">
-            <img src={logo} alt="Q-Hackathon Logo" className="h-10 sm:h-12 w-auto opacity-90 hover:opacity-100 transition-opacity" />
+            <img src={currentLogo} alt="Q-Hackathon Logo" className="h-10 sm:h-12 w-auto opacity-90 hover:opacity-100 transition-opacity duration-300" />
           </Link>
           <p className="text-(--text-muted) text-sm sm:text-base leading-relaxed max-w-md mb-8 font-medium">
             Empowering the next generation of innovators through code, collaboration, and creativity.
