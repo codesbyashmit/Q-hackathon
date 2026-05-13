@@ -1,9 +1,29 @@
 import { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import logo from "../assets/qhackathon-name.svg";
+import { useTheme } from "../context/ThemeContext";
+import logoWhite from "../assets/qhackathon-name.svg";
+import logoBlack from "../assets/qhackathon-name-black.svg";
 import robot from "../assets/hero-robo.svg";
 
 const Hero = () => {
+  const { theme } = useTheme();
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  useEffect(() => {
+    const checkTheme = () => {
+      if (theme === "system") {
+        setIsDarkTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      } else {
+        setIsDarkTheme(theme === "dark");
+      }
+    };
+    
+    checkTheme();
+        const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    mediaQuery.addEventListener("change", checkTheme);
+    return () => mediaQuery.removeEventListener("change", checkTheme);
+  }, [theme]);
+
+  const currentLogo = isDarkTheme ? logoWhite : logoBlack;
   const calculateTimeLeft = () => {
     const countDate = new Date("May 8, 2026 09:00:00").getTime();
     const gap = countDate - Date.now();
@@ -32,6 +52,7 @@ const Hero = () => {
       { value: timeLeft.secs, label: "Sec" },
     ]
     : [];
+    
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
@@ -48,14 +69,13 @@ const Hero = () => {
       transition: { type: "spring", stiffness: 80, damping: 15 }
     },
   };
-
-  //3d hover tilt
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const mouseXSpring = useSpring(x, { stiffness: 150, damping: 15 });
   const mouseYSpring = useSpring(y, { stiffness: 150, damping: 15 });
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+  
   const handleMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const width = rect.width;
@@ -67,10 +87,12 @@ const Hero = () => {
     x.set(xPct);
     y.set(yPct);
   };
+  
   const handleMouseLeave = () => {
     x.set(0);
     y.set(0);
   };
+
   return (
     <section
       className="relative min-h-svh flex items-center px-4 sm:px-6 py-14 overflow-hidden bg-transparent"
@@ -106,8 +128,6 @@ const Hero = () => {
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           />
         </motion.div>
-
-        {/* leftside content */}
         <motion.div
           className="lg:order-1 lg:flex-1 flex flex-col items-center lg:items-start text-center lg:text-left w-full"
           variants={containerVariants}
@@ -115,12 +135,12 @@ const Hero = () => {
           animate="show"
         >
           <motion.img
-            src={logo}
+            src={currentLogo}
             alt="Q-Hackathon 2026 Logo"
-            className="w-40 sm:w-56 lg:max-w-xs mb-4 drop-shadow-md"
+            className="w-40 sm:w-56 lg:max-w-xs mb-4 drop-shadow-md transition-all duration-300"
             variants={itemVariants}
           />
-          {/*subtitle*/}
+          
           <motion.p
             className="text-lg sm:text-2xl lg:text-3xl font-bold tracking-tight mb-1"
             style={{ color: "var(--primary)", letterSpacing: "-0.4px" }}
@@ -129,7 +149,6 @@ const Hero = () => {
             36-Hour Intercollegiate Hackathon
           </motion.p>
 
-          {/*date and location*/}
           <motion.p
             className="text-xs sm:text-sm lg:text-base font-semibold mb-5 sm:mb-7"
             style={{ color: "var(--text-muted)" }}

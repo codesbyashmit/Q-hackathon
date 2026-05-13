@@ -7,6 +7,7 @@ import ThemeToggle from "./ThemeToggle";
 
 const homeNavLinks = [
   { label: "Home", section: "home" },
+  { label: "Winners", section: "winners" },
   { label: "About", section: "about" },
   { label: "Tracks", section: "tracks" },
   { label: "Roadmap", section: "timeline-section" },

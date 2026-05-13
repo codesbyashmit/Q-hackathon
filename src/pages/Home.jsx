@@ -4,6 +4,7 @@ import About from "../components/about";
 import Tracks from "../components/tracks";
 import Timeline from "../components/timeline";
 import Prizes from "../components/prizes";
+import Winners from "../components/Winners";
 import FAQ from "../components/faq";
 import Contact from "../components/contact";
 import OrganizerStrip from "../components/organizerStrip";
@@ -14,6 +15,7 @@ function Home() {
     <>
       <Navbar />
       <Hero />
+      <Winners />
       <About />
       <Tracks />
       <Timeline />
