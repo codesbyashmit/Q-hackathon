@@ -77,7 +77,6 @@ const FireworkBurst = ({ color, delay, scale }) => (
 
 const WinnerCard = ({ winner, index, featured = false }) => {
   const RankIcon = rankIcons[winner.rank] ?? Award;
-
   return (
     <Motion.article
       initial={{ opacity: 0, y: 30 }}
@@ -93,11 +92,9 @@ const WinnerCard = ({ winner, index, featured = false }) => {
         }}
       />
 
-      {featured ? (
+      {featured && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div
-            className="absolute inset-x-0 top-0 h-48"
-          />
+          <div className="absolute inset-x-0 top-0 h-48" />
           <div
             className="absolute -inset-x-10 -top-8 h-28 blur-3xl opacity-70"
             style={{
@@ -118,7 +115,7 @@ const WinnerCard = ({ winner, index, featured = false }) => {
             </Motion.div>
           ))}
         </div>
-      ) : null}
+      )}
 
       <div className={`relative z-10 grid gap-6 ${featured ? "lg:grid-cols-[1.2fr_1fr] lg:items-center" : "grid-cols-1"}`}>
         <div>
@@ -153,7 +150,6 @@ const WinnerCard = ({ winner, index, featured = false }) => {
             </ul>
           </div>
         </div>
-
         <div className={`${featured ? "lg:pl-6" : ""}`}>
           <div className="relative rounded-2xl overflow-hidden border border-(--border-soft) bg-(--bg-page)">
             <img
@@ -161,6 +157,7 @@ const WinnerCard = ({ winner, index, featured = false }) => {
               alt={`${winner.teamName} group photo`}
               className={`w-full object-cover ${featured ? "h-64 sm:h-72" : "h-56 sm:h-64"}`}
               loading="lazy"
+              decoding="async"
             />
             <div
               className="absolute inset-x-0 top-0 h-1.5"
@@ -201,7 +198,7 @@ const Winners = () => {
           />
         </Motion.div>
 
-        {featuredWinner ? <WinnerCard winner={featuredWinner} index={0} featured /> : null}
+        {featuredWinner && <WinnerCard winner={featuredWinner} index={0} featured />}
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           {runnerUps.map((winner, index) => (
